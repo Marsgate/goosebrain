@@ -14,7 +14,7 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "J"
-				(at 0 3.81 0)
+				(at 0 2.54 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -22,7 +22,7 @@
 				)
 			)
 			(property "Value" "Conn_01x02"
-				(at 0 -3.81 0)
+				(at 0 -5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -47,7 +47,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Two-pin connector for direct-soldered XT30 battery cable"
+			(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -56,7 +56,16 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "connector battery XT30"
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -67,8 +76,8 @@
 			)
 			(symbol "Conn_01x02_1_1"
 				(rectangle
-					(start -1.27 2.54)
-					(end 1.27 -2.54)
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -77,8 +86,30 @@
 						(type background)
 					)
 				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(pin passive line
-					(at -5.08 1.27 0)
+					(at -5.08 0 0)
 					(length 3.81)
 					(name "Pin_1"
 						(effects
@@ -96,7 +127,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -1.27 0)
+					(at -5.08 -2.54 0)
 					(length 3.81)
 					(name "Pin_2"
 						(effects
@@ -6248,7 +6279,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
-		(at 39.37 152.4 180)
+		(at 39.37 153.67 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6256,7 +6287,7 @@
 		(dnp no)
 		(uuid "4c8f91a2-2b4c-4d6e-8f10-6a7b8c9d0e1f")
 		(property "Reference" "BT1"
-			(at 39.37 157.48 0)
+			(at 39.37 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6265,7 +6296,7 @@
 			)
 		)
 		(property "Value" "XT30_SOLDER_CABLE"
-			(at 39.37 147.32 0)
+			(at 32.258 148.082 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6273,7 +6304,7 @@
 			)
 		)
 		(property "Footprint" "hexy:XT30_SolderPads_1x02_P5.00mm"
-			(at 39.37 152.4 0)
+			(at 39.37 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6282,7 +6313,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 39.37 152.4 0)
+			(at 39.37 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6290,8 +6321,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Direct-solder XT30 battery cable; pin 1 +BATT, pin 2 GND"
-			(at 39.37 152.4 0)
+		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 39.37 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
