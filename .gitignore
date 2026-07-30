@@ -1,0 +1,18 @@
+# KiCad autosaves, locks, and editor-local files
+\#auto_saved_files\#
+*_autosave*
+~*
+*.lck
+*.kicad_prl
+fp-info-cache
+
+# KiCad backup archives
+*-backups/
+
+# Exported manufacturing and interchange files
+gerbers/
+*.step
+*.stp
+
+# Generic backup files
+*.bak
