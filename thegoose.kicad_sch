@@ -4948,6 +4948,26 @@
 		)
 		(uuid "fedc91f0-aa46-41a7-b088-393b6dbeb759")
 	)
+	(label "ESP_D15"
+		(at 59.69 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3f1bed37-a037-4334-9faa-58cf027c84a9")
+	)
+	(label "ESP_D15"
+		(at 147.32 181.61 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "56008fff-e016-46a5-9c29-5424652a723c")
+	)
 	(label "ESP_D4"
 		(at 59.69 86.36 0)
 		(effects
