@@ -14,7 +14,7 @@
 				)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "AP64500SP-13"
 			(at 0 0 0)
 			(effects
 				(font
@@ -22,7 +22,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:Diodes_SO-8EP"
 			(at 0 0 0)
 			(effects
 				(font
@@ -40,7 +40,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "AP64500SP-13"
 			(at 0 0 0)
 			(effects
 				(font
@@ -73,7 +73,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -91,7 +91,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -109,7 +109,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -127,7 +127,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "4"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -135,7 +135,7 @@
 					)
 				)
 			)
-			(pin output line
+			(pin power_in line
 				(at 0 -7.62 90)
 				(length 2.54)
 				(name "EP"
@@ -145,7 +145,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "9"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -163,7 +163,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "8"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -181,7 +181,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -199,7 +199,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "6"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -217,7 +217,7 @@
 						)
 					)
 				)
-				(number ""
+				(number "7"
 					(effects
 						(font
 							(size 1.27 1.27)
