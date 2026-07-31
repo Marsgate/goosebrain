@@ -1133,7 +1133,7 @@
 			(uuid "7a8db3f3-417b-42f3-954a-c11c4d38cc57")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Package_SO.3dshapes/Diodes_SO-8EP.step"
+		(model "${KIPRJMOD}/3dmodels/AP64500SP-13.wrl"
 			(offset
 				(xyz 0 0 0)
 			)
