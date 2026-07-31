@@ -16,3 +16,5 @@ gerbers/
 
 # Generic backup files
 *.bak
+
+*.zip
