@@ -285,15 +285,15 @@
 		(uuid "48e098e3-a0d4-49e7-abda-401fd5d9578e")
 	)
 	(embedded_fonts no)
-	(model "${KICAD9_3DMODEL_DIR}/Connector_AMASS.3dshapes/AMASS_XT60PW-M_1x02_P7.20mm_Horizontal.step"
+	(model "${KIPRJMOD}/3dmodels/XT60PW-M.STEP"
 		(offset
-			(xyz 0 0 0)
+			(xyz 11.45 -1.68 0)
 		)
 		(scale
 			(xyz 1 1 1)
 		)
 		(rotate
-			(xyz 0 0 0)
+			(xyz -0 -180 -0)
 		)
 	)
 )
