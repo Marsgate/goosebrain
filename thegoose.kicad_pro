@@ -501,7 +501,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.2
+        "track_width": 0.6
       },
       {
         "bus_width": 12,
