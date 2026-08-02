@@ -5901,6 +5901,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C2932676"
+			(at 214.63 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "6"
 			(uuid "536771a3-f8fe-4624-9c39-cb9b67243187")
 		)
@@ -6722,6 +6731,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x15, script generated"
+			(at 207.01 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2932676"
 			(at 207.01 116.84 0)
 			(effects
 				(font
