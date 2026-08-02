@@ -3621,6 +3621,12 @@
 		(uuid "5084f443-80ec-4d13-a908-4b8be2500882")
 	)
 	(junction
+		(at 87.63 147.32)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a9b05a1-028b-4d01-b0a5-c1da1005309f")
+	)
+	(junction
 		(at 53.34 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3649,6 +3655,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9912e65c-2557-424a-a073-0e06cd00fee3")
+	)
+	(junction
+		(at 87.63 124.46)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a0c17023-e577-4fe3-93e0-b85c862fe4c0")
 	)
 	(junction
 		(at 208.28 27.94)
@@ -3697,6 +3709,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dfc48f54-e670-41a5-ade1-1802674efd25")
+	)
+	(junction
+		(at 87.63 135.89)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e13e5817-0e85-4205-ab65-1eaca5a9c647")
 	)
 	(junction
 		(at 87.63 153.67)
@@ -3982,6 +4000,16 @@
 	)
 	(wire
 		(pts
+			(xy 87.63 124.46) (xy 92.71 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "273b5407-176b-402b-b292-7417f7aea063")
+	)
+	(wire
+		(pts
 			(xy 66.04 165.1) (xy 66.04 173.99)
 		)
 		(stroke
@@ -4009,6 +4037,16 @@
 			(type default)
 		)
 		(uuid "30692883-a3ab-4e26-876b-3aee2702485d")
+	)
+	(wire
+		(pts
+			(xy 87.63 147.32) (xy 92.71 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "32955bc9-1ac1-45a7-a4b1-bf0ea720b7cf")
 	)
 	(wire
 		(pts
@@ -4169,6 +4207,16 @@
 			(type default)
 		)
 		(uuid "5ad03da6-9c0f-4ba4-9c24-482318a3e872")
+	)
+	(wire
+		(pts
+			(xy 87.63 147.32) (xy 87.63 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b19a4e9-1dc2-4074-9f46-586182612574")
 	)
 	(wire
 		(pts
@@ -4442,16 +4490,6 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 135.89) (xy 85.09 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a6b46d79-36ed-48b5-904c-fe9ca12b90d3")
-	)
-	(wire
-		(pts
 			(xy 78.74 146.05) (xy 78.74 153.67)
 		)
 		(stroke
@@ -4462,6 +4500,16 @@
 	)
 	(wire
 		(pts
+			(xy 87.63 124.46) (xy 87.63 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8fcd318-0a93-4fd4-a394-5f55f4c991db")
+	)
+	(wire
+		(pts
 			(xy 246.38 151.13) (xy 246.38 152.4)
 		)
 		(stroke
@@ -4469,6 +4517,16 @@
 			(type default)
 		)
 		(uuid "a93550dd-c5a1-42c4-a657-7aed8980eead")
+	)
+	(wire
+		(pts
+			(xy 87.63 135.89) (xy 87.63 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab51b737-d7b3-4688-bb32-522cd4383fd4")
 	)
 	(wire
 		(pts
@@ -4582,7 +4640,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 153.67) (xy 87.63 135.89)
+			(xy 87.63 113.03) (xy 87.63 124.46)
 		)
 		(stroke
 			(width 0)
@@ -4749,6 +4807,16 @@
 			(type default)
 		)
 		(uuid "f01c2594-6b09-44be-84c2-7096bceed24d")
+	)
+	(wire
+		(pts
+			(xy 87.63 135.89) (xy 92.71 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f43850f2-7d99-4de2-a61b-dba951657a5c")
 	)
 	(wire
 		(pts
@@ -5202,6 +5270,73 @@
 	)
 	(symbol
 		(lib_id "Device:C")
+		(at 96.52 147.32 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0008d36a-5ab5-46b1-9ebc-c6f4ca961aa9")
+		(property "Reference" "C12"
+			(at 96.774 141.986 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22uF"
+			(at 96.774 143.764 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 100.33 146.3548 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 96.52 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 96.52 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c523e3d3-5ab0-4974-8459-b267f4c854f6")
+		)
+		(pin "2"
+			(uuid "46d88726-7818-4fc2-be46-55c746a48b84")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "C12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
 		(at 139.7 43.18 180)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5227,7 +5362,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 138.7348 39.37 0)
 			(effects
 				(font
@@ -5254,7 +5389,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C344180"
+		(property "LCSC Part #" "C49678 "
 			(at 145.288 49.276 0)
 			(effects
 				(font
@@ -5306,7 +5441,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 40.9448 158.75 0)
 			(effects
 				(font
@@ -5333,7 +5468,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C380331"
+		(property "LCSC Part #" "C15850"
 			(at 82.5501 335.2801 0)
 			(effects
 				(font
@@ -5796,7 +5931,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 67.6148 39.37 0)
 			(effects
 				(font
@@ -5823,7 +5958,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C344180"
+		(property "LCSC Part #" "C49678"
 			(at 74.422 48.514 0)
 			(effects
 				(font
@@ -6160,6 +6295,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 96.52 124.46 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2325c923-848a-4a3d-9ac6-434e4e7b1e9a")
+		(property "Reference" "C5"
+			(at 96.774 119.126 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22uF"
+			(at 96.774 120.904 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 100.33 123.4948 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 96.52 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 96.52 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a3846e54-758a-4893-942a-3819e814c6fc")
+		)
+		(pin "2"
+			(uuid "36fb5ca8-e1cc-4d66-830f-305fd1d552d3")
+		)
+		(instances
+			(project ""
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VCC")
 		(at 135.89 123.19 270)
 		(unit 1)
@@ -6460,7 +6662,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 220.98 28.9052 0)
 			(effects
 				(font
@@ -6487,7 +6689,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C76638"
+		(property "LCSC Part #" "C377773"
 			(at 252.7301 -196.8501 0)
 			(effects
 				(font
@@ -6564,7 +6766,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2070920"
+		(property "LCSC Part #" "C1609"
 			(at 1.2699 -10.1601 0)
 			(effects
 				(font
@@ -6925,6 +7127,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 100.33 147.32 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4200e924-6c3f-470f-ba3c-430454526320")
+		(property "Reference" "#PWR010"
+			(at 106.68 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.902 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 100.33 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b4d372d6-523b-423e-a751-299cc05e6b1b")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "#PWR010")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
 		(at 40.64 143.51 180)
 		(unit 1)
@@ -7149,7 +7416,7 @@
 	)
 	(symbol
 		(lib_id "power:VCC")
-		(at 85.09 135.89 270)
+		(at 87.63 113.03 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7157,7 +7424,7 @@
 		(dnp no)
 		(uuid "5ab4fa02-0348-48e0-8b58-3ba1cfd3b6c9")
 		(property "Reference" "#PWR04"
-			(at 81.28 135.89 0)
+			(at 87.63 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7166,7 +7433,7 @@
 			)
 		)
 		(property "Value" "VCC"
-			(at 90.17 135.89 0)
+			(at 87.63 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7174,7 +7441,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 85.09 135.89 0)
+			(at 87.63 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7183,7 +7450,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 85.09 135.89 0)
+			(at 87.63 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7192,7 +7459,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 85.09 135.89 0)
+			(at 87.63 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7306,7 +7573,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 136.8552 39.37 0)
 			(effects
 				(font
@@ -7333,7 +7600,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C380331"
+		(property "LCSC Part #" "C15850"
 			(at -0.0001 -0.0001 0)
 			(effects
 				(font
@@ -7451,7 +7718,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 199.0852 142.24 0)
 			(effects
 				(font
@@ -7478,7 +7745,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C106837"
+		(property "LCSC Part #" "C28323"
 			(at 175.2599 38.0999 0)
 			(effects
 				(font
@@ -7497,6 +7764,73 @@
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
 					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 96.52 135.89 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "694cea72-0406-4c4e-a973-42a8680a7d2f")
+		(property "Reference" "C8"
+			(at 96.774 130.556 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22uF"
+			(at 96.774 132.334 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 100.33 134.9248 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 96.52 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 96.52 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d7ea47ba-3ba0-43dd-8120-cd2d1fc4a244")
+		)
+		(pin "2"
+			(uuid "c2a4f425-f129-4b3a-845f-04a05107aa97")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -7529,7 +7863,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 65.7352 39.37 0)
 			(effects
 				(font
@@ -7556,7 +7890,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C380331"
+		(property "LCSC Part #" "C15850"
 			(at -0.0001 -0.0001 0)
 			(effects
 				(font
@@ -7607,7 +7941,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 211.1248 39.37 0)
 			(effects
 				(font
@@ -7634,7 +7968,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C344180"
+		(property "LCSC Part #" "C49678"
 			(at 214.884 47.244 0)
 			(effects
 				(font
@@ -8150,6 +8484,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 100.33 124.46 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8f41ef93-d5aa-48ac-b95f-36ef8ee899d7")
+		(property "Reference" "#PWR01"
+			(at 106.68 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.902 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 100.33 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d5f40d13-4971-480f-aa63-8f6ce13fe684")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+BATT")
 		(at 246.38 152.4 180)
 		(unit 1)
@@ -8533,7 +8932,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 148.59 28.9052 0)
 			(effects
 				(font
@@ -8560,7 +8959,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C76638"
+		(property "LCSC Part #" "C377773"
 			(at 180.3401 -124.4601 0)
 			(effects
 				(font
@@ -8679,7 +9078,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric"
 			(at 84.1248 166.37 0)
 			(effects
 				(font
@@ -9021,7 +9420,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 77.47 28.9052 0)
 			(effects
 				(font
@@ -9048,7 +9447,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C76638"
+		(property "LCSC Part #" "C377773"
 			(at 109.2201 -53.3401 0)
 			(effects
 				(font
@@ -9132,6 +9531,71 @@
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
 					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 100.33 135.89 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bde27e0b-158f-4d59-b043-4a9a61938ca1")
+		(property "Reference" "#PWR09"
+			(at 106.68 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.902 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 100.33 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 100.33 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ded2522a-9523-4cb7-98dd-1b362074a5c0")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -9370,7 +9834,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 209.2452 39.37 0)
 			(effects
 				(font
@@ -9397,7 +9861,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C380331"
+		(property "LCSC Part #" "C15850"
 			(at -0.0001 -0.0001 0)
 			(effects
 				(font
@@ -9723,7 +10187,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 62.23 147.0152 0)
 			(effects
 				(font
@@ -9750,7 +10214,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C344180"
+		(property "LCSC Part #" "C49678 "
 			(at 70.358 140.208 0)
 			(effects
 				(font
