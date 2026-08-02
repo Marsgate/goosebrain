@@ -18,3 +18,5 @@ gerbers/
 *.bak
 
 *.zip
+
+production/
