@@ -5111,7 +5111,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "015008bd-43c6-49bd-88c1-ad6cb1a58e8d")
-		(property "LCSC Part #" "C344180")
 		(property "Reference" "C7"
 			(at 145.796 43.942 0)
 			(effects
@@ -5157,6 +5156,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C344180"
+			(at 145.288 49.276 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0c545561-d488-48cd-bb53-6e6f8c11b1b3")
 		)
@@ -5182,7 +5190,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "049ebf76-4a63-4417-bc01-5c0d56d5f868")
-		(property "LCSC Part #" "C272880")
 		(property "Reference" "C15"
 			(at 44.45 171.4499 0)
 			(effects
@@ -5228,6 +5235,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C272880"
+			(at 81.2801 345.4401 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "6d62b2fb-e252-41c7-8513-b5fcefc50bb9")
 		)
@@ -5252,7 +5268,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "054988de-0283-4190-86df-1185249c259d")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M3"
 			(at 162.56 16.51 90)
 			(effects
@@ -5292,6 +5307,15 @@
 		)
 		(property "Description" ""
 			(at 163.83 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C157931"
+			(at 185.4201 -142.2401 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5388,7 +5412,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "08207ba3-0a62-4614-8e6e-726005b8059c")
-		(property "LCSC Part #" "C42431837")
 		(property "Reference" "GPIO1"
 			(at 102.362 95.758 0)
 			(effects
@@ -5425,6 +5448,15 @@
 		)
 		(property "Description" "Generic connector, single row, 01x18, script generated"
 			(at 101.6 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C42431837"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5505,7 +5537,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0b0af1ba-8fdc-4f09-b1b6-886b9b11766c")
-		(property "LCSC Part #" "C167779")
 		(property "Reference" "L1"
 			(at 82.55 158.75 90)
 			(effects
@@ -5522,7 +5553,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_1210_3225Metric_Pad1.42x2.65mm_HandSolder"
+		(property "Footprint" "Inductor_SMD_Wurth:L_Wurth_WE-LQSH-4020"
 			(at 82.55 163.83 0)
 			(effects
 				(font
@@ -5542,6 +5573,15 @@
 		)
 		(property "Description" "Inductor"
 			(at 82.55 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C167779"
+			(at -81.2801 246.3801 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5573,7 +5613,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0d90b8ba-ca88-49e6-85b7-c4558cd9fb3f")
-		(property "LCSC Part #" "C82899")
 		(property "Reference" "ESP32"
 			(at 47.498 103.632 0)
 			(effects
@@ -5613,6 +5652,15 @@
 		)
 		(property "Description" ""
 			(at 44.45 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C82899"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5728,7 +5776,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "0f16e2bd-cdfb-4c43-b234-70264141778b")
-		(property "LCSC Part #" "C344180")
 		(property "Reference" "C11"
 			(at 74.676 43.942 0)
 			(effects
@@ -5767,6 +5814,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 68.58 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C344180"
+			(at 74.422 48.514 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6060,7 +6116,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2ec586e9-75aa-4c87-a057-01514df31fbe")
-		(property "LCSC Part #" "C844827")
 		(property "Reference" "R25"
 			(at 55.88 177.8 90)
 			(effects
@@ -6097,6 +6152,15 @@
 		)
 		(property "Description" "Resistor"
 			(at 52.07 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C844827"
+			(at 104.1401 355.6001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6193,7 +6257,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "34d40d19-d452-4665-aa73-cae2f099aeff")
-		(property "LCSC Part #" "C76638")
 		(property "Reference" "C2"
 			(at 225.552 21.844 0)
 			(effects
@@ -6232,6 +6295,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 224.79 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C76638"
+			(at 252.7301 -196.8501 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6329,7 +6401,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3e0f62ec-fc41-413b-86ea-fd664f363102")
-		(property "LCSC Part #" "C2070920")
 		(property "Reference" "U4"
 			(at 64.77 164.592 0)
 			(effects
@@ -6367,6 +6438,15 @@
 		)
 		(property "Description" "AP64500SP-13"
 			(at 65.024 157.988 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2070920"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6419,7 +6499,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "3e7ced16-7c56-4346-9521-1de08059a708")
-		(property "LCSC Part #" "C5200544")
 		(property "Reference" "R26"
 			(at 101.6 167.64 90)
 			(effects
@@ -6463,6 +6542,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C5200544"
+			(at 195.5801 335.2801 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e8d2ad26-f13f-4da9-8f9d-e62cd01b67e6")
 		)
@@ -6488,7 +6576,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "400090f0-672f-4973-b115-75577de4bb8b")
-		(property "LCSC Part #" "C2863921")
 		(property "Reference" "U3"
 			(at 114.3 46.6246 90)
 			(effects
@@ -6525,6 +6612,15 @@
 		)
 		(property "Description" "Dual H-Bridge motor driver, PWM controlled, single/dual brushed DC stepper, +2 to +18 VDD, TSSOP-16"
 			(at 95.25 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2863921"
+			(at 43.1799 147.3201 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6601,7 +6697,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4c8f91a2-2b4c-4d6e-8f10-6a7b8c9d0e1f")
-		(property "LCSC Part #" "C98732")
 		(property "Reference" "BT1"
 			(at 39.37 158.75 0)
 			(effects
@@ -6646,6 +6741,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C98732"
+			(at 78.7401 307.3401 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5d9e2f41-7a63-4b90-a1c2-d3e4f5061728")
 		)
@@ -6670,7 +6774,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4e7e6140-c76d-4d87-b9fc-5f2fe3123d33")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M2"
 			(at 245.11 16.51 90)
 			(effects
@@ -6710,6 +6813,15 @@
 		)
 		(property "Description" ""
 			(at 246.38 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C157931"
+			(at 267.9701 -224.7901 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6940,7 +7052,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "61bbd75a-8b7c-4e58-a307-0ea9a9efe872")
-		(property "LCSC Part #" "C272880")
 		(property "Reference" "C6"
 			(at 129.794 34.798 0)
 			(effects
@@ -6979,6 +7090,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 135.89 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C272880"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7077,7 +7197,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "67952b85-8003-4a8d-b025-c526fe8e6756")
-		(property "LCSC Part #" "C106837")
 		(property "Reference" "C1"
 			(at 16.764 98.806 0)
 			(effects
@@ -7123,6 +7242,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C106837"
+			(at -0.0001 -0.0001 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "46fd2b36-a655-4d09-a3fa-e4b8134b1a47")
 		)
@@ -7147,7 +7275,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6caef8a4-2456-4987-a65e-3aa276d1b9f5")
-		(property "LCSC Part #" "C272880")
 		(property "Reference" "C10"
 			(at 58.674 34.798 0)
 			(effects
@@ -7186,6 +7313,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 64.77 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C272880"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7282,7 +7418,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "7727e15f-2478-4df4-b746-9eeff54f4aa9")
-		(property "LCSC Part #" "C344180")
 		(property "Reference" "C4"
 			(at 218.186 43.942 0)
 			(effects
@@ -7321,6 +7456,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 212.09 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C344180"
+			(at 214.884 47.244 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7419,7 +7563,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "79a40abf-4b75-4823-9623-122ece5634bd")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M4"
 			(at 172.72 16.51 90)
 			(effects
@@ -7459,6 +7602,15 @@
 		)
 		(property "Description" ""
 			(at 173.99 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C157931"
+			(at 195.5801 -152.4001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7557,7 +7709,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8990829e-48fb-4ef8-991e-3cad1389c8a1")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M5"
 			(at 91.44 16.51 90)
 			(effects
@@ -7597,6 +7748,15 @@
 		)
 		(property "Description" ""
 			(at 92.71 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C157931"
+			(at 114.3001 -71.1201 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8026,7 +8186,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a01890e0-d868-41dd-9305-786a1b7a43f1")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M1"
 			(at 234.95 16.51 90)
 			(effects
@@ -8073,6 +8232,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C157931"
+			(at 257.8101 -214.6301 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "b81e13cf-322b-4649-a2e9-b0fec9b8cf67")
 		)
@@ -8097,7 +8265,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a401b311-79d3-4f77-9758-51fe3f1642da")
-		(property "LCSC Part #" "C157931")
 		(property "Reference" "M6"
 			(at 101.6 16.51 90)
 			(effects
@@ -8144,6 +8311,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C157931"
+			(at 124.4601 -81.2801 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e797d471-1a8f-4660-b4c5-1397a7ffc778")
 		)
@@ -8168,7 +8344,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a5b55baf-c412-451c-831a-78eed864a657")
-		(property "LCSC Part #" "C76638")
 		(property "Reference" "C9"
 			(at 153.162 21.844 0)
 			(effects
@@ -8207,6 +8382,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 152.4 27.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C76638"
+			(at 180.3401 -124.4601 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8306,7 +8490,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8e5af53-1a88-4f80-a703-c97c6e054f5f")
-		(property "LCSC Part #" "C1847101")
 		(property "Reference" "C16"
 			(at 87.63 179.0699 0)
 			(effects
@@ -8345,6 +8528,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 83.82 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C1847101"
+			(at 167.6401 360.6801 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8640,7 +8832,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ba043c84-bb3e-4896-adbc-e734a2cb80cb")
-		(property "LCSC Part #" "C76638")
 		(property "Reference" "C13"
 			(at 82.042 21.844 0)
 			(effects
@@ -8686,6 +8877,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C76638"
+			(at 109.2201 -53.3401 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d4f7bb25-87c5-4ada-88f6-7a727bdf4e08")
 		)
@@ -8710,7 +8910,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c11a5703-ae12-45e6-99f7-0208fa02340e")
-		(property "LCSC Part #" "C856785")
 		(property "Reference" "R27"
 			(at 101.6 175.26 90)
 			(effects
@@ -8747,6 +8946,15 @@
 		)
 		(property "Description" "Resistor"
 			(at 97.79 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C856785"
+			(at 195.5801 350.5201 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8908,7 +9116,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c7ab15c4-dfcd-443b-ab29-9ab0194fae32")
-		(property "LCSC Part #" "C272880")
 		(property "Reference" "C3"
 			(at 202.184 34.798 0)
 			(effects
@@ -8947,6 +9154,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 208.28 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C272880"
+			(at -0.0001 -0.0001 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9110,7 +9326,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "dbca4c0b-52f3-4e92-94d4-4f03f9a39ca1")
-		(property "LCSC Part #" "C170028")
 		(property "Reference" "R28"
 			(at 87.63 172.72 90)
 			(effects
@@ -9154,6 +9369,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC Part #" "C170028"
+			(at 167.6401 345.4401 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8023bd31-4c51-48f3-a79f-afd2a7d55bcc")
 		)
@@ -9178,7 +9402,6 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "dd19eded-1130-4f88-9ff0-6de8d0e699f4")
-		(property "LCSC Part #" "C344180")
 		(property "Reference" "C14"
 			(at 65.532 150.114 0)
 			(effects
@@ -9217,6 +9440,15 @@
 		)
 		(property "Description" "Unpolarized capacitor"
 			(at 64.77 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C344180"
+			(at 69.088 150.368 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9380,7 +9612,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e7511035-4738-47ea-a3cd-fa7921fa3b8b")
-		(property "LCSC Part #" "C2863921")
 		(property "Reference" "U2"
 			(at 185.42 46.6246 90)
 			(effects
@@ -9417,6 +9648,15 @@
 		)
 		(property "Description" "Dual H-Bridge motor driver, PWM controlled, single/dual brushed DC stepper, +2 to +18 VDD, TSSOP-16"
 			(at 166.37 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2863921"
+			(at 114.2999 218.4401 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9626,7 +9866,6 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fea66782-f1a8-4c15-a47e-5d8a4359b35d")
-		(property "LCSC Part #" "C2863921")
 		(property "Reference" "U1"
 			(at 257.81 46.6246 90)
 			(effects
@@ -9663,6 +9902,15 @@
 		)
 		(property "Description" "Dual H-Bridge motor driver, PWM controlled, single/dual brushed DC stepper, +2 to +18 VDD, TSSOP-16"
 			(at 238.76 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2863921"
+			(at 186.6899 290.8301 0)
 			(effects
 				(font
 					(size 1.27 1.27)
