@@ -20,3 +20,5 @@ gerbers/
 *.zip
 
 production/
+
+.DS_Store
