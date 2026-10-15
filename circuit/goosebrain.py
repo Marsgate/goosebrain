@@ -188,7 +188,10 @@ def motor_driver(ref, sleep, ain1, ain2, bin1, bin2, vbat, gnd, motors, caps):
 
     drv["VM"] += vbat
     drv["GND"] += gnd  # pin 13 and the exposed pad (17)
-    drv["AISEN", "BISEN"] += NC  # sense pins, open as in the KiCad schematic
+    # No current limiting, so the sense pins go straight to GND (data sheet).
+    # The original design left them open, which gave the H-bridges' low side
+    # no return path.
+    drv["AISEN", "BISEN"] += gnd
 
     vint = Net("VINT")
     drv["VINT", "VREF"] += vint  # VREF tied to VINT
