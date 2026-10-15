@@ -7,7 +7,7 @@
 One-time setup (needs KiCad 10 in `/Applications`):
 
 ```bash
-python3 -m venv .venv && .venv/bin/pip install skidl==2.3.0
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ```
 
 Change the circuit:
@@ -16,13 +16,23 @@ Change the circuit:
 2. Run `.venv/bin/python circuit/goosebrain.py`. It runs SKiDL's ERC and writes `build/goosebrain.net`. Add `--schematic` to also write a KiCad schematic under `build/schematic/`. That schematic is generated for viewing only, so don't edit it.
 3. In KiCad's PCB editor, use **File → Import → Netlist** with `build/goosebrain.net`. In that dialog, link footprints by reference designator rather than by unique ID, because SKiDL's symbol IDs differ from the original schematic's.
 
-The generated schematic is electrically correct but laid out automatically, so parts can overlap. `kicad/thegoose.kicad_sch` is the original hand-drawn schematic; it matches the Python as of this conversion, but changes made in the Python won't show up in it.
+The generated schematic is electrically correct but laid out automatically, so parts can overlap. `kicad/thegoose.kicad_sch` is the readable, hand-drawn view. It doesn't update itself when the Python changes: edit it too (the schematic loop below does this through the KiCad MCP server), and the netlist check confirms the two still match.
 
 Check a netlist against another one net by net (net names don't need to match):
 
 ```bash
 python3 circuit/compare_netlists.py REFERENCE.net build/goosebrain.net
 ```
+
+## Design review loop
+
+Claude improves the schematic and the PCB in a "screenshot, analyse, improve" loop. It edits through the KiCad MCP server, renders the result, has a fresh critic agent score it against a rubric, fixes the top findings, and repeats.
+
+- `.venv/bin/python tools/review.py sch` / `pcb` renders zoomable images and runs the hard checks into `build/review/<sch|pcb>/NN/summary.md`. Schematic gates: no ERC errors, and the netlist matches SKiDL. PCB gates: no DRC errors or new warnings, nothing unrouted, schematic parity, minimum power-track widths.
+- `.claude/agents/schematic-critic.md` and `pcb-critic.md` hold the scoring rubrics.
+- `.claude/skills/schematic-loop` and `pcb-loop` define the procedure, phases and stopping rules. Ask Claude to "run the schematic loop", then "run the PCB loop" once the schematic is final.
+
+The loop never commits; review the result in KiCad before ordering.
 
 ## IO ports
 
