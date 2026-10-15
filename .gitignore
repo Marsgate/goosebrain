@@ -22,3 +22,8 @@ gerbers/
 production/
 
 .DS_Store
+
+# SKiDL
+.venv/
+build/
+__pycache__/
