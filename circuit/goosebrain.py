@@ -63,42 +63,45 @@ SAMSUNG = "Samsung Electro-Mechanics"
 FENGHUA = "FH (Guangdong Fenghua)"
 PASSIVES = {
     ("22", "0402"): ("0402WGF220JTCE", UNIROYAL, "C25092"),
-    ("27", "0402"): ("0402WGF270JTCE", UNIROYAL, "C25100"),
+    ("27", "0603"): ("0603WAF270JT5E", UNIROYAL, "C25190"),  # Preferred
     ("33", "0402"): ("0402WGF330JTCE", UNIROYAL, "C25105"),
     ("100", "0402"): ("0402WGF1000TCE", UNIROYAL, "C25076"),
     ("330", "0402"): ("0402WGF3300TCE", UNIROYAL, "C25104"),
     ("1k", "0402"): ("0402WGF1001TCE", UNIROYAL, "C11702"),
     ("2.2k", "0402"): ("0402WGF2201TCE", UNIROYAL, "C25879"),
+    ("4.7k", "0402"): ("0402WGF4701TCE", UNIROYAL, "C25900"),
+    ("5.1k", "0402"): ("0402WGF5101TCE", UNIROYAL, "C25905"),
     ("5.23k", "0402"): ("0402WGF5231TCE", UNIROYAL, "C25907"),
     ("6.8k", "0402"): ("0402WGF6801TCE", UNIROYAL, "C25917"),
     ("10k", "0402"): ("0402WGF1002TCE", UNIROYAL, "C25744"),
-    ("13.7k", "0402"): ("0402WGF1372TCE", UNIROYAL, "C25854"),
-    ("15.8k", "0402"): ("0402WGF1582TCE", UNIROYAL, "C26956"),
-    ("22.1k", "0402"): ("0402WGF2212TCE", UNIROYAL, "C43473"),
+    ("7.5k", "0402"): ("0402WGF7501TCE", UNIROYAL, "C25918"),  # Preferred
+    ("15k", "0402"): ("0402WGF1502TCE", UNIROYAL, "C25756"),
     ("27k", "0402"): ("0402WGF2702TCE", UNIROYAL, "C25771"),
     ("30.1k", "0402"): ("0402WGF3012TCE", UNIROYAL, "C29402"),
+    ("39k", "0402"): ("0402WGF3902TCE", UNIROYAL, "C25783"),  # Preferred
     ("33k", "0402"): ("0402WGF3302TCE", UNIROYAL, "C25779"),
     ("100k", "0402"): ("0402WGF1003TCE", UNIROYAL, "C25741"),
-    ("115k", "0402"): ("0402WGF1153TCE", UNIROYAL, "C25747"),
     ("200k", "0402"): ("0402WGF2003TCE", UNIROYAL, "C25764"),
+    ("470k", "0402"): ("0402WGF4703TCE", UNIROYAL, "C25790"),
+    ("1M", "0402"): ("0402WGF1004TCE", UNIROYAL, "C26083"),
     ("15pF", "0402"): ("0402CG150J500NT", FENGHUA, "C1548"),
     ("1nF", "0402"): ("0402B102K500NT", FENGHUA, "C1523"),
-    ("2.7nF", "0402"): ("0402B272K500NT", FENGHUA, "C45185"),
-    ("47nF", "0402"): ("CL05B473KA5NNNC", SAMSUNG, "C318631"),
+    ("4.7nF", "0402"): ("0402B472K500NT", FENGHUA, "C1538"),
     ("100nF", "0402"): ("CL05B104KO5NNNC", SAMSUNG, "C1525"),
     ("1uF", "0402"): ("CL05A105KA5NQNC", SAMSUNG, "C52923"),  # 25 V
     ("4.7uF", "0402"): ("CL05A475MP5NRNC", SAMSUNG, "C23733"),  # 10 V
-    ("1uF", "0603"): ("CL10A105KA8NNNC", SAMSUNG, "C5673"),  # 25 V
+    ("47nF", "0603"): ("0603B473K500NT", FENGHUA, "C1622"),  # 50 V
+    ("1uF", "0603"): ("CL10A105KB8NNNC", SAMSUNG, "C15849"),  # 50 V (basic)
+    ("2.2uF", "0603"): ("CL10A225KO8NNNC", SAMSUNG, "C23630"),  # 16 V
     ("4.7uF", "0603"): ("CL10A475KO8NNNC", SAMSUNG, "C19666"),  # 16 V
     ("10uF", "0603"): ("CL10A106KP8NNNC", SAMSUNG, "C19702"),  # 10 V
     ("100nF", "0805"): ("CC0805KRX7R9BB104", "YAGEO", "C49678"),  # 50 V
-    ("2.2uF", "0805"): ("CL21A225KBQNNNE", SAMSUNG, "C377773"),  # 50 V
     ("10uF", "0805"): ("CL21A106KAYNNNE", SAMSUNG, "C15850"),  # 25 V
-    ("22uF", "0805"): ("CL21A226MAQNNNE", SAMSUNG, "C45783"),  # 25 V
+    ("22uF", "1206"): ("CL31A226KPHNNNE", SAMSUNG, "C5672"),  # 10 V, Preferred
 }
 R_FP = "Resistor_SMD:R_{0}_{1}Metric"
 C_FP = "Capacitor_SMD:C_{0}_{1}Metric"
-METRIC = {"0402": "1005", "0603": "1608", "0805": "2012"}
+METRIC = {"0402": "1005", "0603": "1608", "0805": "2012", "1206": "3216"}
 
 
 def part(lib, name, ref, footprint, mpn, mfr, lcsc="", value=None):
@@ -149,7 +152,7 @@ class Refs:
 
 
 # Rev 1 used C1-C16, R25-R28, U1-U4, L1, M1-M6; new parts continue from there.
-ref = Refs(C=17, R=29, U=5, L=2, D=1, Q=1, F=1, J=1, SW=1, LED=1, TP=1, Y=1)
+ref = Refs(C=17, R=29, U=5, L=2, D=1, Q=1, F=1, J=1, SW=1, LED=1, TP=1, Y=1, TH=1, FID=1)
 
 
 # Blocks ----------------------------------------------------------------------
@@ -165,8 +168,11 @@ def usb_c_port(vbus, usb_dp, usb_dm, v3v3, gnd):
     """
     j = part(
         "Connector", "USB_C_Receptacle_USB2.0_16P", ref("J"),
-        "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
-        "TYPE-C-31-M-12", "Korean Hroparts Elec", "C165948",
+        # SHOU HAN TYPE-C16PIN: same pegs, tabs and mouth as the HRO part; its
+        # 1.15 mm pads match the GCT USB4105 land pattern (outer GND pads
+        # trimmed 0.1 mm for hole clearance to the pegs).
+        "hexy:USB_C_Receptacle_ShouHan_TYPE-C16PIN",
+        "TYPE-C16PIN", "SHOU HAN", "C393939",
     )
     j["A4", "A9", "B4", "B9"] += vbus
     j["A1", "A12", "B1", "B12", "SH"] += gnd
@@ -196,19 +202,21 @@ def usb_c_port(vbus, usb_dp, usb_dm, v3v3, gnd):
 
     tvs = part(
         "Device", "D_TVS", ref("D"), "Diode_SMD:D_SMB",
-        "SMBJ20A", "MDD", "C364296", "SMBJ20A",
+        "SMBJ20A", "hongjiacheng", "C19077575", "SMBJ20A",  # unidirectional, Preferred
     )
     tvs["A1"] += vbus
     tvs["A2"] += gnd
 
+    # SRV05-4: four steering-diode channels, two per line, on the USBLC6-2SC6
+    # pinout (1/6 and 3/4 paired, 5 VP, 2 VN). About 2 pF per line.
     esd = part(
-        "Power_Protection", "USBLC6-2SC6", ref("U"), "Package_TO_SOT_SMD:SOT-23-6",
-        "USBLC6-2SC6", "STMicroelectronics", "C7519",
+        "hexyhustle", "SRV05-4", ref("U"), "Package_TO_SOT_SMD:SOT-23-6",
+        "SRV05-4", "hongjiacheng", "C7420376", "SRV05-4",
     )
-    esd[1, 6] += usb_dp
-    esd[3, 4] += usb_dm
-    esd["VBUS"] += v3v3  # rated 6 V: never tie to PD VBUS
-    esd["GND"] += gnd
+    esd["IO1", "IO4"] += usb_dp
+    esd["IO2", "IO3"] += usb_dm
+    esd["VP"] += v3v3  # 5 V working voltage: never tie to PD VBUS
+    esd["VN"] += gnd
 
 
 @subcircuit
@@ -217,8 +225,8 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
 
     Safe with no firmware: PROG selects 3S (12.6 V) at 750 kHz, the TS divider
     plus the pack NTC gives JEITA temperature limits, and the ILIM_HIZ divider
-    caps input current at about 0.30 A, so charge current stays near 0.45C of a
-    500 mAh pack from 9 V (and lower from 5 V) even though the power-on charge
+    caps input current at about 0.30 A, so charge current stays near 0.22C of the
+    1000 mAh pack from 9 V (and lower from 5 V) even though the power-on charge
     current default is 1 A. The robot's loads run from the pack, not from SYS,
     because the internal BATFET is only rated 6 A continuous.
     """
@@ -244,16 +252,17 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
     u["~{INT}"] += chg_int
 
     inductor = part(
-        "Device", "L", ref("L"), "Inductor_SMD:L_Sunlord_MWSA0402S",
-        "MWSA0402S-2R2MT", "Sunlord", "C408335", "2.2uH",
+        # 2.2 uH for 750 kHz; Isat 4.9 A, Irms 2.95 A, DCR 39 mOhm max
+        "Device", "L", ref("L"), "Inductor_SMD:L_Changjiang_FNR4030S",
+        "FNR4030S2R2MT", "Changjiang Microelectronics", "C167869", "2.2uH",
     )
     inductor[1] += sw1
     inductor[2] += sw2
     btst1, btst2 = Net("CHG_BTST1"), Net("CHG_BTST2")
     u["BTST1"] += btst1
     u["BTST2"] += btst2
-    cap(ref("C"), "47nF", "0402", btst1, sw1)
-    cap(ref("C"), "47nF", "0402", btst2, sw2)
+    cap(ref("C"), "47nF", "0603", btst1, sw1)  # 0603: the 0402 47 nF is low-stock and extended
+    cap(ref("C"), "47nF", "0603", btst2, sw2)
 
     for _ in range(2):
         cap(ref("C"), "10uF", "0805", vbus, gnd)
@@ -277,7 +286,13 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
 
     prog = Net("CHG_PROG")
     u["PROG"] += prog
-    res(ref("R"), "13.7k", "0402", prog, gnd)  # 3S, 750 kHz
+    # 3S, 750 kHz needs 13.7k (datasheet Table 7-1). Two Preferred 6.8k in series give 13.6k,
+    # 13.46-13.74k worst case: inside the +/-2% TI allows, and far from the 10.5k and 17.4k
+    # settings either side (TI publishes no decode windows). Read REG0x0A CELL on the first
+    # board (must be 3S).
+    prog_mid = Net("CHG_PROG_MID")
+    res(ref("R"), "6.8k", "0402", prog, prog_mid)
+    res("R78", "6.8k", "0402", prog_mid, gnd)  # added part: fresh ref, so later refs don't shift
 
     ilim = Net("CHG_ILIM")
     u["ILIM_HIZ"] += ilim
@@ -286,14 +301,19 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
 
     ts = Net("CHG_TS")
     u["TS"] += ts
+    # TI's 0/60 C divider for a 103AT. Kept on E96 parts: the E24 pair
+    # 5.1k/27k would move the cold cutoff (73.3% of REGN) to about -1.5 C,
+    # below the 0 C charging limit of Li-ion cells, and no E24 pair matches.
     res(ref("R"), "5.23k", "0402", regn, ts)
     res(ref("R"), "30.1k", "0402", ts, gnd)
+    # The pack has no NTC, so a 10 kOhm B3435 (103AT-type) bead on two
+    # wire pads is hand-soldered from the top and taped against the pack.
     ntc = part(
         "Connector_Generic", "Conn_01x02", ref("J"),
-        "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal",
-        "S2B-PH-K-S(LF)(SN)", "JST", "C173752", "Pack NTC",
+        "Connector_Wire:SolderWire-0.1sqmm_1x02_P3.6mm_D0.4mm_OD1mm",
+        "", "", "", "NTC bead 10k B3435",
     )
-    ntc[1] += ts  # 10 kOhm 103AT NTC in the pack, TS to GND
+    ntc[1] += ts  # TS to GND through the bead
     ntc[2] += gnd
 
     # Charge LED on STAT: lit while charging, with no firmware involved.
@@ -301,8 +321,8 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
     u["STAT"] += stat
     res(ref("R"), "2.2k", "0402", regn, stat_led)
     led = part(
-        "Device", "LED", ref("LED"), "LED_SMD:LED_0603_1608Metric",
-        "KT-0603G", "Hubei KENTO Elec", "C12624", "green",
+        "Device", "LED", ref("LED"), "LED_SMD:LED_0805_2012Metric",
+        "KT-0805G", "Hubei KENTO Elec", "C2297", "green",  # 0805 green is basic
     )
     led["A"] += stat_led
     led["K"] += stat
@@ -312,25 +332,34 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
 
 
 @subcircuit
-def battery_and_switch(vbat, vsys, gnd):
+def battery_and_switch(vbat, vsys, bat_n, gnd):
     """Pack connector, fuse and the main power switch.
 
     The slide switch only drives the P-FET gate; motor current flows through
     the FET. Charging works with the switch off, since the charger connects to
     VBAT ahead of it.
     """
+    # Pack lead: a short XT60 female pigtail (14 AWG, off-board part) soldered
+    # to two wire pads at the top of the left-end strip; it mates with the
+    # Gens Ace pack's XT60 male plug off the board and the pair lies flat in the
+    # strip pocket. A board-mounted right-angle XT60 couldn't be mated: the
+    # plug's straight 20 mm insertion path crosses J11 and the M5/M6 pins.
+    # Pin 2 is "+" (PACK+, the pigtail's red lead); pin 1 is the pack's
+    # negative, which goes to the protector's low side (BAT_N), not board GND.
     j = part(
         "Connector_Generic", "Conn_01x02", ref("J"),
-        "Connector_AMASS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal",
-        "XT30PW-M", "Changzhou Amass", "C431092", "XT30 pack",
+        "Connector_Wire:SolderWire-2sqmm_1x02_P7.8mm_D2mm_OD3.9mm",
+        "", "", "", "XT60-F pigtail 14AWG",
     )
     pack = Net("PACK+")
-    j[1] += pack
-    j[2] += gnd
+    j[2] += pack
+    j[1] += bat_n
 
     fuse = part(
         "Device", "Fuse", ref("F"), "Fuse:Fuse_Littelfuse-NANO2-451_453",
-        "0453015.MR", "Littelfuse", "C178997", "15A slow",
+        # Very fast-acting. The cheaper JFC2410-2150TS (C136393) was rejected:
+        # it is time-lag, about 7-15x slower at 30-50 A, with 2.4x the I2t.
+        "0453015.MR", "Littelfuse", "C178997", "15A fast",
     )
     fuse[1] += pack
     fuse[2] += vbat
@@ -346,8 +375,10 @@ def battery_and_switch(vbat, vsys, gnd):
     res(ref("R"), "100k", "0402", vbat, gate)  # off by default
 
     switch = part(
-        "Switch", "SW_SPDT", ref("SW"), "Button_Switch_SMD:SW_SPDT_Shouhan_MSK12C02",
-        "MSK12C02", "SHOU HAN", "C431540", "Power",
+        # THT, rated 50 V (the SMD MSK12C02 was rated 12 V and sees 12.6 V).
+        # The lever reaches 4 mm past the board edge: the box needs a slot.
+        "Switch", "SW_SPDT", ref("SW"), "hexy:SW_SPDT_ShouHan_SK12D07VG4",
+        "SK12D07VG4", "SHOU HAN", "C393937", "Power",
     )
     sw_on = Net("PWR_SW_ON")
     switch["B"] += gate  # common
@@ -358,9 +389,21 @@ def battery_and_switch(vbat, vsys, gnd):
 
 @subcircuit
 def buck_5v(vin, vcc, gnd):
-    """AP64500 buck converter, pack to 5 V (rev 1 values).
+    """AP64500 buck converter, pack to 5 V (datasheet DS41979 equations).
 
-    Vout = 0.8 V * (1 + R26 / R27) = 0.8 * (1 + 115k / 22.1k) = 4.96 V
+    Vout = 0.8 V * (1 + R26 / R27) = 0.8 * (1 + 39k / 7.5k) = 4.960 V,
+    the same as rev 1's 115k / 22.1k (4.963 V); worst case with VFB +/-1% and
+    1% resistors is 4.83-5.09 V. The divider now draws 107 uA instead of 36.
+
+    Compensation (Eq. 17/18, gm = 0.15 mS, current sense 0.089 V/A):
+    fc = R28 / (4660 * Vout * Cout). With R28 = 15k and 30-45 uF effective
+    Cout (3 x 22 uF 10 V at 5 V bias; not measured) fc is 14-22 kHz, under
+    fsw / 10 = 45 kHz at the 450 kHz minimum; it stays under that limit
+    while Cout > 14.4 uF. The zero 1 / (2 pi R28 C16) is at 2.26 kHz, below
+    the full-load output pole (3.6 kHz at 45 uF): about 5 degrees more phase
+    margin than rev 1's 15.8k / 2.7 nF, with a slower settling tail
+    (R28 * C16 = 70 us) after load steps. The Eq. 18 value for 15k would be
+    2-3 nF; 4.7 nF is the basic part. No Cc2 (Eq. 19) is fitted.
     """
     u = part(
         "hexyhustle", "AP64500-13", "U4", "Package_SO:Diodes_SO-8EP",
@@ -385,15 +428,17 @@ def buck_5v(vin, vcc, gnd):
     inductor[2] += vcc
 
     res("R25", "200k", "0402", gnd, u["RT/CLK"])  # switching frequency
-    res("R26", "115k", "0402", fb, vcc)  # feedback divider, top
-    res("R27", "22.1k", "0402", gnd, fb)  # feedback divider, bottom
-    res("R28", "15.8k", "0402", comp_rc, comp)  # loop compensation
-    cap("C16", "2.7nF", "0402", gnd, comp_rc)
+    res("R26", "39k", "0402", fb, vcc)  # feedback divider, top
+    res("R27", "7.5k", "0402", gnd, fb)  # feedback divider, bottom
+    res("R28", "15k", "0402", comp_rc, comp)  # loop compensation
+    cap("C16", "4.7nF", "0402", gnd, comp_rc)
 
-    # 22 uF 0805/25 V: the rev 1 0603 parts lost most of their capacitance
-    # to DC bias at 5 V.
+    # 22 uF 1206/10 V (5 V is 50% of rating). The rev 1 0603 parts lost most
+    # of their capacitance to DC bias at 5 V; Samsung publishes no 5 V curve
+    # for this part, so check the output ripple (about 14 mV expected) on
+    # the first board.
     for r in ("C5", "C8", "C12"):
-        cap(r, "22uF", "0805", vcc, gnd)
+        cap(r, "22uF", "1206", vcc, gnd)
 
 
 @subcircuit
@@ -424,14 +469,15 @@ def rail_3v3(vbus, vcc, v3v3, gnd):
         d["A"] += src
         d["K"] += v5_or
 
+    # XC6206: 200 mA, 6 V max input, no enable (always on), 250 mV dropout
+    # at 100 mA; the RP2354 and its I/O draw well under 100 mA.
     ldo = part(
-        "Regulator_Linear", "AP2112K-3.3", ref("U"), "Package_TO_SOT_SMD:SOT-23-5",
-        "AP2112K-3.3TRG1", "Diodes Incorporated", "C51118", "AP2112K-3.3",
+        "hexyhustle", "XC6206P332MR", ref("U"), "Package_TO_SOT_SMD:SOT-23-3",
+        "XC6206P332MR-G", "Torex Semicon", "C5446", "XC6206P332MR",
     )
-    ldo["VIN", "EN"] += v5_or
+    ldo["VIN"] += v5_or
     ldo["VOUT"] += v3v3
     ldo["GND"] += gnd
-    ldo["NC"] += NC
     cap(ref("C"), "1uF", "0402", v5_or, gnd)
     cap(ref("C"), "10uF", "0603", v3v3, gnd)
 
@@ -461,7 +507,9 @@ def mcu(v3v3, gnd, usb_dp, usb_dm, gpio):
     cap(ref("C"), "100nF", "0402", v3v3, gnd)  # ADC_AVDD
     cap(ref("C"), "4.7uF", "0402", v3v3, gnd)  # VREG_VIN (CIN)
 
-    # Core regulator: 3.3 uH polarity-marked inductor from VREG_LX to 1.1 V.
+    # Core regulator: 3.3 uH polarity-marked inductor between VREG_LX and 1.1 V.
+    # The dot (pin 1) goes to +1V1 and pin 2 to VREG_LX, as in Figure 4 of
+    # "Hardware design with RP2350".
     u["VREG_AVDD"] += vreg_avdd
     res(ref("R"), "33", "0402", v3v3, vreg_avdd)
     cap(ref("C"), "4.7uF", "0402", vreg_avdd, gnd)
@@ -470,6 +518,9 @@ def mcu(v3v3, gnd, usb_dp, usb_dm, gpio):
         "Device", "L", ref("L"), "hexy:L_Abracon_AOTA-B201610",
         "AOTA-B201610S3R3-101-T", "Abracon", "C42411119", "3.3uH",
     )
+    # Not stocked at JLC: bought from Digi-Key and hand-placed. The schematic
+    # and board mark L3 DNP / excluded from BOM and position files, so the
+    # JLC BOM and CPL skip it; its pads stay on the board.
     core_l[1] += v1v1
     core_l[2] += vreg_lx
     u["VREG_FB", "DVDD"] += v1v1
@@ -493,10 +544,10 @@ def mcu(v3v3, gnd, usb_dp, usb_dm, gpio):
     cap(ref("C"), "15pF", "0402", xout_r, gnd)
 
     # Native USB to USB-C.
-    u["USB_DP"] += (dp_mcu := Net("USB_DP_MCU"))
-    u["USB_DM"] += (dm_mcu := Net("USB_DM_MCU"))
-    res(ref("R"), "27", "0402", dp_mcu, usb_dp)
-    res(ref("R"), "27", "0402", dm_mcu, usb_dm)
+    u["USB_DP"] += (dp_mcu := Net("USB_MCU_P"))
+    u["USB_DM"] += (dm_mcu := Net("USB_MCU_N"))
+    res(ref("R"), "27", "0603", dp_mcu, usb_dp)  # 27 Ohm per Raspberry Pi (not 22)
+    res(ref("R"), "27", "0603", dm_mcu, usb_dm)
 
     # BOOTSEL on QSPI_SS, RESET on RUN (each with 1 kOhm, per the RPi design).
     qspi_ss, boot_r = Net("QSPI_SS"), Net("BOOTSEL_R")
@@ -537,36 +588,40 @@ def usb_a_host(dp_gpio, dm_gpio, vbus_en, vcc, gnd):
     host enables the RP2354's internal pull-downs. VBUS comes from the 5 V rail
     through a 0.5 A current-limited switch, off until firmware enables it.
     """
-    usba_dp, usba_dm, usba_vbus = Net("USBA_DP"), Net("USBA_DM"), Net("USBA_VBUS")
+    usba_dp, usba_dm, usba_vbus = Net("USBA_P"), Net("USBA_N"), Net("USBA_VBUS")
     res(ref("R"), "22", "0402", dp_gpio, usba_dp)
     res(ref("R"), "22", "0402", dm_gpio, usba_dm)
 
     esd = part(
-        "Power_Protection", "USBLC6-2SC6", ref("U"), "Package_TO_SOT_SMD:SOT-23-6",
-        "USBLC6-2SC6", "STMicroelectronics", "C7519",
+        "hexyhustle", "SRV05-4", ref("U"), "Package_TO_SOT_SMD:SOT-23-6",
+        "SRV05-4", "hongjiacheng", "C7420376", "SRV05-4",
     )
-    esd[1, 6] += usba_dp
-    esd[3, 4] += usba_dm
-    esd["VBUS"] += vcc
-    esd["GND"] += gnd
+    esd["IO1", "IO4"] += usba_dp
+    esd["IO2", "IO3"] += usba_dm
+    esd["VP"] += vcc  # 4.96 V, at the 5 V working voltage (VBR 6 V min)
+    esd["VN"] += gnd
 
     switch = part(
-        "Power_Management", "TPS2051CDBV", ref("U"), "Package_TO_SOT_SMD:SOT-23-5",
-        "TPS2051CDBVR", "Texas Instruments", "C129581", "TPS2051C",
+        "hexyhustle", "SY6280AAC", ref("U"), "Package_TO_SOT_SMD:SOT-23-5",
+        "SY6280AAC", "Silergy Corp", "C55136", "SY6280AAC",
     )
     switch["IN"] += vcc
-    switch["EN"] += vbus_en
+    switch["EN"] += vbus_en  # active high, must not float
     switch["OUT"] += usba_vbus
     switch["GND"] += gnd
-    switch["~{FLT}"] += NC
+    iset = Net("USBA_ISET")
+    switch["ISET"] += iset
     res(ref("R"), "100k", "0402", vbus_en, gnd)  # off while the MCU boots
+    # Ilim = 6800 / Rset = 0.68 A nominal (about 0.51-0.85 A, scaling the
+    # datasheet's +/-25% at 6.8k); the USB-A dongle draws well under 0.5 A.
+    res("R79", "10k", "0402", iset, gnd)  # added part: fresh ref
     cap(ref("C"), "1uF", "0402", vcc, gnd)
-    cap(ref("C"), "22uF", "0805", usba_vbus, gnd)
+    cap(ref("C"), "10uF", "0805", usba_vbus, gnd)  # same basic line as the 10 uF bulk caps
     cap(ref("C"), "100nF", "0402", usba_vbus, gnd)
 
     j = part(
-        "Connector", "USB_A", ref("J"), "hexy:USB_A_Amphenol_87520-0010BLF",
-        "87520-0010BLF", "Amphenol ICC", "C599115", "USB-A host",
+        "Connector", "USB_A", ref("J"), "hexy:USB_A_ShouHan_AF90_WJDG",
+        "AF 90 WJDG", "SHOU HAN", "C456018", "USB-A host",
     )
     j["VBUS"] += usba_vbus
     j["D+"] += usba_dp
@@ -600,7 +655,7 @@ def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, ca
 
     vint = Net("VINT")
     drv["VINT", "VREF"] += vint  # VREF tied to VINT
-    cap(vint_cap, "2.2uF", "0805", vint, gnd)
+    cap(vint_cap, "2.2uF", "0603", vint, gnd)
     cap(bulk_cap, "10uF", "0805", gnd, vm)
     cap(bypass_cap, "100nF", "0805", vm, gnd)
 
@@ -624,17 +679,21 @@ def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, ca
 def io_ports(ios, vcc, gnd):
     """Six 3-pin IO ports, one 1x3 header each: pin 1 IO, 2 VCC (5 V), 3 GND.
 
+    Vertical headers, placed side by side at 2.54 mm as one 3 x 6 block (like a
+    servo shield) under a recessed slot in the enclosure face. A plug put in
+    backwards only swaps IO and GND, since the middle pin is 5 V.
+
     330 Ohm series resistors protect the GPIOs from shorts and hot-plugging.
-    GPIO22-25 are 5 V tolerant; GPIO26-27 (ADC) are not, so IO5/IO6 must stay
-    at 3.3 V logic.
+    IO1-IO4 are on 5 V tolerant GPIOs; IO5/IO6 are on GPIO28/27 (ADC), which
+    are not, so IO5/IO6 must stay at 3.3 V logic.
     """
     for n, io in enumerate(ios, start=1):
         pin_net = Net(f"IO{n}")
         res(ref("R"), "330", "0402", io, pin_net)
         j = part(
             "Connector_Generic", "Conn_01x03", ref("J"),
-            "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal",
-            "HX PZ2.54-1x3P WZ", "hanxia", "C32713262", f"IO{n}",
+            "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical",
+            "2.54-1*3P", "BOOMELE(Boom Precision Elec)", "C49257", f"IO{n}",
         )
         j[1] += pin_net
         j[2] += vcc
@@ -663,6 +722,100 @@ def battery_sense(vsys, sense, gnd):
     cap(ref("C"), "100nF", "0402", sense, gnd)
 
 
+@subcircuit
+def pack_protection(pack, bat_n, gnd):
+    """BQ7791501 standalone 3S primary protector with low-side CHG/DSG FETs.
+
+    The pack (Gens Ace 3S 1000 mAh) has no protection board, so the board protects it. Wired
+    as the datasheet's 3-series configuration (Figure 9-11) and design example:
+    CCFG, CTRC, CTRD and CBI to VSS (3 cells, no stack, balancing on), PRES
+    pulled high (HIBERNATE off), CBO and LPWR open.
+
+    BQ7791501 thresholds: OV 4.25 V, UV 2.8 V, OCD1 35 mV, OCD2 60 mV, SCD
+    120 mV, OCC 20 mV; OTD 70 C / OTC 50 C / UTD -20 C / UTC 0 C. With the
+    2.5 mOhm shunt (two 5 mOhm in parallel): OCD1 14 A, OCD2 24 A, SCD 48 A,
+    charge OC 8 A. ROCD 100 kOhm (1 %) selects the EEPROM OCD delays (180 ms).
+
+    Ground: VSS and the cell taps are the pack's own negative (bat_n). Board
+    GND is PACK-, after the back-to-back FETs (cell- -> shunt -> DSG FET ->
+    CHG FET -> GND). Balancing runs through the balance lead (RIN 100 Ohm,
+    about 20 mA).
+    """
+    bal = part(
+        "Connector_Generic", "Conn_01x04", ref("J"),
+        "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical",
+        "B4B-XH-A(LF)(SN)", "JST", "C144395", "Balance",
+    )
+    cell = [Net(f"CELL{k}") for k in range(4)]  # balance taps: 0 = cell 1 -, 3 = cell 3 +
+    for k in range(4):
+        bal[k + 1] += cell[k]
+    u = part(
+        "hexyhustle", "BQ77915", ref("U"), "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm",
+        "BQ7791501PWR", "Texas Instruments", "C2876947", "BQ7791501",
+    )
+    vdd = Net("PROT_VDD")
+    vdd.drive = POWER  # fed from PACK+ through the RVDD filter
+    u["VDD"] += vdd
+    u["VSS"] += bat_n
+    res(ref("R"), "1k", "0402", pack, vdd)
+    cap(ref("C"), "1uF", "0402", vdd, bat_n)
+    avdd = Net("PROT_AVDD")
+    u["AVDD"] += avdd
+    cap(ref("C"), "1uF", "0402", avdd, bat_n)
+    # Cell inputs: VC3-VC5 together on the top cell (3-series), RIN/CIN filters.
+    vc = [Net(f"PROT_VC{k}") for k in range(4)]
+    u["VC0"] += vc[0]
+    u["VC1"] += vc[1]
+    u["VC2"] += vc[2]
+    u["VC3", "VC4", "VC5"] += vc[3]
+    for k in range(4):
+        res(ref("R"), "100", "0402", cell[k], vc[k])
+    for k in range(3):
+        cap(ref("C"), "1uF", "0402", vc[k + 1], vc[k])
+    cap(ref("C"), "1uF", "0402", vc[0], bat_n)
+    # Current sense: 2 x 5 mOhm 2512 in parallel, Kelvin-filtered into SRP/SRN.
+    sns = Net("PROT_SNS")  # shunt, FET side
+    for _ in range(2):
+        part("Device", "R", ref("R"), "Resistor_SMD:R_2512_6332Metric",
+             "LRBM25GFER005", "NCT", "C5121087", "5m")[1, 2] += bat_n, sns  # 3 W, 1 %
+    srp, srn = Net("PROT_SRP"), Net("PROT_SRN")
+    u["SRP"] += srp
+    u["SRN"] += srn
+    res(ref("R"), "100", "0402", bat_n, srp)
+    res(ref("R"), "100", "0402", sns, srn)
+    cap(ref("C"), "100nF", "0402", srp, srn)
+    # Back-to-back N-FETs: DSG (source on the shunt side), then CHG (source on PACK-).
+    mid = Net("PROT_FET_D")
+    dsg_g, chg_g = Net("PROT_DSG_G"), Net("PROT_CHG_G")
+    for g, src, pin, rg in ((dsg_g, sns, "DSG", "4.7k"), (chg_g, gnd, "CHG", "1k")):
+        q = part(
+            "Transistor_FET", "BSC026N08NS5", ref("Q"), "Package_TO_SOT_SMD:TDSON-8-1",
+            "80N03F", "HL", "C7471104", "80N03F",  # PDFN5x6: 1-3 S, 4 G, 5-8 D (datasheet pin table)
+        )
+        q["G"] += g
+        q["S"] += src
+        q["D"] += mid
+        drv = Net(f"PROT_{pin}")
+        u[pin] += drv
+        res(ref("R"), rg, "0402", drv, g)
+        res(ref("R"), "1M", "0402", g, src)
+    res(ref("R"), "470k", "0402", u["LD"], gnd)  # load-removal detect on PACK-
+    for name in ("CTRC", "CTRD", "CCFG", "CBI"):
+        u[name] += bat_n
+    res(ref("R"), "10k", "0402", vdd, u["PRES"])  # HIBERNATE off
+    res(ref("R"), "100k", "0402", u["OCDP"], bat_n)  # OCD delays from EEPROM (180 ms)
+    u["CBO", "LPWR"] += NC
+    # Temperature: 10 kOhm pull-up from VTB, 0603 NTC by the FETs (board/FET heat).
+    ts = Net("PROT_TS")
+    u["TS"] += ts
+    res(ref("R"), "10k", "0402", u["VTB"], ts)
+    part("Device", "Thermistor_NTC", ref("TH"), "Resistor_SMD:R_0603_1608Metric",
+         "NCP18XH103F03RB", "Murata", "C13564", "10k B3434")[1, 2] += ts, bat_n
+    # Assembly fiducials (top side).
+    for _ in range(3):
+        part("Mechanical", "Fiducial", ref("FID"), "Fiducial:Fiducial_1mm_Mask2mm", "", "")
+
+
 # Top level -------------------------------------------------------------------
 
 vbus = Net("VBUS")  # USB-C, 5 V or 9 V (PD)
@@ -671,57 +824,71 @@ vsys = Net("VSYS")  # pack, after the power switch: motors and buck
 vcc = Net("VCC")  # 5 V from the buck
 v3v3 = Net("+3V3")
 regn = Net("REGN")  # charger's internal 5 V, present while USB is powered
-gnd = Net("GND")
-for rail in (vbus, vbat, vsys, vcc, v3v3, regn, gnd):
+gnd = Net("GND")  # board ground = PACK-, after the protection FETs
+bat_n = Net("BAT_N")  # the pack's negative, before the protection FETs
+for rail in (vbus, vbat, vsys, vcc, v3v3, regn, gnd, bat_n):
     rail.drive = POWER
 
-# GPIO map (RP2354A, GPIO0-29). Motors sit on GPIO0-11 so each motor's two
-# inputs share one PWM slice (slices 0-5). Servos on IO ports use the free
-# third PIO block, since GPIO22-27 share PWM slices 3-5 with the motors.
+# GPIO map (RP2354A, GPIO0-29), chosen in the PCB layout so each signal leaves
+# U10 on the side facing its destination (step 4 pin-swap pass). Each motor's
+# two inputs are one PWM slice's A/B pair (n even, n + 1), and the six motors
+# use six different slices. "A/B swapped" means the motor's IN1 is on the odd
+# GPIO (PWM channel B); the firmware maps direction per motor.
 #
-#   GPIO0-1   M1 (U1 AIN1/AIN2)      GPIO12  I2C0 SDA (charger)
-#   GPIO2-3   M2 (U1 BIN1/BIN2)      GPIO13  I2C0 SCL (charger)
-#   GPIO4-5   M3 (U2 AIN1/AIN2)      GPIO14  charger /INT
-#   GPIO6-7   M4 (U2 BIN1/BIN2)      GPIO15  driver nSLEEP (all three)
-#   GPIO8-9   M5 (U3 AIN1/AIN2)      GPIO16  USB-A D+ (PIO-USB)
-#   GPIO10-11 M6 (U3 BIN1/BIN2)      GPIO17  USB-A D- (PIO-USB, D+ + 1)
-#   GPIO18    USB-A VBUS enable      GPIO19  driver nFAULT (wired-OR)
-#   GPIO20    status LED             GPIO21  spare
-#   GPIO22-25 IO1-IO4 (5 V tolerant) GPIO26-27 IO5-IO6 (ADC0-1, 3.3 V only)
-#   GPIO28    battery sense (ADC2)   GPIO29  spare (ADC3)
-GPIO_NETS = {
-    12: "I2C_SDA", 13: "I2C_SCL", 14: "CHG_INT", 15: "DRV_SLEEP",
-    16: "USBA_DP_GPIO", 17: "USBA_DM_GPIO", 18: "USBA_VBUS_EN", 19: "DRV_FAULT",
-    20: "STATUS_LED", 22: "IO1_GPIO", 23: "IO2_GPIO", 24: "IO3_GPIO",
-    25: "IO4_GPIO", 26: "IO5_GPIO", 27: "IO6_GPIO", 28: "BAT_SENSE",
+#   GPIO0-1   M2 (U1 BIN2/BIN1, A/B swapped)   GPIO12  IO2
+#   GPIO2     USB-A D+ (PIO-USB)               GPIO13  IO1
+#   GPIO3     USB-A D- (PIO-USB, D+ + 1)       GPIO14  IO3
+#   GPIO4-5   M4 (U2 BIN2/BIN1, A/B swapped)   GPIO15  driver nFAULT (wired-OR)
+#   GPIO6     charger /INT                     GPIO16  USB-A VBUS enable
+#   GPIO7     IO4                              GPIO17  driver nSLEEP (all three)
+#   GPIO8     I2C0 SDA (charger)               GPIO18-19 M3 (U2 AIN1/AIN2)
+#   GPIO9     I2C0 SCL (charger)               GPIO20  status LED
+#   GPIO10-11 M1 (U1 AIN1/AIN2)                GPIO21  spare
+#   GPIO22-23 M6 (U3 BIN2/BIN1, A/B swapped)   GPIO24-25 M5 (U3 AIN1/AIN2)
+#   GPIO26    battery sense (ADC0)             GPIO27-28 IO6, IO5 (ADC1-2, 3.3 V only)
+#   GPIO29    spare (ADC3)
+#
+# PWM slices: M2 0, M3 1, M4 2, M6 3, M5 4, M1 5. IO1-IO4 are 5 V tolerant
+# (GPIO0-25); servos on the IO ports run from PIO.
+MOTOR_GPIO = {  # motor -> (IN1 GPIO, IN2 GPIO); the net is GPIO<n>_<motor><A|B>
+    "M1": (10, 11), "M2": (1, 0), "M3": (18, 19),
+    "M4": (5, 4), "M5": (24, 25), "M6": (23, 22),
 }
-gpio = {n: Net(f"GPIO{n}_M{n // 2 + 1}{'AB'[n % 2]}") for n in range(12)}
+GPIO_NETS = {
+    2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 6: "CHG_INT", 7: "IO4_GPIO",
+    8: "I2C_SDA", 9: "I2C_SCL", 12: "IO2_GPIO", 13: "IO1_GPIO", 14: "IO3_GPIO",
+    15: "DRV_FAULT", 16: "USBA_VBUS_EN", 17: "DRV_SLEEP", 20: "STATUS_LED",
+    26: "BAT_SENSE", 27: "IO6_GPIO", 28: "IO5_GPIO",
+}
+gpio = {n: Net(f"GPIO{n}_{m}{ab}") for m, pins in MOTOR_GPIO.items() for n, ab in zip(pins, "AB")}
 gpio.update({n: Net(name) for n, name in GPIO_NETS.items()})
-for n in (14, 19):  # open-drain outputs into GPIO inputs, with pull-ups
+for n in (6, 15):  # open-drain outputs into GPIO inputs, with pull-ups
     gpio[n].do_erc = False
+motor_in = {m: (gpio[a], gpio[b]) for m, (a, b) in MOTOR_GPIO.items()}
 
-usb_dp, usb_dm = Net("USB_DP"), Net("USB_DM")
+usb_dp, usb_dm = Net("USB_P"), Net("USB_N")  # P/N names: KiCad diff-pair router
 
 usb_c_port(vbus, usb_dp, usb_dm, v3v3, gnd)
-charger_3s(vbus, vbat, regn, gpio[13], gpio[12], gpio[14], v3v3, gnd)
-battery_and_switch(vbat, vsys, gnd)
+charger_3s(vbus, vbat, regn, gpio[9], gpio[8], gpio[6], v3v3, gnd)
+battery_and_switch(vbat, vsys, bat_n, gnd)
 buck_5v(vsys, vcc, gnd)
 rail_3v3(vbus, vcc, v3v3, gnd)
 mcu(v3v3, gnd, usb_dp, usb_dm, gpio)
-usb_a_host(gpio[16], gpio[17], gpio[18], vcc, gnd)
+usb_a_host(gpio[2], gpio[3], gpio[16], vcc, gnd)
 status_led(gpio[20], gnd)
-battery_sense(vsys, gpio[28], gnd)
-res(ref("R"), "10k", "0402", v3v3, gpio[19])  # nFAULT pull-up
+battery_sense(vsys, gpio[26], gnd)
+res(ref("R"), "10k", "0402", v3v3, gpio[15])  # nFAULT pull-up
 
-for drv_ref, base, motors, caps in (
-    ("U1", 0, ("M1", "M2"), ("C2", "C3", "C4")),
-    ("U2", 4, ("M3", "M4"), ("C9", "C6", "C7")),
-    ("U3", 8, ("M5", "M6"), ("C13", "C10", "C11")),
+for drv_ref, motors, caps in (
+    ("U1", ("M1", "M2"), ("C2", "C3", "C4")),
+    ("U2", ("M3", "M4"), ("C9", "C6", "C7")),
+    ("U3", ("M5", "M6"), ("C13", "C10", "C11")),
 ):
-    motor_driver(drv_ref, gpio[15], gpio[19], *(gpio[base + i] for i in range(4)),
+    motor_driver(drv_ref, gpio[17], gpio[15], *motor_in[motors[0]], *motor_in[motors[1]],
                  vsys, gnd, motors=motors, caps=caps)
 
-io_ports([gpio[n] for n in (22, 23, 24, 25, 26, 27)], vcc, gnd)
+io_ports([gpio[n] for n in (13, 12, 14, 7, 28, 27)], vcc, gnd)
+pack_protection(Net.get("PACK+"), bat_n, gnd)  # last, so earlier references stay put
 
 
 if __name__ == "__main__":

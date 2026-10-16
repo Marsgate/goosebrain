@@ -4,6 +4,7 @@
   (generator_version "9.0")
   (layer "F.Cu")
   (descr "Abracon AOTA-B201610 mini molded power inductor, 2.0x1.6x1.0 mm (0806 / 2016 metric), polarity dot on pad 1. Land pattern per Abracon datasheet AOTA-B201610S3R3-101-T rev A (9/13/2024): 1.00x1.60 mm pads, 1.00 mm gap. https://abracon.com/datasheets/AOTA-B201610S3R3-101-T.pdf")
+  (attr smd)
   (tags "inductor polarized Abracon AOTA 0806 2016 RP2350")
 
   (property "Reference" "REF**" (at 0 -1.8 0)

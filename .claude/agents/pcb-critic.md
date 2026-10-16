@@ -9,11 +9,24 @@ before ordering boards from JLCPCB (4-layer, PCBA). You don't edit anything.
 
 ## The board
 
-60 x 50 mm, 4 layers. A battery comes in on an XT60, and an AP64500 buck
-converter makes 5 V for an ESP32 DevKit, which plugs into two 1x15 sockets.
-Three DRV8848 dual H-bridges, powered from the battery, drive six motors on
-JST-XH connectors (up to ~1 A per bridge). A 3x6 right-angle header gives six
-IO ports (IO, 5 V, GND). Read `circuit/goosebrain.py` for the full circuit.
+Rev 2: 4 layers, as small as the connectors allow, with an internal 3S pack
+under the board. No radio on the board.
+
+- **Power:** USB-C (J1) with a CH224A PD sink (9 V) feeds a BQ25798
+  buck-boost charger (U7, 2.2 µH L2) that charges the pack on an XT30 (J3),
+  with the pack NTC on J2. The pack path J3 → fuse F1 → P-FET Q1 (gated by
+  slide switch SW1) → VSYS carries all motor current; it bypasses the
+  charger's SYS. An AP64500 buck (U4, L1) makes 5 V (VCC) from VSYS. U8/D2/D3
+  and an AP2112K (U9) make 3.3 V from USB or VCC.
+- **MCU:** RP2354A (U10, QFN-60) with its core regulator inductor L3, a
+  12 MHz crystal, BOOT/RESET buttons and SWD pads. Native USB goes to the
+  USB-C port; a PIO USB host goes to the USB-A port (J4, TPS2051 U12) for a
+  2.4 GHz controller dongle.
+- **Motors:** three DRV8848 dual H-bridges on VSYS drive six motors on
+  JST-XH connectors (up to ~1 A per bridge).
+- **IO:** six 1x3 right-angle headers (IO, 5 V, GND).
+
+Read `circuit/goosebrain.py` for the full circuit.
 
 ## Input
 
@@ -32,15 +45,20 @@ Don't re-check them; mention them only if they fail.
 Score each criterion 1–5 (5 = ready to order, 3 = needs work, 1 = redo).
 
 1. **Placement**: connectors on board edges, facing out and reachable;
-   mounting holes clear of parts; parts grouped by function; nothing in
-   the way of the ESP32 DevKit or its USB connector.
-2. **Buck converter**: input cap, IC and GND form a tight loop; the SW node
-   (pin 8, L1, C14) is short and small; FB trace and divider kept away from
-   SW and L1; output caps close to L1.
+   mounting holes clear of parts; parts grouped by function; USB-C, USB-A,
+   power switch, BOOT/RESET reachable; the board as small as the
+   connectors allow.
+2. **Switchers**: for the AP64500 buck (U4), the BQ25798 charger (U7) and
+   the RP2354A core regulator (L3): input caps, IC and GND form tight loops;
+   SW nodes (U4–L1, U7 SW1/SW2–L2, VREG_LX–L3) are short and small; feedback
+   and sense traces kept away from SW nodes and inductors; output caps close
+   to the inductor.
 3. **Decoupling**: each cap sits beside the pin it serves, with a short path
    to its own GND via (VM caps by DRV8848 VM, VINT caps by VINT).
-4. **Power paths**: battery-to-driver and driver-to-motor paths are wide and
-   short and avoid running under or alongside ESP32 signal traces.
+4. **Power paths**: pack-to-driver (J3, F1, Q1, VSYS) and driver-to-motor
+   paths are wide and short and avoid running under or alongside USB,
+   crystal or MCU signal traces. USB pairs (both ports) are routed as short,
+   matched 90 Ω differential pairs over unbroken ground.
 5. **Ground and planes**: continuous ground reference under signals; no
    slots or splits under traces; stitching vias near layer changes; thermal
    vias under the DRV8848 and AP64500 exposed pads.
@@ -70,7 +88,7 @@ manufacturability: N
 overall: N.N   (mean of the eight)
 
 FINDINGS (most important first, at most 10)
-1. [major|minor] <what is wrong, naming parts/nets> | where: <image and area, e.g. "top_tile_r1c1, between U4 and L1"> | fix: <a concrete edit, e.g. "move C15 to 1 mm left of U4 pin 2 and reroute +BATT">
+1. [major|minor] <what is wrong, naming parts/nets> | where: <image and area, e.g. "top_tile_r1c1, between U4 and L1"> | fix: <a concrete edit, e.g. "move C15 to 1 mm left of U4 pin 2 and reroute VSYS">
 2. ...
 
 KEEP

@@ -4,6 +4,7 @@
   (generator_version "9.0")
   (layer "F.Cu")
   (descr "USB 2.0 type A receptacle, right angle, through hole, Amphenol FCI 87520-0010BLF. PCB layout per Amphenol drawing 87520 rev AR, recommended type 1 (round shell holes): contacts dia 0.92 at 2.50/2.00/2.50 mm, shell holes dia 2.30 at 13.14 mm, 2.71 mm toward the mating face. 1.57 mm board. https://cdn.amphenol-cs.com/media/wysiwyg/files/drawing/87520.pdf")
+  (attr through_hole)
   (tags "USB A receptacle horizontal Amphenol 87520")
 
   (property "Reference" "REF**" (at 3.5 -3.2 0)
@@ -143,5 +144,15 @@
     (layers "*.Cu" "*.Mask")
     (uuid "eba894b7-42b1-4706-890d-b867415ab771")
   )
-
+  (model "${KICAD10_3DMODEL_DIR}/Connector_USB.3dshapes/USB_A_Molex_67643_Horizontal.step"
+    (offset
+    (xyz 0 0 0)
+    )
+    (scale
+    (xyz 1 1 1)
+    )
+    (rotate
+    (xyz 0 0 0)
+    )
+  )
 )

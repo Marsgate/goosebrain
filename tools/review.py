@@ -37,9 +37,16 @@ PCB = ROOT / "kicad/thegoose.kicad_pcb"
 SKIDL_NET = ROOT / "build/goosebrain.net"
 
 # Minimum track width (mm) per power net. Starting points, not datasheet
-# limits: +BATT and GND also have pours, so their tracks are short stubs.
-# Motor outputs carry up to ~1 A per DRV8848 bridge.
-POWER_NETS = {"+BATT": 0.4, "VCC": 0.4, "GND": 0.4}
+# limits; pours (GND, the pack path) leave only short stubs. The pack path
+# carries all motor current, with stall peaks of several amps. The charger
+# nets carry up to 3 A once firmware raises the input limit. Motor outputs
+# carry up to ~1 A per DRV8848 bridge.
+POWER_NETS = {
+    "/Power & charging/PACK+": 1.0, "VBAT": 1.0, "VSYS": 1.0,  # pack, fuse, switch
+    "VBUS": 0.5, "/Power & charging/CHG_SYS": 0.5, "Net-(U7-PMID)": 0.5,
+    "Net-(U7-SW1)": 0.5, "Net-(U7-SW2)": 0.5,
+    "VCC": 0.5, "GND": 0.4,
+}
 POWER_NET_PREFIXES = {"Net-(M": 0.4}
 
 # Schematic-parity findings that aren't real mismatches: board-only parts

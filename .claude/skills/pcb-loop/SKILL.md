@@ -36,18 +36,22 @@ board already exists. When improving a finished board, start at the phase
 the user names (default: Finish).
 
 1. **Rules.** Set up design rules and net classes for JLC 4-layer: a power
-   class for `+BATT`, `VCC`, `GND` and the motor outputs (`Net-(M…)`), with
-   widths at least those in `POWER_NETS` in `tools/review.py`, and the
-   default class at 0.2 mm track and space. Exit when DRC runs clean on rules
+   class for each net in `POWER_NETS` in `tools/review.py` (pack path,
+   charger, `VCC`, `GND`) and the motor outputs (`Net-(M…)`), with widths at
+   least those listed there; a 90 Ω differential class for both USB pairs;
+   and the default class at 0.2 mm track and space. Exit when DRC runs clean on rules
    alone.
-2. **Placement.** Place connectors on edges first, then the buck converter
-   as one tight cluster, then drivers with their caps, then the rest. Judge
-   with the critic's placement, buck and decoupling scores. Exit when those
+2. **Placement.** Place connectors on edges first, then each switcher (the
+   BQ25798 charger, the AP64500 buck, the RP2354A core regulator) as one
+   tight cluster, then the MCU with its decoupling and crystal, then drivers
+   with their caps, then the rest. Judge with the critic's placement,
+   switchers and decoupling scores. Exit when those
    three are 4 or more.
-3. **Power routing.** Route power by hand through MCP: battery to drivers
-   and buck, buck output, motor outputs, short GND via stubs. Add pours (GND
-   on inner and outer layers, `+BATT` where it helps), plus thermal vias under
-   the exposed pads. Exit when power_paths and ground are 4 or more.
+3. **Power routing.** Route power by hand through MCP: pack (J3) through F1
+   and Q1 to the drivers and buck, the charger's switching loop, buck
+   output, motor outputs, short GND via stubs. Add pours (GND on inner and
+   outer layers, the pack path `VBAT`/`VSYS` where it helps), plus thermal
+   vias under the exposed pads. Exit when power_paths and ground are 4 or more.
 4. **Signal routing.** Run Freerouting for everything left, then fix its
    output by hand where the critic flags problems. Exit when the `unrouted`
    gate passes and routing is 4 or more.
