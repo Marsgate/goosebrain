@@ -158,7 +158,7 @@ def compare_nets(actual_path, reference_path):
     for ref in sorted(set(ref_parts) ^ set(actual_parts)):
         diffs.append(f"part {ref} only in {'SKiDL' if ref in ref_parts else 'KiCad'}")
     for ref in sorted(set(ref_parts) & set(actual_parts)):
-        for key in ("value", "footprint", "lcsc"):
+        for key in ("value", "footprint", "mpn", "lcsc"):
             a, b = actual_parts[ref][key].strip(), ref_parts[ref][key].strip()
             if a != b:
                 diffs.append(f"part {ref} {key}: KiCad {a!r}, SKiDL {b!r}")

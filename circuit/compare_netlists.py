@@ -5,7 +5,7 @@ Usage:
     python compare_netlists.py --dump NETLIST.net
 
 Nets are matched by their set of (ref, pin) connections, so net names don't
-have to agree. Parts are compared on value, footprint and LCSC part number, ignoring
+have to agree. Parts are compared on value, footprint, MPN and LCSC part number, ignoring
 surrounding whitespace.
 Exits non-zero when anything differs.
 """
@@ -63,6 +63,7 @@ def load(path):
             "value": value_of(comp, "value"),
             "footprint": value_of(comp, "footprint"),
             "lcsc": fields.get("LCSC Part #", ""),
+            "mpn": fields.get("MPN", ""),
             "lib": f"{value_of(lib, 'lib')}:{value_of(lib, 'part')}" if lib else "",
         }
 
@@ -81,7 +82,7 @@ def dump(path):
     print("# Parts")
     for ref in sorted(parts, key=natural_key):
         p = parts[ref]
-        print(f"{ref}\t{p['lib']}\t{p['value']}\t{p['footprint']}\t{p['lcsc']}")
+        print(f"{ref}\t{p['lib']}\t{p['value']}\t{p['footprint']}\t{p['mpn']}\t{p['lcsc']}")
     print("\n# Nets")
     for name in sorted(nets):
         pins = " ".join(f"{r}.{p}" for r, p in sorted(nets[name], key=lambda rp: (natural_key(rp[0]), natural_key(rp[1]))))
@@ -103,7 +104,7 @@ def compare(ref_path, cand_path):
         elif ref not in ref_parts:
             problems.append(f"part {ref} only in candidate")
         else:
-            for key in ("value", "footprint", "lcsc"):
+            for key in ("value", "footprint", "mpn", "lcsc"):
                 a, b = ref_parts[ref][key], cand_parts[ref][key]
                 if a.strip() != b.strip():
                     problems.append(f"part {ref} {key}: {a!r} != {b!r}")
