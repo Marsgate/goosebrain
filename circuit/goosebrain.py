@@ -713,6 +713,41 @@ def status_led(gpio_net, gnd):
 
 
 @subcircuit
+def led_stick(din, vcc, gnd):
+    """Connector for an off-board WS2812B stick (DIYmall 8 x 5050), on the case's top edge.
+
+    WS2812B wants VIH >= 0.7 * VDD = 3.5 V at 5 V, so a 74AHCT1G125 (TTL
+    inputs, VIH 2.0 V, 5 V supply) lifts the RP2354's 3.3 V PIO output to
+    5 V. 330 Ohm in series at the cable damps ringing and limits current into
+    the first LED's input. The stick runs from VCC (the 5 V buck): 8 LEDs at
+    full white draw up to about 0.5 A of the rail's roughly 2.3 A, so
+    firmware should cap brightness.
+    Refs are explicit: the sequential counters would reuse R78/R79.
+    """
+    buf = part(
+        "74xGxx", "74AHCT1G125", "U14", "Package_TO_SOT_SMD:SOT-23-5",
+        "SN74AHCT1G125DBVR", "UMW", "C20617903", "74AHCT1G125",
+    )
+    din_5v, din_j = Net("LED_DIN_5V"), Net("LED_DIN_J")
+    buf[1] += gnd  # /OE: always driving
+    buf[2] += din  # A, from GPIO21
+    buf[3] += gnd
+    buf[4] += din_5v  # Y
+    buf[5] += vcc
+    cap("C69", "100nF", "0402", vcc, gnd)  # U14 supply
+    res("R80", "330", "0402", din_5v, din_j)
+    j = part(
+        "Connector_Generic", "Conn_01x03", "J12",
+        "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical",
+        "B3B-PH-K-S(LF)(SN)", "JST", "C131339", "LED stick",
+    )
+    j[1] += vcc  # 5V
+    j[2] += din_j  # DIN
+    j[3] += gnd
+    cap("C70", "10uF", "0805", vcc, gnd)  # bulk at the connector
+
+
+@subcircuit
 def battery_sense(vsys, sense, gnd):
     """VSYS / 4.7 into an ADC pin: 12.6 V reads as about 2.68 V."""
     # On VSYS, after the power switch, so the divider drains nothing when the
@@ -843,7 +878,7 @@ for rail in (vbus, vbat, vsys, vcc, v3v3, regn, gnd, bat_n):
 #   GPIO7     IO4                              GPIO17  driver nSLEEP (all three)
 #   GPIO8     I2C0 SDA (charger)               GPIO18-19 M3 (U2 AIN1/AIN2)
 #   GPIO9     I2C0 SCL (charger)               GPIO20  status LED
-#   GPIO10-11 M1 (U1 AIN1/AIN2)                GPIO21  spare
+#   GPIO10-11 M1 (U1 AIN1/AIN2)                GPIO21  LED stick data (PIO WS2812)
 #   GPIO22-23 M6 (U3 BIN2/BIN1, A/B swapped)   GPIO24-25 M5 (U3 AIN1/AIN2)
 #   GPIO26    battery sense (ADC0)             GPIO27-28 IO6, IO5 (ADC1-2, 3.3 V only)
 #   GPIO29    spare (ADC3)
@@ -857,7 +892,7 @@ MOTOR_GPIO = {  # motor -> (IN1 GPIO, IN2 GPIO); the net is GPIO<n>_<motor><A|B>
 GPIO_NETS = {
     2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 6: "CHG_INT", 7: "IO4_GPIO",
     8: "I2C_SDA", 9: "I2C_SCL", 12: "IO2_GPIO", 13: "IO1_GPIO", 14: "IO3_GPIO",
-    15: "DRV_FAULT", 16: "USBA_VBUS_EN", 17: "DRV_SLEEP", 20: "STATUS_LED",
+    15: "DRV_FAULT", 16: "USBA_VBUS_EN", 17: "DRV_SLEEP", 20: "STATUS_LED", 21: "LED_DIN",
     26: "BAT_SENSE", 27: "IO6_GPIO", 28: "IO5_GPIO",
 }
 gpio = {n: Net(f"GPIO{n}_{m}{ab}") for m, pins in MOTOR_GPIO.items() for n, ab in zip(pins, "AB")}
@@ -889,6 +924,7 @@ for drv_ref, motors, caps in (
 
 io_ports([gpio[n] for n in (13, 12, 14, 7, 28, 27)], vcc, gnd)
 pack_protection(Net.get("PACK+"), bat_n, gnd)  # last, so earlier references stay put
+led_stick(gpio[21], vcc, gnd)  # added after rev 2 layout: explicit refs U14, J12, R80, C69, C70
 
 
 if __name__ == "__main__":

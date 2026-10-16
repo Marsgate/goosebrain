@@ -20,8 +20,8 @@ Parts for the RP2354 + USB host + internal 3S battery revision. **MPN is the pri
 - **MCU power from USB alone:** HT7550 (30 V in) on VBUS → Schottky → OR'd with the buck's 5 V → XC6206P332MR (200 mA, 6 V max, no enable).
 - **5 V buck values** (AP64500 datasheet equations, comments in `buck_5v()`): divider 39 k / 7.5 k gives 4.960 V, the same as rev 1's 115 k / 22.1 k. Compensation 15 k + 4.7 nF puts crossover at 14-22 kHz for 30-45 µF effective output capacitance, about 5° more phase margin than rev 1, with a slower settling tail. Scope one VCC load step on the first board.
 - **ESD:** SRV05-4 arrays on the USBLC6-2SC6 pinout (two channels per line: 1/6 D+, 3/4 D−, 5 VP, 2 VN). VP is a 5 V working-voltage clamp, so tie it to 3V3 (USB-C) or 5 V (USB-A), never to PD VBUS. On USB-A it sits at 4.96 V, at the working voltage, so leakage may run above the 5 µA spec. The SMBJ20A TVS clamps PD VBUS.
+- **LED stick (J12):** an off-board DIYmall 8 × WS2812B 5050 stick (5V/GND/DIN, about 51 × 10 mm) on the case's top edge near the USB ports, on a short cable to a JST-PH 3-pin header. WS2812B needs VIH ≥ 0.7 × VDD (3.5 V at 5 V), so GPIO21 (PIO) drives it through a 74AHCT1G125 (TTL inputs, 5 V supply) and 330 Ω. It runs from VCC, the 5 V buck: up to about 0.5 A at full white against roughly 2.3 A for the whole rail, so **firmware should cap brightness**. A 10 µF bulk cap sits at the connector.
 - **Not using:**
-  - WS2812-type RGB LEDs, which need a supply of 3.5 V or more and a level shifter from 3.3 V GPIO;
   - JST-PH/XH for battery power, which are rated only 2–3 A. The pack plugs into an XT60 instead;
   - reverse-polarity protection, because the XT60 is keyed (the pigtail is soldered once, red to "+").
 - **Pack: Gens Ace Soaring 3S1P 1000 mAh 30C** (listed as 71.5 × 35 × 17 mm or 71.5 × 30 × 20 mm, ±5 mm; the layout allows **74 × 36 × 20 mm** until a real pack is measured). It has an XT60 male main lead, a JST-XH 4-pin balance lead and no protection board or NTC, so the board protects it:
@@ -69,6 +69,8 @@ Parts for the RP2354 + USB host + internal 3S battery revision. **MPN is the pri
 | Motor connectors ×6 | S2B-XH-A(LF)(SN) | JST | THT RA | C157931 | 82,074 / ext | H | Unchanged |
 | IO headers ×6 (1x3) | 2.54-1*3P | BOOMELE(Boom Precision Elec) | THT vertical | C49257 | 196,940 / ext | H | One per port, side by side at 2.54 mm as one 3 × 6 block under a recessed slot in the face (nothing sticks out). Replaces the right-angle hanxia C32713262; same netlist. Stock checked on LCSC 2026-10-16 |
 | BOOT / RESET buttons | TS-1088-AR02016 | XUNPU | SMD 4x3 | C720477 | 642,299 / **basic** | M | 1 kΩ in series on each |
+| LED stick buffer (U14) | SN74AHCT1G125DBVR | UMW | SOT-23-5 | C20617903 | 28,924 / ext | M | 3.3 V → 5 V for the WS2812B data line; /OE to GND. $0.053 at JLC vs TI C7484 at $0.100 (51,402), the fallback |
+| LED stick connector (J12) | B3B-PH-K-S(LF)(SN) | JST | THT vertical, 2 mm | C131339 | 169,640 / ext | H | Pin 1 5 V, 2 DIN, 3 GND. Top edge beside the USB-C/USB-A group |
 | Status LED (GPIO) | KT-0603R | KENTO | 0603 red | C2286 | 7.8 M / **basic** | M | |
 | Charge LED (STAT) | KT-0805G | KENTO | 0805 green | C2297 | basic | M | Was KT-0603G (C12624, extended) |
 | Passives | UNI-ROYAL 0402WGF…/0603WAF…, Samsung CL05/CL10/CL21/CL31, FH 0402/0603 | — | 0402/0603/0805/1206 | See `PASSIVES` in `circuit/goosebrain.py` | Mostly basic or preferred, all in stock | M | Cost-down (2026-10-16): buck 39k/7.5k/15k/4.7nF, buck outputs C5/C8/C12 22 µF **1206/10 V** CL31A226KPHNNNE (C5672; 5 V DC-bias capacitance not published, check ripple on the first board), C59 10 µF 0805, R44/R45 27 Ω 0603, C18/C19 47 nF 0603, VINT caps C2/C9/C13 2.2 µF 0603, C17/C37 1 µF 0603/50 V CL10A105KB8NNNC (C15849) |

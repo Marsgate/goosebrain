@@ -10852,10 +10852,6 @@
 		(uuid "62bfeffd-2315-438c-a03a-047ff42e381c")
 	)
 	(no_connect
-		(at 215.9 170.18)
-		(uuid "45271e83-422c-4958-ad3b-f604bf9fbbbf")
-	)
-	(no_connect
 		(at 215.9 193.04)
 		(uuid "458123a9-920b-477b-bfd9-7da109c6ba36")
 	)
@@ -15069,6 +15065,17 @@
 				)
 			)
 		)
+	)
+	(global_label "LED_DIN"
+		(shape output)
+		(at 215.9 170.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "716a1da8-4d1f-48c2-9d2a-a7f22404007d")
 	)
 	(sheet_instances
 		(path "/"
