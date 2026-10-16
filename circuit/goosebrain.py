@@ -378,7 +378,7 @@ def buck_5v(vin, vcc, gnd):
     cap("C15", "10uF", "0805", gnd, vin)  # input bulk
     cap("C14", "100nF", "0805", sw, u["BST"])  # bootstrap
     inductor = part(
-        "Device", "L", "L1", "Inductor_SMD:L_Wuerth_WE-LQSH-4020",
+        "Device", "L", "L1", "Inductor_SMD_Wurth:L_Wurth_WE-LQSH-4020",
         "CR4030-3R6M", "Ceaiya", "C7588667", "3.6uH",
     )
     inductor[1] += sw
@@ -656,6 +656,8 @@ def status_led(gpio_net, gnd):
 @subcircuit
 def battery_sense(vsys, sense, gnd):
     """VSYS / 4.7 into an ADC pin: 12.6 V reads as about 2.68 V."""
+    # On VSYS, after the power switch, so the divider drains nothing when the
+    # switch is off. With the switch off, read the pack from the BQ25798 ADC.
     res(ref("R"), "100k", "0402", vsys, sense)
     res(ref("R"), "27k", "0402", sense, gnd)
     cap(ref("C"), "100nF", "0402", sense, gnd)

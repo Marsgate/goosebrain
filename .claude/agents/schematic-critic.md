@@ -26,9 +26,11 @@ Score each criterion 1–5 (5 = nothing to fix, 3 = noticeable problems,
 
 1. **Flow**: inputs on the left, outputs on the right; supply toward the top,
    ground toward the bottom; GND symbols point down, supply symbols up.
-2. **Blocks**: each function (battery input, 5 V buck, ESP32 sockets, each
-   motor driver, IO ports) is grouped, separated from its neighbours by clear
-   space, and ideally titled with a text note.
+2. **Blocks**: each function (USB-C input and PD sink, charger, battery and
+   power switch, 5 V buck, 3.3 V rail, MCU and its support parts, USB-A host,
+   each motor driver, IO ports) is grouped, separated from its neighbours by
+   clear space, and ideally titled with a text note. The design is
+   hierarchical: judge each sheet (one image per sheet) and the top sheet.
 3. **Clutter**: no overlapping text or symbols; no text on wires; nothing off
    the page; consistent spacing between parts.
 4. **Wiring**: few bends; no avoidable crossings; no four-way junctions; no
@@ -42,8 +44,9 @@ Score each criterion 1–5 (5 = nothing to fix, 3 = noticeable problems,
    close to it. Pin names and numbers are readable. Unused pins carry
    no-connect flags.
 8. **Notes**: non-obvious decisions are written on the sheet (buck output
-   formula, B motor wired reversed, sense pins tied to GND, IO port pin
-   order).
+   formula, charge safety via ILIM, 9 V PD request, motors bypassing the
+   charger's SYS, GPIO map, B motor wired reversed, sense pins tied to GND,
+   IO port pin order).
 
 ## Output
 
