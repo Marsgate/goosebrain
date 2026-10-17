@@ -8871,295 +8871,6 @@
 		(uuid "fb03c987-5839-4f3b-a9c1-a096c1dbfd5b")
 	)
 	(symbol
-		(lib_id "Switch:SW_Push")
-		(at 152.4 132.08 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7374c0a7-8a85-4006-b588-d22a164837bb")
-		(property "Reference" "SW3"
-			(at 152.40 128.78 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "RESET"
-			(at 152.40 127.00 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_TS-1088-xR020"
-			(at 152.4 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 152.4 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Push button switch, generic, two pins"
-			(at 152.4 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TS-1088-AR02016"
-			(at 152.4 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "XUNPU"
-			(at 152.4 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C720477"
-			(at 152.4 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cc440616-8bb6-4595-94b2-5bc014665dc7")
-		)
-		(pin "2"
-			(uuid "e0a8d7a9-bfe1-4781-956e-1fd24f1758b5")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "SW3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 142.24 135.89 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f14a15bd-55ce-4b97-aedb-43ca8fe09ce2")
-		(property "Reference" "R47"
-			(at 146.62 134.62 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 146.09 137.16 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 140.462 135.89 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 135.89 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 142.24 135.89 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF1001TCE"
-			(at 142.24 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 142.24 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C11702"
-			(at 142.24 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "38f0797c-f342-4d3f-a93c-741fcb9ec440")
-		)
-		(pin "2"
-			(uuid "a2c6932a-8280-4801-9c50-99ec4ab50698")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "R47")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 142.24 139.7 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "38476589-56ab-4cb0-81aa-dd6a7d4b37d1")
-		(property "Reference" "#PWR221"
-			(at 142.24 137.16 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 142.24 143.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 142.24 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 142.24 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "47a18a22-fb17-4ff7-8edd-b11c796b5bce")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "#PWR221")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 157.48 149.86 270)
 		(unit 1)
@@ -9296,7 +9007,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_TS-1088-xR020"
+		(property "Footprint" "hexy:SW_Push_1P1T-MP_NO_Horizontal_Alps_SKRTLAE010_JLC"
 			(at 143.51 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -9329,7 +9040,7 @@
 				)
 			)
 		)
-		(property "MPN" "TS-1088-AR02016"
+		(property "MPN" "SKRTLAE010"
 			(at 143.51 149.86 0)
 			(effects
 				(font
@@ -9338,7 +9049,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "XUNPU"
+		(property "Manufacturer" "ALPS Electric"
 			(at 143.51 149.86 0)
 			(effects
 				(font
@@ -9347,7 +9058,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C720477"
+		(property "LCSC Part #" "C110293"
 			(at 143.51 149.86 0)
 			(effects
 				(font
@@ -10683,16 +10394,6 @@
 	)
 	(wire
 		(pts
-			(xy 147.32 132.08) (xy 142.24 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1147758c-04b3-4ab8-aa49-ea0bc66f5e6f")
-	)
-	(wire
-		(pts
 			(xy 165.1 149.86) (xy 161.29 149.86)
 		)
 		(stroke
@@ -10932,7 +10633,7 @@
 			)
 		)
 	)
-	(global_label "GPIO0_M2B"
+	(global_label "GPIO0_M3A"
 		(at 215.9 116.84 0)
 		(effects
 			(font
@@ -10942,7 +10643,7 @@
 		)
 		(uuid "58e933e1-d0d8-41cd-b089-34b560ba7251")
 	)
-	(global_label "GPIO1_M2A"
+	(global_label "GPIO1_M3B"
 		(at 215.9 119.38 0)
 		(effects
 			(font
@@ -10972,7 +10673,7 @@
 		)
 		(uuid "75123b5a-39a6-4b4b-b506-0e185f2d7616")
 	)
-	(global_label "GPIO4_M4B"
+	(global_label "GPIO4_M1A"
 		(at 215.9 127.0 0)
 		(effects
 			(font
@@ -10982,7 +10683,7 @@
 		)
 		(uuid "2caf1e5e-8200-4eae-a0a5-dc4ff39cebfd")
 	)
-	(global_label "GPIO5_M4A"
+	(global_label "GPIO5_M1B"
 		(at 215.9 129.54 0)
 		(effects
 			(font
@@ -10992,7 +10693,7 @@
 		)
 		(uuid "6e6919f7-3651-4c00-8c1d-fd9cd79b6ff6")
 	)
-	(global_label "CHG_INT"
+	(global_label "GPIO6_M2B"
 		(at 215.9 132.07999999999998 0)
 		(effects
 			(font
@@ -11002,7 +10703,7 @@
 		)
 		(uuid "d40b4c17-e310-4fc8-b036-7405b3b5bbeb")
 	)
-	(global_label "IO4_GPIO"
+	(global_label "GPIO7_M2A"
 		(at 215.9 134.62 0)
 		(effects
 			(font
@@ -11022,7 +10723,7 @@
 		)
 		(uuid "bf561548-ce91-4ad2-a621-dee90502f349")
 	)
-	(global_label "I2C_SCL"
+	(global_label "CHG_INT"
 		(at 215.9 139.7 0)
 		(effects
 			(font
@@ -11032,7 +10733,7 @@
 		)
 		(uuid "210a9e20-0db2-4b10-a8c1-4356213184dc")
 	)
-	(global_label "GPIO10_M1A"
+	(global_label "GPIO10_M5A"
 		(at 215.9 142.24 0)
 		(effects
 			(font
@@ -11042,7 +10743,7 @@
 		)
 		(uuid "2f63ffc2-ec2e-4668-98d7-80098e5639df")
 	)
-	(global_label "GPIO11_M1B"
+	(global_label "GPIO11_M5B"
 		(at 215.9 144.78 0)
 		(effects
 			(font
@@ -11052,7 +10753,7 @@
 		)
 		(uuid "fe9ef3c1-f32a-48bd-adb3-c57889fc6f5f")
 	)
-	(global_label "IO2_GPIO"
+	(global_label "GPIO12_M6B"
 		(at 215.9 147.32 0)
 		(effects
 			(font
@@ -11062,7 +10763,7 @@
 		)
 		(uuid "2b246aea-ca8f-470a-b083-e7530239dd08")
 	)
-	(global_label "IO1_GPIO"
+	(global_label "GPIO13_M6A"
 		(at 215.9 149.85999999999999 0)
 		(effects
 			(font
@@ -11072,7 +10773,7 @@
 		)
 		(uuid "2589fa9b-8009-4fb3-8978-c8b0519d8101")
 	)
-	(global_label "IO3_GPIO"
+	(global_label "GPIO14_M4A"
 		(at 215.9 152.4 0)
 		(effects
 			(font
@@ -11082,7 +10783,7 @@
 		)
 		(uuid "207b169f-4885-47be-bd8d-4ccabdd11470")
 	)
-	(global_label "DRV_FAULT"
+	(global_label "GPIO15_M4B"
 		(at 215.9 154.94 0)
 		(effects
 			(font
@@ -11092,7 +10793,7 @@
 		)
 		(uuid "84e89efe-1f6b-443d-a7e5-628179c7a537")
 	)
-	(global_label "GPIO19_M3B"
+	(global_label "DRV_FAULT"
 		(at 215.9 165.1 0)
 		(effects
 			(font
@@ -11102,7 +10803,7 @@
 		)
 		(uuid "3f5b8c37-fc08-4651-82ab-150ca85ff57a")
 	)
-	(global_label "GPIO22_M6B"
+	(global_label "IO3_GPIO"
 		(at 215.9 172.72 0)
 		(effects
 			(font
@@ -11112,7 +10813,7 @@
 		)
 		(uuid "608a127c-ade3-4075-96c1-1e2bc8b7ca67")
 	)
-	(global_label "GPIO23_M6A"
+	(global_label "DRV_SLEEP"
 		(at 215.9 175.26 0)
 		(effects
 			(font
@@ -11122,7 +10823,7 @@
 		)
 		(uuid "ea5c9115-4c32-4869-8563-8fd429f68186")
 	)
-	(global_label "GPIO24_M5A"
+	(global_label "IO2_GPIO"
 		(at 215.9 177.8 0)
 		(effects
 			(font
@@ -11132,23 +10833,23 @@
 		)
 		(uuid "6b57c854-9d58-4275-ba6c-f63118108900")
 	)
-	(global_label "GPIO25_M5B"
+	(label "USBA_VBUS_EN"
 		(at 215.9 180.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify left bottom)
 		)
 		(uuid "cc799086-929f-4691-9d1d-0ac2d2d7ab21")
 	)
-	(label "BAT_SENSE"
+	(global_label "IO5_GPIO"
 		(at 215.9 185.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "846edd90-0713-41b2-a743-de4bfe765410")
 	)
@@ -11162,17 +10863,17 @@
 		)
 		(uuid "8c3f7755-702c-455d-9832-e84b21646a00")
 	)
-	(label "USBA_VBUS_EN"
+	(global_label "IO4_GPIO"
 		(at 233.68 157.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "9158c545-7e42-4dd3-99ff-112633ecb4dd")
 	)
-	(global_label "DRV_SLEEP"
+	(global_label "I2C_SCL"
 		(at 233.68 160.02 0)
 		(effects
 			(font
@@ -11182,7 +10883,7 @@
 		)
 		(uuid "4ca824fc-154a-4687-b234-cb7ec0fe8e03")
 	)
-	(global_label "GPIO18_M3A"
+	(global_label "LED_DIN"
 		(at 233.68 162.56 0)
 		(effects
 			(font
@@ -11192,13 +10893,13 @@
 		)
 		(uuid "67994b05-0b86-4985-a97e-05b7d80d1cb3")
 	)
-	(global_label "IO5_GPIO"
+	(label "BAT_SENSE"
 		(at 233.68 190.5 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify left bottom)
 		)
 		(uuid "a6eae7ca-3285-41f2-9670-2b8e1e862c88")
 	)
@@ -12830,295 +12531,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 275.59 167.64 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "682bd5f2-10c3-48b8-9013-b3fce2c029a9")
-		(property "Reference" "R51"
-			(at 275.59 164.34 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 275.59 170.94 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 275.59 169.41799999999998 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 275.59 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 275.59 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0402WGF1001TCE"
-			(at 275.59 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 275.59 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C11702"
-			(at 275.59 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "bd95da98-e98c-42d9-8c6d-526441b0d068")
-		)
-		(pin "2"
-			(uuid "16c61b31-621d-4553-a593-d7675a47b134")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "R51")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:LED")
-		(at 287.02 167.64 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ec57af66-8fc1-4e49-8cfa-ad13c935d3f7")
-		(property "Reference" "LED2"
-			(at 287.02 164.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "red"
-			(at 287.02 170.94 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 287.02 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 287.02 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 287.02 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "KT-0603R"
-			(at 287.02 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Hubei KENTO Elec"
-			(at 287.02 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C2286"
-			(at 287.02 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "979945ed-010d-43ba-9cb9-69c692442cff")
-		)
-		(pin "2"
-			(uuid "b227553e-d1e3-45fa-8cc1-8d02ec68e32e")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "LED2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 293.37 167.64 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "c67ec278-779a-4398-82e7-c308b67435d2")
-		(property "Reference" "#PWR239"
-			(at 293.37 165.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 293.37 171.45 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 293.37 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 293.37 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 293.37 167.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "701e7bd7-ce81-4991-a96e-9e3ab98d6ded")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "#PWR239")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+BATT")
 		(at 299.72 182.88 0)
 		(unit 1)
@@ -14426,7 +13838,7 @@
 		)
 		(uuid "73332b8b-aa04-4055-bbb2-e8732c7da794")
 	)
-	(text "GPIO MAP (step 4 pin swap: each signal leaves U10 toward its destination)\nGPIO0/1    M2 (U1 BIN2/BIN1, A/B swapped)\nGPIO2/3    USB-A D+/D- (Pico-PIO-USB, D- = D+ + 1)\nGPIO4/5    M4 (U2 BIN2/BIN1, A/B swapped)\nGPIO6      charger /INT\nGPIO7      IO4\nGPIO8/9    I2C0 SDA/SCL (charger)\nGPIO10/11  M1 (U1 AIN1/AIN2)\nGPIO12/13/14  IO2/IO1/IO3 (5 V tolerant)\nGPIO15     drivers nFAULT (wired-OR, R54 pull-up)\nGPIO16     USB-A VBUS enable\nGPIO17     drivers nSLEEP (all three)\nGPIO18/19  M3 (U2 AIN1/AIN2)\nGPIO20     status LED\nGPIO21     spare\nGPIO22/23  M6 (U3 BIN2/BIN1, A/B swapped)\nGPIO24/25  M5 (U3 AIN1/AIN2)\nGPIO26     battery sense (ADC0)\nGPIO27/28  IO6/IO5 (ADC1/2, 3.3 V logic only)\nGPIO29     spare (ADC3)\nMotor pairs are PWM slices 0-5 (M2 0, M3 1, M4 2, M6 3, M5 4, M1 5)."
+	(text "GPIO MAP (pin swap redone after the IO ports moved to the left end: each signal leaves U10 toward its destination)\nGPIO0/1    M3 (U2 AIN1/AIN2)\nGPIO2/3    USB-A D+/D- (Pico-PIO-USB, D- = D+ + 1)\nGPIO4/5    M1 (U1 AIN1/AIN2)\nGPIO6/7    M2 (U1 BIN2/BIN1, A/B swapped)\nGPIO8      I2C0 SDA (charger)\nGPIO9      charger /INT\nGPIO10/11  M5 (U3 AIN1/AIN2)\nGPIO12/13  M6 (U3 BIN2/BIN1, A/B swapped)\nGPIO14/15  M4 (U2 BIN1/BIN2)\nGPIO16     IO4 (5 V tolerant)\nGPIO17     I2C0 SCL (charger)\nGPIO18     LED stick data (PIO WS2812, U14 level shift)\nGPIO19     drivers nFAULT (wired-OR, R54 pull-up)\nGPIO20     spare (the status LED was removed; the LED stick shows status)\nGPIO21/22  IO1/IO3 (5 V tolerant)\nGPIO23     drivers nSLEEP (all three)\nGPIO24     IO2 (5 V tolerant)\nGPIO25     USB-A VBUS enable\nGPIO26/27  IO5/IO6 (ADC0/1, 3.3 V logic only)\nGPIO28     battery sense (ADC2)\nGPIO29     spare (ADC3)\nMotor pairs are PWM slices M3 0, M1 2, M2 3, M5 5, M6 6, M4 7."
 		(exclude_from_sim no)
 		(at 243.84 30.48 0)
 		(effects
@@ -14460,7 +13872,7 @@
 		)
 		(uuid "4a74fc38-49e0-41a4-8b5e-06cfcb24186a")
 	)
-	(text "BOOT (SW2) pulls QSPI_SS low through R46;\nRESET (SW3) pulls RUN low through R47.\nQSPI clock/data unused: the flash is inside the RP2354A.\nSWD on test pads TP1/TP2."
+	(text "BOOT (SW2, side push on the top edge, pressed through a pinhole\nwith a 2.5 mm hex key) pulls QSPI_SS low through R46.\nNo RESET button: RUN keeps the internal pull-up; TP3 (RUN) and TP4 (GND)\nsit with the SWD pads on the bottom side.\nQSPI clock/data unused: the flash is inside the RP2354A.\nSWD on test pads TP1/TP2 (bottom side)."
 		(exclude_from_sim no)
 		(at 106.68 207.01 0)
 		(effects
@@ -14483,7 +13895,7 @@
 		)
 		(uuid "d65924d2-e57f-408d-8364-03920a5ceb6a")
 	)
-	(text "Pico-PIO-USB on GPIO2/3 with 22 R in series (as on\nAdafruit's Feather RP2040 USB Host); firmware enables the\nRP2354's internal pull-downs. U12 (SY6280AAC, R79 10k) limits VBUS to about 0.68 A and\nstays off until firmware drives GPIO16 (R50 holds it off)."
+	(text "Pico-PIO-USB on GPIO2/3 with 22 R in series (as on\nAdafruit's Feather RP2040 USB Host); firmware enables the\nRP2354's internal pull-downs. U12 (SY6280AAC, R79 10k) limits VBUS to about 0.68 A and\nstays off until firmware drives GPIO25 (R50 holds it off)."
 		(exclude_from_sim no)
 		(at 322.58 157.48 0)
 		(effects
@@ -14493,18 +13905,6 @@
 			(justify left top)
 		)
 		(uuid "1e894e94-5fd4-49a1-8457-9ed53480c944")
-	)
-	(text "STATUS LED"
-		(exclude_from_sim no)
-		(at 266.7 160.02 0)
-		(effects
-			(font
-				(size 1.778 1.778)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "99d7eb08-ae3d-4007-9746-bbaa6fecb18b")
 	)
 	(text "BATTERY SENSE"
 		(exclude_from_sim no)
@@ -14633,16 +14033,6 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 167.64) (xy 233.68 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a43afe6c-d0ac-4240-a0d7-a7eadb24aaa0")
-	)
-	(wire
-		(pts
 			(xy 215.9 190.5) (xy 233.68 190.5)
 		)
 		(stroke
@@ -14650,26 +14040,6 @@
 			(type default)
 		)
 		(uuid "11368e51-56ed-4376-b470-970007385dbe")
-	)
-	(wire
-		(pts
-			(xy 233.68 167.64) (xy 271.78 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40fa1621-b4d8-46de-97b4-d3fd59dfe753")
-	)
-	(wire
-		(pts
-			(xy 279.4 167.64) (xy 283.21 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "917c59cf-5db2-4951-b509-b85255c23051")
 	)
 	(wire
 		(pts
@@ -14690,16 +14060,6 @@
 			(type default)
 		)
 		(uuid "bf63f847-f9ee-432c-abc6-1b43d933e71e")
-	)
-	(wire
-		(pts
-			(xy 290.83 167.64) (xy 293.37 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "660819c1-7238-4109-9f28-6df279f7a35e")
 	)
 	(junction
 		(at 40.64 63.5)
@@ -15066,8 +14426,7 @@
 			)
 		)
 	)
-	(global_label "LED_DIN"
-		(shape output)
+	(global_label "IO1_GPIO"
 		(at 215.9 170.18 0)
 		(effects
 			(font
@@ -15076,6 +14435,279 @@
 			(justify left)
 		)
 		(uuid "716a1da8-4d1f-48c2-9d2a-a7f22404007d")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 149.86 198.12 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "92eb2834-a83b-4c25-b4bf-fc0f443669af")
+		(property "Reference" "TP3"
+			(at 154.31 200.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "RUN"
+			(at 154.31 201.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 154.94 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 154.94 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 149.86 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d2c39201-6b2f-450c-bf17-2f1e460f6231")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "TP3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 144.78 198.12 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c04fba23-ead3-49bc-b64b-98d176163fad")
+		(property "Reference" "TP4"
+			(at 149.23 200.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 149.23 201.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 149.86 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 149.86 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 144.78 198.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "109285e8-df56-4437-9705-3959673142bf")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 144.78 195.58 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "bb5ae1e0-b5b1-411d-8cfe-2ff5c1701622")
+		(property "Reference" "#PWR318"
+			(at 144.78 193.04 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 144.78 199.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 144.78 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 144.78 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 144.78 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "88a8b681-388f-462c-b464-0b7c7a7c5417")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "#PWR318")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 149.86 195.58) (xy 149.86 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc14a56e-a22e-4440-8dd2-881fb4f139cd")
+	)
+	(wire
+		(pts
+			(xy 144.78 195.58) (xy 144.78 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "67eed772-73b0-46d8-b80e-d4f5dd6ba878")
+	)
+	(label "RUN"
+		(at 149.86 195.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4aca7f51-d991-4011-af3c-ef25e272288e")
+	)
+	(label "RUN"
+		(at 157.48 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "90b18c6b-6eed-45ef-b930-9d04b4ce83ef")
+	)
+	(no_connect
+		(at 215.9 167.64)
+		(uuid "49da0dc0-3ee2-4320-86ef-125cdba5b749")
 	)
 	(sheet_instances
 		(path "/"

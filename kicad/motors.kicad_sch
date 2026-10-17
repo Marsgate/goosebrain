@@ -7695,7 +7695,7 @@
 		(uuid "8a849504-d2f3-44d8-ba91-6a14a7a1828e")
 	)
 	(embedded_fonts no)
-	(global_label "GPIO10_M1A"
+	(global_label "GPIO4_M1A"
 		(at 238.76 69.85 270)
 		(effects
 			(font
@@ -7735,7 +7735,7 @@
 		)
 		(uuid "b09bcd83-4845-407e-9cd3-e734e9a3f3c9")
 	)
-	(global_label "GPIO11_M1B"
+	(global_label "GPIO5_M1B"
 		(at 241.3 69.85 270)
 		(effects
 			(font
@@ -7745,7 +7745,7 @@
 		)
 		(uuid "f780f2df-0e10-4c1d-89e2-c974680b8e06")
 	)
-	(global_label "GPIO1_M2A"
+	(global_label "GPIO7_M2A"
 		(at 246.38 69.85 270)
 		(effects
 			(font
@@ -7755,7 +7755,7 @@
 		)
 		(uuid "dfee3424-b99d-4f19-a79a-8024182f0bfc")
 	)
-	(global_label "GPIO0_M2B"
+	(global_label "GPIO6_M2B"
 		(at 248.92 69.85 270)
 		(effects
 			(font
@@ -7785,7 +7785,7 @@
 		)
 		(uuid "b68109f3-aea2-4041-97a9-8606be34ecf4")
 	)
-	(global_label "GPIO18_M3A"
+	(global_label "GPIO0_M3A"
 		(at 166.37 69.85 270)
 		(effects
 			(font
@@ -7795,7 +7795,7 @@
 		)
 		(uuid "f022e5d6-abe7-4c07-97a8-cc20499e595f")
 	)
-	(global_label "GPIO19_M3B"
+	(global_label "GPIO1_M3B"
 		(at 168.91 69.85 270)
 		(effects
 			(font
@@ -7805,7 +7805,7 @@
 		)
 		(uuid "7d925d8c-4e34-40e9-a78d-3b8cee851e02")
 	)
-	(global_label "GPIO5_M4A"
+	(global_label "GPIO14_M4A"
 		(at 173.99 69.85 270)
 		(effects
 			(font
@@ -7815,7 +7815,7 @@
 		)
 		(uuid "2195bc7d-c66f-48ce-9ff7-9d638809df0a")
 	)
-	(global_label "GPIO4_M4B"
+	(global_label "GPIO15_M4B"
 		(at 176.53 69.85 270)
 		(effects
 			(font
@@ -7845,7 +7845,7 @@
 		)
 		(uuid "48db5d4e-aa33-4954-93ce-f7b64c98c3cf")
 	)
-	(global_label "GPIO24_M5A"
+	(global_label "GPIO10_M5A"
 		(at 95.25 69.85 270)
 		(effects
 			(font
@@ -7855,7 +7855,7 @@
 		)
 		(uuid "dd43132b-68ac-4ec7-b609-4f86d566bfa4")
 	)
-	(global_label "GPIO25_M5B"
+	(global_label "GPIO11_M5B"
 		(at 97.79 69.85 270)
 		(effects
 			(font
@@ -7865,7 +7865,7 @@
 		)
 		(uuid "9d5dc8ce-2834-4429-af94-216202d927fb")
 	)
-	(global_label "GPIO23_M6A"
+	(global_label "GPIO13_M6A"
 		(at 102.87 69.85 270)
 		(effects
 			(font
@@ -7875,7 +7875,7 @@
 		)
 		(uuid "69193dfe-f43b-4634-b444-e3925e28bd89")
 	)
-	(global_label "GPIO22_M6B"
+	(global_label "GPIO12_M6B"
 		(at 105.41 69.85 270)
 		(effects
 			(font
@@ -7905,7 +7905,7 @@
 		)
 		(uuid "c9a1ea36-1475-46a1-89da-c63cb4256d27")
 	)
-	(text "VM = VSYS: the pack after F1 and the power switch (up to 12.6 V; DRV8848 VM max 18 V).\nnSLEEP of all three drivers on GPIO15 (DRV_SLEEP); nFAULT wired-OR on GPIO19 (DRV_FAULT, pull-up on the MCU sheet).\nMotor inputs: GPIOn_MxA/B = the GPIO number and motor; A/B of one motor share a PWM slice.\nB motors are wired reversed (OUT1 to BOUT2) as in rev 1: the firmware's direction handling depends on it."
+	(text "VM = VSYS: the pack after F1 and the power switch (up to 12.6 V; DRV8848 VM max 18 V).\nnSLEEP of all three drivers on GPIO23 (DRV_SLEEP); nFAULT wired-OR on GPIO19 (DRV_FAULT, pull-up on the MCU sheet).\nMotor inputs: GPIOn_MxA/B = the GPIO number and motor; A/B of one motor share a PWM slice.\nB motors are wired reversed (OUT1 to BOUT2) as in rev 1: the firmware's direction handling depends on it."
 		(exclude_from_sim no)
 		(at 53.34 93.98 0)
 		(effects

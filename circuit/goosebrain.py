@@ -99,6 +99,11 @@ PASSIVES = {
     ("10uF", "0805"): ("CL21A106KAYNNNE", SAMSUNG, "C15850"),  # 25 V
     ("22uF", "1206"): ("CL31A226KPHNNNE", SAMSUNG, "C5672"),  # 10 V, Preferred
 }
+# BOOT switch (side push, top edge); set from the parts search
+# Alps SKRTLAE010: Ø2 mm actuator 1.7 mm above the board, 0.2 mm travel, 1.6 N, 100k cycles; the case pinhole
+# (3.0-3.2 mm, for the end of a 2.5 mm hex key) is centred on the actuator.
+BOOT_SW = {"fp": "hexy:SW_Push_1P1T-MP_NO_Horizontal_Alps_SKRTLAE010_JLC", "mpn": "SKRTLAE010",
+           "mfr": "ALPS Electric", "lcsc": "C110293"}
 R_FP = "Resistor_SMD:R_{0}_{1}Metric"
 C_FP = "Capacitor_SMD:C_{0}_{1}Metric"
 METRIC = {"0402": "1005", "0603": "1608", "0805": "2012", "1206": "3216"}
@@ -224,9 +229,9 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
     """BQ25798 buck-boost charger for the internal 3S pack.
 
     Safe with no firmware: PROG selects 3S (12.6 V) at 750 kHz, the TS divider
-    plus the pack NTC gives JEITA temperature limits, and the ILIM_HIZ divider
-    caps input current at about 0.30 A, so charge current stays near 0.22C of the
-    1000 mAh pack from 9 V (and lower from 5 V) even though the power-on charge
+    holds TS at the 25 C point (fixed 10k, no pack NTC), and the ILIM_HIZ divider
+    caps input current at about 0.30 A, so charge current stays near 0.2 A, about
+    0.45C of the 450 mAh pack, from 9 V (and lower from 5 V) even though the power-on charge
     current default is 1 A. The robot's loads run from the pack, not from SYS,
     because the internal BATFET is only rated 6 A continuous.
     """
@@ -301,28 +306,28 @@ def charger_3s(vbus, vbat, regn, i2c_scl, i2c_sda, chg_int, v3v3, gnd):
 
     ts = Net("CHG_TS")
     u["TS"] += ts
-    # TI's 0/60 C divider for a 103AT. Kept on E96 parts: the E24 pair
-    # 5.1k/27k would move the cold cutoff (73.3% of REGN) to about -1.5 C,
-    # below the 0 C charging limit of Li-ion cells, and no E24 pair matches.
+    # TI's 0/60 C divider for a 103AT (5.23k REGN-TS, 30.1k TS-GND). There is
+    # no pack thermistor (user decision: packs are used indoors at low stress),
+    # so a fixed 10k (R81) sits where the NTC was, i.e. the NTC at 25 C:
+    #   TS = 30.1k || 10k = 7.506k;  7.506 / (5.23 + 7.506) = 58.9 % of REGN.
+    # That is between T3 (warm, 44.8 %) and T2 (cool, 68.4 %), so the charger
+    # always sees the normal zone: full charge current and voltage, JEITA never
+    # steps in, no firmware needed. The pack is still protected by the
+    # BQ7791501 (OV/UV/OC/SC) and TH1 keeps watching the protector's FETs.
     res(ref("R"), "5.23k", "0402", regn, ts)
     res(ref("R"), "30.1k", "0402", ts, gnd)
-    # The pack has no NTC, so a 10 kOhm B3435 (103AT-type) bead on two
-    # wire pads is hand-soldered from the top and taped against the pack.
-    ntc = part(
-        "Connector_Generic", "Conn_01x02", ref("J"),
-        "Connector_Wire:SolderWire-0.1sqmm_1x02_P3.6mm_D0.4mm_OD1mm",
-        "", "", "", "NTC bead 10k B3435",
-    )
-    ntc[1] += ts  # TS to GND through the bead
-    ntc[2] += gnd
+    ref("J")  # J2 burned: the NTC bead pads were removed
+    res("R81", "10k", "0402", ts, gnd)  # fixed "25 C" in place of the NTC
 
-    # Charge LED on STAT: lit while charging, with no firmware involved.
+    # Charge LED on STAT: lit while charging, with no firmware involved. A
+    # side-view LED on the top edge, shining out through a small hole in the
+    # wall (no side-view LED at JLC is basic). 2.2k from REGN gives about 1.3 mA.
     stat, stat_led = Net("CHG_STAT"), Net("CHG_STAT_LED")
     u["STAT"] += stat
     res(ref("R"), "2.2k", "0402", regn, stat_led)
     led = part(
-        "Device", "LED", ref("LED"), "LED_SMD:LED_0805_2012Metric",
-        "KT-0805G", "Hubei KENTO Elec", "C2297", "green",  # 0805 green is basic
+        "Device", "LED", ref("LED"), "hexy:LED_Everlight_27-21_SideView",
+        "27-21SYGC/S530-E3/TR8", "Everlight Elec", "C74270", "green",
     )
     led["A"] += stat_led
     led["K"] += stat
@@ -339,17 +344,16 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     the FET. Charging works with the switch off, since the charger connects to
     VBAT ahead of it.
     """
-    # Pack lead: a short XT60 female pigtail (14 AWG, off-board part) soldered
-    # to two wire pads at the top of the left-end strip; it mates with the
-    # Gens Ace pack's XT60 male plug off the board and the pair lies flat in the
-    # strip pocket. A board-mounted right-angle XT60 couldn't be mated: the
-    # plug's straight 20 mm insertion path crosses J11 and the M5/M6 pins.
-    # Pin 2 is "+" (PACK+, the pigtail's red lead); pin 1 is the pack's
-    # negative, which goes to the protector's low side (BAT_N), not board GND.
+    # Pack lead: a short XT30 pigtail (16 AWG, off-board part) soldered to two
+    # wire pads in the left-end strip, beside the pack's lead end. The pack
+    # (Ovonic 80C 3S 450 mAh) sits on top of the board; the mated XT30 pair
+    # lies flat on top beside it. Pin 2 is "+" (PACK+, the pigtail's red
+    # lead); pin 1 is the pack's negative, which goes to the protector's low
+    # side (BAT_N), not board GND.
     j = part(
         "Connector_Generic", "Conn_01x02", ref("J"),
-        "Connector_Wire:SolderWire-2sqmm_1x02_P7.8mm_D2mm_OD3.9mm",
-        "", "", "", "XT60-F pigtail 14AWG",
+        "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm",
+        "", "", "", "XT30 pigtail 16AWG",
     )
     pack = Net("PACK+")
     j[2] += pack
@@ -549,23 +553,29 @@ def mcu(v3v3, gnd, usb_dp, usb_dm, gpio):
     res(ref("R"), "27", "0603", dp_mcu, usb_dp)  # 27 Ohm per Raspberry Pi (not 22)
     res(ref("R"), "27", "0603", dm_mcu, usb_dm)
 
-    # BOOTSEL on QSPI_SS, RESET on RUN (each with 1 kOhm, per the RPi design).
+    # BOOTSEL on QSPI_SS through 1 kOhm (per the RPi design). There is no
+    # RESET button: RUN has the chip's internal pull-up (RP2350 datasheet; the
+    # hardware guide's external parts on RUN are optional) and a test pad, TP3,
+    # beside the SWD pads, so a debugger can still reset the chip.
     qspi_ss, boot_r = Net("QSPI_SS"), Net("BOOTSEL_R")
     u["~{QSPI_SS}"] += qspi_ss
     u["QSPI_SD0", "QSPI_SD1", "QSPI_SD2", "QSPI_SD3", "QSPI_SCLK"] += NC
     res(ref("R"), "1k", "0402", qspi_ss, boot_r)
-    run, run_r = Net("RUN"), Net("RUN_R")
+    run = Net("RUN")
     u["RUN"] += run
-    res(ref("R"), "1k", "0402", run_r, gnd)
-    for label, a, b in (("BOOT", boot_r, gnd), ("RESET", run, run_r)):
-        sw = part(
-            "Switch", "SW_Push", ref("SW"), "Button_Switch_SMD:SW_SPST_TS-1088-xR020",
-            "TS-1088-AR02016", "XUNPU", "C720477", label,
-        )
-        sw[1] += a
-        sw[2] += b
+    ref("R")  # R47 burned (the RESET button's 1 kOhm)
+    # BOOT: side-push tactile switch on the top edge, pressed through a pinhole
+    # in the case with the end of a 2.5 mm hex key.
+    sw = part(
+        "Switch", "SW_Push", ref("SW"), BOOT_SW["fp"], BOOT_SW["mpn"], BOOT_SW["mfr"], BOOT_SW["lcsc"], "BOOT",
+    )
+    sw[1] += boot_r
+    sw[2] += gnd
+    ref("SW")  # SW3 burned (RESET removed)
 
-    # SWD test pads for factory programming and debugging.
+    # SWD test pads for factory programming and debugging, plus RUN and GND
+    # (TP3/TP4), all on the bottom side so a debugger can clip on with the pack
+    # still fitted.
     for name in ("SWCLK", "SWDIO"):
         net = Net(name)
         u[name] += net
@@ -573,6 +583,9 @@ def mcu(v3v3, gnd, usb_dp, usb_dm, gpio):
             "Connector", "TestPoint", ref("TP"), "TestPoint:TestPoint_Pad_D1.0mm",
             "", "", "", name,
         )
+        tp[1] += net
+    for tp_ref, name, net in (("TP3", "RUN", run), ("TP4", "GND", gnd)):
+        tp = part("Connector", "TestPoint", tp_ref, "TestPoint:TestPoint_Pad_D1.0mm", "", "", "", name)
         tp[1] += net
 
     for n in range(30):
@@ -677,39 +690,32 @@ def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, ca
 
 @subcircuit
 def io_ports(ios, vcc, gnd):
-    """Six 3-pin IO ports, one 1x3 header each: pin 1 IO, 2 VCC (5 V), 3 GND.
+    """Six 3-pin IO ports on one 3 x 6 right-angle header (J5) at the board's left end.
 
-    Vertical headers, placed side by side at 2.54 mm as one 3 x 6 block (like a
-    servo shield) under a recessed slot in the enclosure face. A plug put in
-    backwards only swaps IO and GND, since the middle pin is 5 V.
+    Pins point out through the left wall. Per port: GND on the row nearest the
+    wall (the lowest mating pin), 5V in the middle, SIG on the inner row (the
+    top pin), so a plug put in upside down only swaps SIG and GND. One 6-unit
+    symbol (hexyhustle:IO_3x6_RA), unit k = port k: SIG pin 3k, 5V 3k-1,
+    GND 3k-2. Refs stay stable: J6-J10 are burned.
 
     330 Ohm series resistors protect the GPIOs from shorts and hot-plugging.
-    IO1-IO4 are on 5 V tolerant GPIOs; IO5/IO6 are on GPIO28/27 (ADC), which
+    IO1-IO4 are on 5 V tolerant GPIOs; IO5/IO6 are on GPIO26/27 (ADC), which
     are not, so IO5/IO6 must stay at 3.3 V logic.
     """
+    j = None
     for n, io in enumerate(ios, start=1):
         pin_net = Net(f"IO{n}")
         res(ref("R"), "330", "0402", io, pin_net)
-        j = part(
-            "Connector_Generic", "Conn_01x03", ref("J"),
-            "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical",
-            "2.54-1*3P", "BOOMELE(Boom Precision Elec)", "C49257", f"IO{n}",
-        )
-        j[1] += pin_net
-        j[2] += vcc
-        j[3] += gnd
-
-
-@subcircuit
-def status_led(gpio_net, gnd):
-    led_a = Net("STATUS_LED_A")
-    res(ref("R"), "1k", "0402", gpio_net, led_a)
-    led = part(
-        "Device", "LED", ref("LED"), "LED_SMD:LED_0603_1608Metric",
-        "KT-0603R", "Hubei KENTO Elec", "C2286", "red",
-    )
-    led["A"] += led_a
-    led["K"] += gnd
+        if j is None:
+            j = part(
+                "hexyhustle", "IO_3x6_RA", ref("J"), "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT",
+                "2011-3X06G00RB", "WingTAT", "C51953246", "IO 3x6 RA",
+            )
+        else:
+            ref("J")  # J6-J10 burned: one header now
+        j[3 * n] += pin_net
+        j[3 * n - 1] += vcc
+        j[3 * n - 2] += gnd
 
 
 @subcircuit
@@ -730,7 +736,7 @@ def led_stick(din, vcc, gnd):
     )
     din_5v, din_j = Net("LED_DIN_5V"), Net("LED_DIN_J")
     buf[1] += gnd  # /OE: always driving
-    buf[2] += din  # A, from GPIO21
+    buf[2] += din  # A, from GPIO18
     buf[3] += gnd
     buf[4] += din_5v  # Y
     buf[5] += vcc
@@ -761,7 +767,7 @@ def battery_sense(vsys, sense, gnd):
 def pack_protection(pack, bat_n, gnd):
     """BQ7791501 standalone 3S primary protector with low-side CHG/DSG FETs.
 
-    The pack (Gens Ace 3S 1000 mAh) has no protection board, so the board protects it. Wired
+    The pack (Ovonic 80C 3S 450 mAh) has no protection board, so the board protects it. Wired
     as the datasheet's 3-series configuration (Figure 9-11) and design example:
     CCFG, CTRC, CTRD and CBI to VSS (3 cells, no stack, balancing on), PRES
     pulled high (HIBERNATE off), CBO and LPWR open.
@@ -865,66 +871,69 @@ for rail in (vbus, vbat, vsys, vcc, v3v3, regn, gnd, bat_n):
     rail.drive = POWER
 
 # GPIO map (RP2354A, GPIO0-29), chosen in the PCB layout so each signal leaves
-# U10 on the side facing its destination (step 4 pin-swap pass). Each motor's
-# two inputs are one PWM slice's A/B pair (n even, n + 1), and the six motors
-# use six different slices. "A/B swapped" means the motor's IN1 is on the odd
-# GPIO (PWM channel B); the firmware maps direction per motor.
+# U10 on the side facing its destination (pin-swap pass redone again on
+# 2026-10-17, after the IO ports moved to the left end). Each motor's two inputs are one PWM slice's
+# A/B pair (n even, n + 1), and the six motors use six different slices. "A/B
+# swapped" means the motor's IN1 is on the odd GPIO (PWM channel B); the
+# firmware maps direction per motor.
 #
-#   GPIO0-1   M2 (U1 BIN2/BIN1, A/B swapped)   GPIO12  IO2
-#   GPIO2     USB-A D+ (PIO-USB)               GPIO13  IO1
-#   GPIO3     USB-A D- (PIO-USB, D+ + 1)       GPIO14  IO3
-#   GPIO4-5   M4 (U2 BIN2/BIN1, A/B swapped)   GPIO15  driver nFAULT (wired-OR)
-#   GPIO6     charger /INT                     GPIO16  USB-A VBUS enable
-#   GPIO7     IO4                              GPIO17  driver nSLEEP (all three)
-#   GPIO8     I2C0 SDA (charger)               GPIO18-19 M3 (U2 AIN1/AIN2)
-#   GPIO9     I2C0 SCL (charger)               GPIO20  status LED
-#   GPIO10-11 M1 (U1 AIN1/AIN2)                GPIO21  LED stick data (PIO WS2812)
-#   GPIO22-23 M6 (U3 BIN2/BIN1, A/B swapped)   GPIO24-25 M5 (U3 AIN1/AIN2)
-#   GPIO26    battery sense (ADC0)             GPIO27-28 IO6, IO5 (ADC1-2, 3.3 V only)
+#   GPIO0-1   M3 (U2 AIN1/AIN2)                GPIO14-15 M4 (U2 BIN1/BIN2)
+#   GPIO2     USB-A D+ (PIO-USB)               GPIO16  IO4
+#   GPIO3     USB-A D- (PIO-USB, D+ + 1)       GPIO17  I2C0 SCL (charger)
+#   GPIO4-5   M1 (U1 AIN1/AIN2)                GPIO18  LED stick data (PIO WS2812)
+#   GPIO6-7   M2 (U1 BIN2/BIN1, A/B swapped)   GPIO19  driver nFAULT (wired-OR)
+#   GPIO8     I2C0 SDA (charger)               GPIO20  spare
+#   GPIO9     charger /INT                     GPIO21  IO1
+#   GPIO10-11 M5 (U3 AIN1/AIN2)                GPIO22  IO3
+#   GPIO12-13 M6 (U3 BIN2/BIN1, A/B swapped)   GPIO23  driver nSLEEP (all three)
+#   GPIO24    IO2                              GPIO25  USB-A VBUS enable
+#   GPIO26-27 IO5, IO6 (ADC0-1, 3.3 V only)    GPIO28  battery sense (ADC2)
 #   GPIO29    spare (ADC3)
 #
-# PWM slices: M2 0, M3 1, M4 2, M6 3, M5 4, M1 5. IO1-IO4 are 5 V tolerant
+# PWM slices: M3 0, M1 2, M2 3, M5 5, M6 6, M4 7. IO1-IO4 are 5 V tolerant
 # (GPIO0-25); servos on the IO ports run from PIO.
 MOTOR_GPIO = {  # motor -> (IN1 GPIO, IN2 GPIO); the net is GPIO<n>_<motor><A|B>
-    "M1": (10, 11), "M2": (1, 0), "M3": (18, 19),
-    "M4": (5, 4), "M5": (24, 25), "M6": (23, 22),
+    "M1": (4, 5), "M2": (7, 6), "M3": (0, 1),
+    "M4": (14, 15), "M5": (10, 11), "M6": (13, 12),
 }
 GPIO_NETS = {
-    2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 6: "CHG_INT", 7: "IO4_GPIO",
-    8: "I2C_SDA", 9: "I2C_SCL", 12: "IO2_GPIO", 13: "IO1_GPIO", 14: "IO3_GPIO",
-    15: "DRV_FAULT", 16: "USBA_VBUS_EN", 17: "DRV_SLEEP", 20: "STATUS_LED", 21: "LED_DIN",
-    26: "BAT_SENSE", 27: "IO6_GPIO", 28: "IO5_GPIO",
+    2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 8: "I2C_SDA", 9: "CHG_INT", 16: "IO4_GPIO",
+    17: "I2C_SCL", 18: "LED_DIN", 19: "DRV_FAULT", 21: "IO1_GPIO",
+    22: "IO3_GPIO", 23: "DRV_SLEEP", 24: "IO2_GPIO", 25: "USBA_VBUS_EN",
+    26: "IO5_GPIO", 27: "IO6_GPIO", 28: "BAT_SENSE",
 }
+GP = {name: n for n, name in GPIO_NETS.items()}  # signal name -> GPIO number
 gpio = {n: Net(f"GPIO{n}_{m}{ab}") for m, pins in MOTOR_GPIO.items() for n, ab in zip(pins, "AB")}
 gpio.update({n: Net(name) for n, name in GPIO_NETS.items()})
-for n in (6, 15):  # open-drain outputs into GPIO inputs, with pull-ups
-    gpio[n].do_erc = False
+for name in ("CHG_INT", "DRV_FAULT"):  # open-drain outputs into GPIO inputs, with pull-ups
+    gpio[GP[name]].do_erc = False
 motor_in = {m: (gpio[a], gpio[b]) for m, (a, b) in MOTOR_GPIO.items()}
+sig = lambda name: gpio[GP[name]]
 
 usb_dp, usb_dm = Net("USB_P"), Net("USB_N")  # P/N names: KiCad diff-pair router
 
 usb_c_port(vbus, usb_dp, usb_dm, v3v3, gnd)
-charger_3s(vbus, vbat, regn, gpio[9], gpio[8], gpio[6], v3v3, gnd)
+charger_3s(vbus, vbat, regn, sig("I2C_SCL"), sig("I2C_SDA"), sig("CHG_INT"), v3v3, gnd)
 battery_and_switch(vbat, vsys, bat_n, gnd)
 buck_5v(vsys, vcc, gnd)
 rail_3v3(vbus, vcc, v3v3, gnd)
 mcu(v3v3, gnd, usb_dp, usb_dm, gpio)
-usb_a_host(gpio[2], gpio[3], gpio[16], vcc, gnd)
-status_led(gpio[20], gnd)
-battery_sense(vsys, gpio[26], gnd)
-res(ref("R"), "10k", "0402", v3v3, gpio[15])  # nFAULT pull-up
+usb_a_host(sig("USBA_GPIO_P"), sig("USBA_GPIO_N"), sig("USBA_VBUS_EN"), vcc, gnd)
+ref("R"); ref("LED")  # R51 and LED2 burned: the GPIO status LED was removed (the LED stick shows status)
+battery_sense(vsys, sig("BAT_SENSE"), gnd)
+res(ref("R"), "10k", "0402", v3v3, sig("DRV_FAULT"))  # nFAULT pull-up
 
 for drv_ref, motors, caps in (
     ("U1", ("M1", "M2"), ("C2", "C3", "C4")),
     ("U2", ("M3", "M4"), ("C9", "C6", "C7")),
     ("U3", ("M5", "M6"), ("C13", "C10", "C11")),
 ):
-    motor_driver(drv_ref, gpio[17], gpio[15], *motor_in[motors[0]], *motor_in[motors[1]],
+    motor_driver(drv_ref, sig("DRV_SLEEP"), sig("DRV_FAULT"), *motor_in[motors[0]], *motor_in[motors[1]],
                  vsys, gnd, motors=motors, caps=caps)
 
-io_ports([gpio[n] for n in (13, 12, 14, 7, 28, 27)], vcc, gnd)
+io_ports([sig(f"IO{k}_GPIO") for k in range(1, 7)], vcc, gnd)
 pack_protection(Net.get("PACK+"), bat_n, gnd)  # last, so earlier references stay put
-led_stick(gpio[21], vcc, gnd)  # added after rev 2 layout: explicit refs U14, J12, R80, C69, C70
+led_stick(sig("LED_DIN"), vcc, gnd)  # added after rev 2 layout: explicit refs U14, J12, R80, C69, C70
 
 
 if __name__ == "__main__":

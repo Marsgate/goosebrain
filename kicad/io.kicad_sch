@@ -930,6 +930,693 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "hexyhustle:IO_3x6_RA"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "IO_3x6_RA"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_1_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_2_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_3_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_4_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_5_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IO_3x6_RA_6_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "SIG"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(symbol
 		(lib_id "Device:R")
@@ -1460,7 +2147,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 48.26 0)
 		(unit 1)
 		(body_style 1)
@@ -1480,7 +2167,7 @@
 				)
 			)
 		)
-		(property "Value" "IO1"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1490,7 +2177,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -1512,7 +2199,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -1523,22 +2210,22 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 48.26 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 48.26 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 48.26 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 48.26 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 48.26 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 48.26 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "3"
 			(uuid "3b458f03-4297-48a9-ad84-ef9f60f9caa4")
 		)
 		(pin "2"
 			(uuid "6a7711e7-514c-4d61-9726-5047a379242f")
 		)
-		(pin "3"
+		(pin "1"
 			(uuid "1a5cea11-7b45-426c-8c9a-5305f6cc7ece")
 		)
 		(instances
@@ -1551,9 +2238,9 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 66.04 0)
-		(unit 1)
+		(unit 2)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1561,7 +2248,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "53482b3a-a4a4-47a8-91b1-750741515087")
-		(property "Reference" "J6"
+		(property "Reference" "J5"
 			(at 129.54 60.32 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1571,7 +2258,7 @@
 				)
 			)
 		)
-		(property "Value" "IO2"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 66.04 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1581,7 +2268,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 66.04 0)
 			(hide yes)
 			(show_name no)
@@ -1603,7 +2290,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 66.04 0)
 			(hide yes)
 			(show_name no)
@@ -1614,37 +2301,37 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 66.04 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 66.04 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 66.04 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 66.04 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 66.04 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 66.04 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "6"
 			(uuid "5726e0ac-c086-413f-8bab-16807dd0d41d")
 		)
-		(pin "2"
+		(pin "5"
 			(uuid "7dd50ef1-96ef-42a3-a738-84210050be27")
 		)
-		(pin "3"
+		(pin "4"
 			(uuid "557beed2-8f1d-4444-b024-c0bf8a23bbd2")
 		)
 		(instances
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "J6")
-					(unit 1)
+					(reference "J5")
+					(unit 2)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 83.82 0)
-		(unit 1)
+		(unit 3)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1652,7 +2339,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "2b2f3111-a6af-4933-8f77-8435764e40c0")
-		(property "Reference" "J7"
+		(property "Reference" "J5"
 			(at 129.54 78.10 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1662,7 +2349,7 @@
 				)
 			)
 		)
-		(property "Value" "IO3"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 83.82 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1672,7 +2359,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -1694,7 +2381,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -1705,37 +2392,37 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 83.82 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 83.82 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 83.82 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "9"
 			(uuid "bf86b294-20f5-44bd-a8c5-6b0c3956cfbe")
 		)
-		(pin "2"
+		(pin "8"
 			(uuid "cace5378-0437-4a2d-be55-540bc010c674")
 		)
-		(pin "3"
+		(pin "7"
 			(uuid "410071c2-853f-49ee-911d-2211692476da")
 		)
 		(instances
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "J7")
-					(unit 1)
+					(reference "J5")
+					(unit 3)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 101.6 0)
-		(unit 1)
+		(unit 4)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1743,7 +2430,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "216a7ce8-86ae-40f1-8190-6c38122f0464")
-		(property "Reference" "J8"
+		(property "Reference" "J5"
 			(at 129.54 95.88 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1753,7 +2440,7 @@
 				)
 			)
 		)
-		(property "Value" "IO4"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 101.60 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1763,7 +2450,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -1785,7 +2472,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -1796,37 +2483,37 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 101.6 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 101.6 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 101.6 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 101.6 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 101.6 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 101.6 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "12"
 			(uuid "508db95b-fd6c-4099-a802-fc7f397bb6ac")
 		)
-		(pin "2"
+		(pin "11"
 			(uuid "415ab955-d181-4e0f-a5d7-1ed38cb4fd28")
 		)
-		(pin "3"
+		(pin "10"
 			(uuid "0cf90faf-e9b5-45ba-82ad-9a92bd4d2faa")
 		)
 		(instances
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "J8")
-					(unit 1)
+					(reference "J5")
+					(unit 4)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 119.38 0)
-		(unit 1)
+		(unit 5)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1834,7 +2521,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "300252f3-d1b8-41e8-82a6-648ed3c06637")
-		(property "Reference" "J9"
+		(property "Reference" "J5"
 			(at 129.54 113.66 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1844,7 +2531,7 @@
 				)
 			)
 		)
-		(property "Value" "IO5"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 119.38 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1854,7 +2541,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -1876,7 +2563,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -1887,37 +2574,37 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 119.38 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 119.38 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 119.38 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 119.38 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 119.38 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 119.38 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "15"
 			(uuid "d02444c7-f0dc-4e58-a0f4-44082f0eb86f")
 		)
-		(pin "2"
+		(pin "14"
 			(uuid "904f139c-5109-40c7-b675-aeb675c37877")
 		)
-		(pin "3"
+		(pin "13"
 			(uuid "98aadbed-4eae-40cd-9c19-75449d489b19")
 		)
 		(instances
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "J9")
-					(unit 1)
+					(reference "J5")
+					(unit 5)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
+		(lib_id "hexyhustle:IO_3x6_RA")
 		(at 129.54 137.16 0)
-		(unit 1)
+		(unit 6)
 		(body_style 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1925,7 +2612,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "a1922698-c75d-45a2-93c3-34a0627a39e0")
-		(property "Reference" "J10"
+		(property "Reference" "J5"
 			(at 129.54 131.44 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1935,7 +2622,7 @@
 				)
 			)
 		)
-		(property "Value" "IO6"
+		(property "Value" "IO 3x6 RA"
 			(at 134.62 137.16 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1945,7 +2632,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+		(property "Footprint" "hexy:PinHeader_3x06_P2.54mm_Horizontal_WingTAT"
 			(at 129.54 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -1967,7 +2654,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "3 x 6 right-angle 2.54 mm header, one unit per IO port (SIG / 5V / GND)"
 			(at 129.54 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -1978,29 +2665,29 @@
 				)
 			)
 		)
-    (property "MPN" "2.54-1*3P" (at 129.54 137.16 0)
+    (property "MPN" "2011-3X06G00RB" (at 129.54 137.16 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "BOOMELE(Boom Precision Elec)" (at 129.54 137.16 0)
+    (property "Manufacturer" "WingTAT" (at 129.54 137.16 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C49257" (at 129.54 137.16 0)
+    (property "LCSC Part #" "C51953246" (at 129.54 137.16 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-		(pin "1"
+		(pin "18"
 			(uuid "1c4ed301-844a-4346-be2d-49d9ad2f737b")
 		)
-		(pin "2"
+		(pin "17"
 			(uuid "91fb6e44-4304-4791-b80b-873d46022959")
 		)
-		(pin "3"
+		(pin "16"
 			(uuid "daa8c996-53c4-41c0-bb7c-e03af10c8520")
 		)
 		(instances
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "J10")
-					(unit 1)
+					(reference "J5")
+					(unit 6)
 				)
 			)
 		)
@@ -2887,7 +3574,7 @@
 		)
 		(uuid "de8b1746-0f9e-4d3e-8188-ac843a9d8ba0")
 	)
-	(text "Header pins: 1 IO (330 R in series against shorts and hot-plugging),\n2 VCC (5 V from the buck), 3 GND.\nIO1-IO4 = GPIO22-25 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from the third PIO block, since GPIO22-27\nshare PWM slices 3-5 with the motors."
+	(text "Header pins: 1 IO (330 R in series against shorts and hot-plugging),\n2 VCC (5 V from the buck), 3 GND.\nIO1-IO4 = GPIO21/24/22/16 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from PIO (the motors use PWM slices 0 and 2-7).\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
 		(exclude_from_sim no)
 		(at 86.36 152.4 0)
 		(effects
@@ -4176,7 +4863,7 @@
 		)
 		(uuid "0ea49803-7583-403f-b8ba-4adac93b3931")
 	)
-	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO21 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V) -> R80 330 R -> DIN.\nPower from VCC (5 V buck): up to about 0.5 A at full white, of the rail's ~2.3 A. Cap brightness in firmware."
+	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO18 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V) -> R80 330 R -> DIN.\nPower from VCC (5 V buck): up to about 0.5 A at full white, of the rail's ~2.3 A. Cap brightness in firmware."
 		(exclude_from_sim no)
 		(at 165.1 86.36 0)
 		(effects

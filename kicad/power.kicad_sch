@@ -13831,7 +13831,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0805_2012Metric"
+		(property "Footprint" "hexy:LED_Everlight_27-21_SideView"
 			(at 237.49 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -13864,7 +13864,7 @@
 				)
 			)
 		)
-		(property "MPN" "KT-0805G"
+		(property "MPN" "27-21SYGC/S530-E3/TR8"
 			(at 237.49 78.74 0)
 			(effects
 				(font
@@ -13873,7 +13873,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Hubei KENTO Elec"
+		(property "Manufacturer" "Everlight Elec"
 			(at 237.49 78.74 0)
 			(effects
 				(font
@@ -13882,7 +13882,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2297"
+		(property "LCSC Part #" "C74270"
 			(at 237.49 78.74 0)
 			(effects
 				(font
@@ -17939,104 +17939,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 175.26 116.84 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "31307717-0f2a-4ddb-b886-fa739f41041d")
-		(property "Reference" "J2"
-			(at 168.91 116.84 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NTC bead 10k B3435"
-			(at 167.64 119.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Wire:SolderWire-0.1sqmm_1x02_P3.6mm_D0.4mm_OD1mm"
-			(at 175.26 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 175.26 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 175.26 116.84 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 175.26 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 175.26 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "df68f962-9119-42d7-845a-7b83e01d4882")
-		)
-		(pin "2"
-			(uuid "fd558729-2f65-41d7-a688-bd69159c21ed")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/0021e6ae-34c0-486e-ac47-c8566b803df5"
-					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
-		(at 180.34 119.38 0)
+		(at 180.34 124.46 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18044,7 +17948,7 @@
 		(dnp no)
 		(uuid "be93a7be-05d7-4e12-9b6a-5be669e6bbed")
 		(property "Reference" "#PWR139"
-			(at 180.34 116.84 0)
+			(at 180.34 121.92 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18055,7 +17959,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 180.34 123.19 0)
+			(at 180.34 128.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18065,7 +17969,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 180.34 119.38 0)
+			(at 180.34 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18076,7 +17980,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 180.34 119.38 0)
+			(at 180.34 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18087,7 +17991,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 180.34 119.38 0)
+			(at 180.34 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20518,7 +20422,7 @@
 				)
 			)
 		)
-		(property "Value" "XT60-F pigtail 14AWG"
+		(property "Value" "XT30 pigtail 16AWG"
 			(at 153.67 172.72 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20528,7 +20432,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-2sqmm_1x02_P7.8mm_D2mm_OD3.9mm"
+		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm"
 			(at 160.02 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -21419,7 +21323,7 @@
 		)
 		(uuid "c1228740-c7b0-4703-9782-25af3abb8488")
 	)
-	(text "CHARGE SAFETY WITHOUT FIRMWARE\nPROG: R31 13.7 k selects 3S (12.6 V) at 750 kHz.\nILIM_HIZ: R32/R33 (100 k / 33 k from REGN) set 1.24 V, an input\nlimit of about 0.30 A. Charge current stays near 0.22C of the\n1000 mAh pack from 9 V (less from 5 V), even though the\npower-on charge-current default is 1 A.\nTS: R34/R35 with a 10 k B3435 bead on J2 (taped to the pack) give JEITA limits.\n/CE tied low: charging always on. /QON, D+/D- unused.\nNo ship FET: SDRV only has C36. BATP senses VBAT via R30.\nFirmware may raise the limits over I2C (GPIO12/13, /INT GPIO14)."
+	(text "CHARGE SAFETY WITHOUT FIRMWARE\nPROG: R31 + R78 (2 x 6.8 k = 13.6 k) select 3S (12.6 V) at 750 kHz.\nILIM_HIZ: R32/R33 (100 k / 33 k from REGN) set 1.24 V, an input\nlimit of about 0.30 A. Charge current stays near 0.2 A (about 0.45C of the\n450 mAh pack) from 9 V (less from 5 V), even though the\npower-on charge-current default is 1 A.\nTS: R34/R35 with a fixed 10 k (R81, no pack NTC) hold TS at the 25 C point (58.9 % of REGN): always the normal zone.\n/CE tied low: charging always on. /QON, D+/D- unused.\nNo ship FET: SDRV only has C36. BATP senses VBAT via R30.\nFirmware may raise the limits over I2C0 (SDA GPIO8, SCL GPIO17, /INT GPIO9)."
 		(exclude_from_sim no)
 		(at 271.78 45.72 0)
 		(effects
@@ -21430,7 +21334,7 @@
 		)
 		(uuid "c34c8fad-b374-46ba-a55c-ae1c50305296")
 	)
-	(text "MOTORS BYPASS THE CHARGER SYS\nVSYS (motors, 5 V buck) comes from the pack through F1 and Q1,\nnot from CHG_SYS: the BQ25798 BATFET is rated 6 A continuous,\nbelow the motor peaks. CHG_SYS only carries its own caps.\nCharging works with the power switch off.\nLED1 (green) is lit while charging, no firmware needed."
+	(text "MOTORS BYPASS THE CHARGER SYS\nVSYS (motors, 5 V buck) comes from the pack through F1 and Q1,\nnot from CHG_SYS: the BQ25798 BATFET is rated 6 A continuous,\nbelow the motor peaks. CHG_SYS only carries its own caps.\nCharging works with the power switch off.\nLED1 (green, side view on the top edge, seen through a small hole in the wall)\nis lit while charging, no firmware needed."
 		(exclude_from_sim no)
 		(at 271.78 83.82 0)
 		(effects
@@ -26559,7 +26463,7 @@
 		(at 162.56 250.19)
 		(uuid "918501b8-7a81-49fa-99ee-07095ba937ea")
 	)
-	(text "PACK PROTECTION (Gens Ace 3S 1000 mAh, no protection board in the pack)"
+	(text "PACK PROTECTION (Ovonic 80C 3S 450 mAh, no protection board in the pack)"
 		(exclude_from_sim no)
 		(at 40 204 0)
 		(effects
@@ -26571,7 +26475,7 @@
 		)
 		(uuid "889e152b-5374-4649-9491-24157eff3eb6")
 	)
-	(text "BQ7791501 standalone 3S (datasheet Fig. 9-11): OV 4.25 V, UV 2.8 V; 2.5 mOhm shunt (R66||R67) -> OCD1 14 A, OCD2 24 A, SCD 48 A, OCC 8 A.\nCCFG, CTRC, CTRD, CBI to VSS (3 cells, no stack, balancing on); PRES high through R75 (no HIBERNATE); R76 100k = EEPROM OCD delays.\nGround: the pack's negative (BAT_N, J3 pin 1) -> shunt -> Q2 (DSG) -> Q3 (CHG) -> board GND (PACK-). Everything else runs on board GND.\nTH1 (0603 by the FETs) is the protector's TS; the charger's TS bead is J2. Balance lead J11: pin 1 cell 1-, pin 4 cell 3+."
+	(text "BQ7791501 standalone 3S (datasheet Fig. 9-11): OV 4.25 V, UV 2.8 V; 2.5 mOhm shunt (R66||R67) -> OCD1 14 A, OCD2 24 A, SCD 48 A, OCC 8 A.\nCCFG, CTRC, CTRD, CBI to VSS (3 cells, no stack, balancing on); PRES high through R75 (no HIBERNATE); R76 100k = EEPROM OCD delays.\nGround: the pack's negative (BAT_N, J3 pin 1) -> shunt -> Q2 (DSG) -> Q3 (CHG) -> board GND (PACK-). Everything else runs on board GND.\nTH1 (0603 by the FETs) is the protector's TS; the charger's TS has a fixed 10 k (R81) instead of a pack NTC. Balance lead J11: pin 1 cell 1-, pin 4 cell 3+."
 		(exclude_from_sim no)
 		(at 40 284 0)
 		(effects
@@ -26782,6 +26686,112 @@
 			(type default)
 		)
 		(uuid "6805e448-3258-4d2a-8dca-c1a5e030b50a")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 180.34 120.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a4e0678a-9f2c-41bc-a5a2-acbc21d97048")
+		(property "Reference" "R81"
+			(at 177.8 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "10k"
+			(at 177.8 121.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 178.562 120.65 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180.34 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 180.34 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF1002TCE"
+			(at 180.34 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 180.34 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25744"
+			(at 180.34 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4fa39ebb-6948-4026-900d-f7407fec311f")
+		)
+		(pin "2"
+			(uuid "d16fbb27-5342-4a3d-9cc2-2210137b03d2")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/0021e6ae-34c0-486e-ac47-c8566b803df5"
+					(reference "R81")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet_instances
 		(path "/"
