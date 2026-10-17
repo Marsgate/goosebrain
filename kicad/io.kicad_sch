@@ -3574,7 +3574,7 @@
 		)
 		(uuid "de8b1746-0f9e-4d3e-8188-ac843a9d8ba0")
 	)
-	(text "Header pins: 1 IO (330 R in series against shorts and hot-plugging),\n2 VCC (5 V from the buck), 3 GND.\nIO1-IO4 = GPIO21/24/22/16 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from PIO (the motors use PWM slices 0 and 2-7).\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
+	(text "Header pins: 1 IO (330 R in series against shorts and hot-plugging),\n2 VCC (5 V from the buck), 3 GND.\nIO1-IO4 = GPIO16/21/22/24 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from PIO (the motors use PWM slices 0 and 2-7).\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
 		(exclude_from_sim no)
 		(at 86.36 152.4 0)
 		(effects

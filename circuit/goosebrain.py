@@ -344,8 +344,9 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     the FET. Charging works with the switch off, since the charger connects to
     VBAT ahead of it.
     """
-    # Pack lead: a short XT30 pigtail (16 AWG, off-board part) soldered to two
-    # wire pads in the left-end strip, beside the pack's lead end. The pack
+    # Pack lead: a short male XT30 pigtail (XT30U-M on 16 AWG, off-board part;
+    # the pack carries a female XT30U-F) soldered to two wire pads in the
+    # left-end strip, beside the pack's lead end. The pack
     # (Ovonic 80C 3S 450 mAh) sits on top of the board; the mated XT30 pair
     # lies flat on top beside it. Pin 2 is "+" (PACK+, the pigtail's red
     # lead); pin 1 is the pack's negative, which goes to the protector's low
@@ -353,7 +354,7 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     j = part(
         "Connector_Generic", "Conn_01x02", ref("J"),
         "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm",
-        "", "", "", "XT30 pigtail 16AWG",
+        "", "", "", "XT30U-M pigtail 16AWG",
     )
     pack = Net("PACK+")
     j[2] += pack
@@ -872,21 +873,22 @@ for rail in (vbus, vbat, vsys, vcc, v3v3, regn, gnd, bat_n):
 
 # GPIO map (RP2354A, GPIO0-29), chosen in the PCB layout so each signal leaves
 # U10 on the side facing its destination (pin-swap pass redone again on
-# 2026-10-17, after the IO ports moved to the left end). Each motor's two inputs are one PWM slice's
+# 2026-10-17, after the IO ports moved to the left end; IO1-IO4 reordered for the
+# recessed header so U10's pin order matches S1-S6). Each motor's two inputs are one PWM slice's
 # A/B pair (n even, n + 1), and the six motors use six different slices. "A/B
 # swapped" means the motor's IN1 is on the odd GPIO (PWM channel B); the
 # firmware maps direction per motor.
 #
 #   GPIO0-1   M3 (U2 AIN1/AIN2)                GPIO14-15 M4 (U2 BIN1/BIN2)
-#   GPIO2     USB-A D+ (PIO-USB)               GPIO16  IO4
+#   GPIO2     USB-A D+ (PIO-USB)               GPIO16  IO1
 #   GPIO3     USB-A D- (PIO-USB, D+ + 1)       GPIO17  I2C0 SCL (charger)
 #   GPIO4-5   M1 (U1 AIN1/AIN2)                GPIO18  LED stick data (PIO WS2812)
 #   GPIO6-7   M2 (U1 BIN2/BIN1, A/B swapped)   GPIO19  driver nFAULT (wired-OR)
 #   GPIO8     I2C0 SDA (charger)               GPIO20  spare
-#   GPIO9     charger /INT                     GPIO21  IO1
+#   GPIO9     charger /INT                     GPIO21  IO2
 #   GPIO10-11 M5 (U3 AIN1/AIN2)                GPIO22  IO3
 #   GPIO12-13 M6 (U3 BIN2/BIN1, A/B swapped)   GPIO23  driver nSLEEP (all three)
-#   GPIO24    IO2                              GPIO25  USB-A VBUS enable
+#   GPIO24    IO4                              GPIO25  USB-A VBUS enable
 #   GPIO26-27 IO5, IO6 (ADC0-1, 3.3 V only)    GPIO28  battery sense (ADC2)
 #   GPIO29    spare (ADC3)
 #
@@ -897,9 +899,9 @@ MOTOR_GPIO = {  # motor -> (IN1 GPIO, IN2 GPIO); the net is GPIO<n>_<motor><A|B>
     "M4": (14, 15), "M5": (10, 11), "M6": (13, 12),
 }
 GPIO_NETS = {
-    2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 8: "I2C_SDA", 9: "CHG_INT", 16: "IO4_GPIO",
-    17: "I2C_SCL", 18: "LED_DIN", 19: "DRV_FAULT", 21: "IO1_GPIO",
-    22: "IO3_GPIO", 23: "DRV_SLEEP", 24: "IO2_GPIO", 25: "USBA_VBUS_EN",
+    2: "USBA_GPIO_P", 3: "USBA_GPIO_N", 8: "I2C_SDA", 9: "CHG_INT", 16: "IO1_GPIO",
+    17: "I2C_SCL", 18: "LED_DIN", 19: "DRV_FAULT", 21: "IO2_GPIO",
+    22: "IO3_GPIO", 23: "DRV_SLEEP", 24: "IO4_GPIO", 25: "USBA_VBUS_EN",
     26: "IO5_GPIO", 27: "IO6_GPIO", 28: "BAT_SENSE",
 }
 GP = {name: n for n, name in GPIO_NETS.items()}  # signal name -> GPIO number

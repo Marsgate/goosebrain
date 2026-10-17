@@ -20422,7 +20422,7 @@
 				)
 			)
 		)
-		(property "Value" "XT30 pigtail 16AWG"
+		(property "Value" "XT30U-M pigtail 16AWG"
 			(at 153.67 172.72 0)
 			(show_name no)
 			(do_not_autoplace no)

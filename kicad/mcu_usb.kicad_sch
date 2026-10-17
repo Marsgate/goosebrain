@@ -10823,7 +10823,7 @@
 		)
 		(uuid "ea5c9115-4c32-4869-8563-8fd429f68186")
 	)
-	(global_label "IO2_GPIO"
+	(global_label "IO4_GPIO"
 		(at 215.9 177.8 0)
 		(effects
 			(font
@@ -10863,7 +10863,7 @@
 		)
 		(uuid "8c3f7755-702c-455d-9832-e84b21646a00")
 	)
-	(global_label "IO4_GPIO"
+	(global_label "IO1_GPIO"
 		(at 233.68 157.48 0)
 		(effects
 			(font
@@ -13838,7 +13838,7 @@
 		)
 		(uuid "73332b8b-aa04-4055-bbb2-e8732c7da794")
 	)
-	(text "GPIO MAP (pin swap redone after the IO ports moved to the left end: each signal leaves U10 toward its destination)\nGPIO0/1    M3 (U2 AIN1/AIN2)\nGPIO2/3    USB-A D+/D- (Pico-PIO-USB, D- = D+ + 1)\nGPIO4/5    M1 (U1 AIN1/AIN2)\nGPIO6/7    M2 (U1 BIN2/BIN1, A/B swapped)\nGPIO8      I2C0 SDA (charger)\nGPIO9      charger /INT\nGPIO10/11  M5 (U3 AIN1/AIN2)\nGPIO12/13  M6 (U3 BIN2/BIN1, A/B swapped)\nGPIO14/15  M4 (U2 BIN1/BIN2)\nGPIO16     IO4 (5 V tolerant)\nGPIO17     I2C0 SCL (charger)\nGPIO18     LED stick data (PIO WS2812, U14 level shift)\nGPIO19     drivers nFAULT (wired-OR, R54 pull-up)\nGPIO20     spare (the status LED was removed; the LED stick shows status)\nGPIO21/22  IO1/IO3 (5 V tolerant)\nGPIO23     drivers nSLEEP (all three)\nGPIO24     IO2 (5 V tolerant)\nGPIO25     USB-A VBUS enable\nGPIO26/27  IO5/IO6 (ADC0/1, 3.3 V logic only)\nGPIO28     battery sense (ADC2)\nGPIO29     spare (ADC3)\nMotor pairs are PWM slices M3 0, M1 2, M2 3, M5 5, M6 6, M4 7."
+	(text "GPIO MAP (pin swap redone after the IO ports moved to the left end: each signal leaves U10 toward its destination)\nGPIO0/1    M3 (U2 AIN1/AIN2)\nGPIO2/3    USB-A D+/D- (Pico-PIO-USB, D- = D+ + 1)\nGPIO4/5    M1 (U1 AIN1/AIN2)\nGPIO6/7    M2 (U1 BIN2/BIN1, A/B swapped)\nGPIO8      I2C0 SDA (charger)\nGPIO9      charger /INT\nGPIO10/11  M5 (U3 AIN1/AIN2)\nGPIO12/13  M6 (U3 BIN2/BIN1, A/B swapped)\nGPIO14/15  M4 (U2 BIN1/BIN2)\nGPIO16     IO1 (5 V tolerant)\nGPIO17     I2C0 SCL (charger)\nGPIO18     LED stick data (PIO WS2812, U14 level shift)\nGPIO19     drivers nFAULT (wired-OR, R54 pull-up)\nGPIO20     spare (the status LED was removed; the LED stick shows status)\nGPIO21/22  IO2/IO3 (5 V tolerant)\nGPIO23     drivers nSLEEP (all three)\nGPIO24     IO4 (5 V tolerant)\nGPIO25     USB-A VBUS enable\nGPIO26/27  IO5/IO6 (ADC0/1, 3.3 V logic only)\nGPIO28     battery sense (ADC2)\nGPIO29     spare (ADC3)\nMotor pairs are PWM slices M3 0, M1 2, M2 3, M5 5, M6 6, M4 7."
 		(exclude_from_sim no)
 		(at 243.84 30.48 0)
 		(effects
@@ -14426,7 +14426,7 @@
 			)
 		)
 	)
-	(global_label "IO1_GPIO"
+	(global_label "IO2_GPIO"
 		(at 215.9 170.18 0)
 		(effects
 			(font
