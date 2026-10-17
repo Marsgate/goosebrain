@@ -20422,7 +20422,7 @@
 				)
 			)
 		)
-		(property "Value" "XT30U-M pigtail 16AWG"
+		(property "Value" "XT30UPB-M"
 			(at 153.67 172.72 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -20432,7 +20432,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm"
+		(property "Footprint" "hexy:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical_EasyEDA3D"
 			(at 160.02 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -20465,7 +20465,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "XT30UPB-M"
 			(at 160.02 170.18 0)
 			(effects
 				(font
@@ -20474,13 +20474,24 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" ""
+		(property "Manufacturer" "Changzhou Amass Elec"
 			(at 160.02 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C428721"
+			(at 160.02 172.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"

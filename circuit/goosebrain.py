@@ -344,17 +344,16 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     the FET. Charging works with the switch off, since the charger connects to
     VBAT ahead of it.
     """
-    # Pack lead: a short male XT30 pigtail (XT30U-M on 16 AWG, off-board part;
-    # the pack carries a female XT30U-F) soldered to two wire pads in the
-    # left-end strip, beside the pack's lead end. The pack
-    # (Ovonic 80C 3S 450 mAh) sits on top of the board; the mated XT30 pair
-    # lies flat on top beside it. Pin 2 is "+" (PACK+, the pigtail's red
-    # lead); pin 1 is the pack's negative, which goes to the protector's low
-    # side (BAT_N), not board GND.
+    # Pack connector: a vertical male XT30 (Amass XT30UPB-M) on top beside the
+    # pack's lead end; the pack's female XT30U-F plugs straight in. Pin 1 is
+    # "-" at the keyed (chamfered) end: the pack's negative, which goes to the
+    # protector's low side (BAT_N), not board GND. Pin 2 is "+" (PACK+).
+    # Mated with the lead bent toward the pack it stands about 22-24 mm, close
+    # to the face (23.4 mm): see PARTS.md.
     j = part(
         "Connector_Generic", "Conn_01x02", ref("J"),
-        "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm",
-        "", "", "", "XT30U-M pigtail 16AWG",
+        "hexy:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical_EasyEDA3D",
+        "XT30UPB-M", "Changzhou Amass Elec", "C428721", "XT30UPB-M",
     )
     pack = Net("PACK+")
     j[2] += pack
