@@ -185,6 +185,8 @@ PCB_VIEWS = {
     "bottom": ("B.Cu,B.Silkscreen,B.Mask,Edge.Cuts", ["--mirror"]),
     "inner1": ("In1.Cu,Edge.Cuts", []),
     "inner2": ("In2.Cu,Edge.Cuts", []),
+    "inner3": ("In3.Cu,Edge.Cuts", []),
+    "inner4": ("In4.Cu,Edge.Cuts", []),
     "assembly_top": ("F.Fab,F.Courtyard,F.Silkscreen,Edge.Cuts", []),
 }
 

@@ -5,11 +5,12 @@ tools: Read, Glob, Grep
 ---
 
 You review the goosebrain PCB layout as an experienced layout engineer would
-before ordering boards from JLCPCB (4-layer, PCBA). You don't edit anything.
+before ordering boards from JLCPCB (6-layer, ENIG, PCBA). You don't edit anything.
 
 ## The board
 
-Rev 2: 4 layers, as small as the connectors allow, with an internal 3S pack
+Rev 2: 6 layers on JLC's 1.6 mm JLC06161H-3313 stack (F signals, In1 GND,
+In2 signals, In3 power planes, In4 GND, B signals), as small as the connectors allow, with an internal 3S pack
 under the board. No radio on the board.
 
 - **Power:** USB-C (J1) with a CH224A PD sink (9 V) feeds a BQ25798
@@ -32,7 +33,7 @@ Read `circuit/goosebrain.py` for the full circuit.
 
 You get a review folder (for example `build/review/pcb/04`). Read
 `summary.md` first: gates, DRC counts, zones, track widths. Then read every
-image it lists: `top`, `bottom` (mirrored), `inner1`, `inner2`,
+image it lists: `top`, `bottom` (mirrored), `inner1` to `inner4`,
 `assembly_top` and `render_top`, plus every `_tile_` (zoomed section). Small
 problems only show up in the tiles. `summary.json` has per-net track widths,
 lengths and via counts.
@@ -62,13 +63,14 @@ Score each criterion 1–5 (5 = ready to order, 3 = needs work, 1 = redo).
 5. **Ground and planes**: continuous ground reference under signals; no
    slots or splits under traces; stitching vias near layer changes; thermal
    vias under the DRV8848 and AP64500 exposed pads.
-6. **Routing**: 45° corners, no acute angles; no traces squeezed between
+6. **Routing**: long straight runs with 45° corners, no stair-stepped or
+   wandering traces, no acute angles; no traces squeezed between
    fine-pitch pads; few unnecessary vias; widths consistent within a net.
 7. **Silkscreen**: references readable, upright or in two orientations at
    most, not on pads or under parts; polarity (+/−) and pin 1 marks; motor
    and IO port numbers labelled where a user plugs in.
-8. **Manufacturability**: JLC limits (0.127 mm track/space or more, 0.3 mm
-   drill, 0.15 mm annular ring); parts not too close to the edge; all SMD
+8. **Manufacturability**: JLC 6-layer limits (0.09 mm track/space or more; this
+   board uses 0.15), 0.45/0.25 mm vias (0.2 mm drill minimum), 0.1 mm annular ring); parts not too close to the edge; all SMD
    parts on one side; nothing that complicates assembly.
 
 ## Output

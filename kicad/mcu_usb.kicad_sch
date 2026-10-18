@@ -13827,7 +13827,7 @@
 		)
 		(uuid "ca47d5a4-09bb-47c9-a72e-fcfc070461ba")
 	)
-	(text "CORE REGULATOR: L3 must be the polarity-marked Abracon\nAOTA-B201610S3R3 (dot = pin 1 = +1V1), as in the RP2350\nhardware design guide. Not stocked at JLC: Digi-Key,\nhand-placed (DNP, out of the JLC BOM/CPL). C52 sits at DVDD pin 23;\nC53-C55 at the other DVDD pins. R42/C51 filter VREG_AVDD."
+	(text "CORE REGULATOR: L3 must be the polarity-marked Abracon\nAOTA-B201610S3R3 (dot = pin 1 = +1V1), as in the RP2350\nhardware design guide. Not stocked at JLC: Digi-Key,\nhand-placed (DNP, out of the JLC BOM/CPL). C52 is the regulator\noutput cap (VREG_VOUT). C54 is DVDD pin 23's 100 nF; C53/C55 sit\nat DVDD pins 6/39. R42/C51 filter VREG_AVDD."
 		(exclude_from_sim no)
 		(at 210.82 76.2 0)
 		(effects
