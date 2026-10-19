@@ -4,7 +4,7 @@ This repo holds two boards that ship as one system:
 
 - **The brain** (`kicad/thegoose.kicad_pro`): an RP2354A robot controller for six DC motors and six IO ports, with a USB-A host for a 2.4 GHz controller dongle. Its USB-C port is for programming only.
 - **The smart pack** (`kicad-pack/goosepack.kicad_pro`): a small board that sits on the Ovonic 3S 450 mAh cells. It carries the charger, the protector, the 15 A fuse and its own USB-C charging port, and it plugs into the brain over an XT30 lead. Packs can be swapped, and spares can be sold.
-- **The 2S smart pack** (`kicad-pack-2s/goosepack2s.kicad_pro`, started 2026-10-19): the same pack for 2-cell batteries. The charger is set for 2S by resistors, the protector is an ABLIC S-8252AAH, and two HYCON HY2213 balancers replace the BQ7791501's balancing. See "The 2S pack board" below and PARTS.md. The brain runs from either pack.
+- **The 2S smart pack** (`kicad-pack-2s/goosepack2s.kicad_pro`, started 2026-10-19): the same pack for 2-cell batteries. The charger is set for 2S by resistors, the protector is a HYCON HY2120-LB, and two HYCON HY2213 balancers replace the BQ7791501's balancing. See "The 2S pack board" below and PARTS.md. The brain runs from either pack.
 
 The schematics are done. The brain's placement is done except for rough spots for the new parts. All routing is left for you: tracks, vias, planes and pours.
 
@@ -30,7 +30,7 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 - **The pack cuts off in hardware:** the 3S pack at 2.8 V per cell (8.4 V), the 2S pack at 3.0 V per cell (6.0 V). Warn the user well above that, at about 3.3 V per cell.
 - **Work out the cell count at power-on** from the GPIO28 reading: above about 8.6 V it's a 3S pack, otherwise 2S. The only pack this reads wrong is a nearly flat 3S one, and the cutoff is in hardware, so the cost is only a wrong warning level.
 - **Motor speed:** the motors run about 40 % slower on a 2S pack. To make the robot behave the same on either pack, cap the 3S PWM to match.
-- **Motors:** six DRV8251As, one per motor, on the same GPIO pairs (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.18 kΩ on IPROPI). They run from 4.5 V, so a 2S pack works.
+- **Motors:** six DRV8251As, one per motor, on the same GPIO pairs (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.2 kΩ on IPROPI, so 1.34 A). They run from 4.5 V, so a 2S pack works.
 - **USB-A:** the port is always powered through a 0.5 A PTC. There is no USBA_VBUS_EN.
 
 ## Bring-up tests
@@ -39,7 +39,7 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 2. **Trip recovery:** short the pack output through a 10 A-rated load to trip OCD, then check that unplugging the pack clears it. Trip it again with the brain connected and check that the brain's power switch clears it.
 3. **NTC:** warm TH2 past 45 °C and check the charge voltage drops 0.4 V (JEITA warm), and past 60 °C that charging stops.
 4. **Motors:** stall one motor and check the current chops at about 1.36 A.
-5. **2S pack:** check that the charge stops at 8.4 V, measure the charge current (about 0.42 A at 3.5 V/cell), and check that each HY2213 bleeds about 89 mA once its cell passes 4.20 V. Trip the S-8252 with a load: over-current near 18–20 A, depending on how hot Q2/Q3 are. Then check that unplugging clears it.
+5. **2S pack:** check that the charge stops at 8.4 V, measure the charge current (about 0.42 A at 3.5 V/cell), and check that each HY2213 bleeds about 89 mA once its cell passes 4.20 V. Trip the HY2120 with a load: over-current near 18–20 A, depending on how hot Q2/Q3 are. Then check that unplugging clears it.
 6. **Brain on 2S:** at 6.0 V in, check that Q1 is fully on (about −5 V gate drive), that VCC holds 4.96 V with the servos loaded, and that the soft start still takes about 70 µs with C71 at 10 nF.
 
 ## Opening it
@@ -74,7 +74,7 @@ It was 6 layers (JLC06161H-3313). In3 and In4 and their GND pours are gone.
 ### What's on the board now
 
 - **Placement:** every part from before keeps its place. The new parts have rough spots near the parts they replace:
-  - U1/U15 (M1/M2), U2/U16 (M3/M4) in a column beside M1–M4, with their 10 µF/100 nF caps and 1.18 kΩ IPROPI resistors on their left. R107, R108 and C81 (the shared VREF divider) sit in a row just below the board edge at y 152: move them in, anywhere near +3V3. U3/U17 (M5/M6) at the left end, U17 where J11 was.
+  - U1/U15 (M1/M2), U2/U16 (M3/M4) in a column beside M1–M4, with their 10 µF/100 nF caps and 1.2 kΩ IPROPI resistors on their left. R107, R108 and C81 (the shared VREF divider) sit in a row just below the board edge at y 152: move them in, anywhere near +3V3. U3/U17 (M5/M6) at the left end, U17 where J11 was.
   - F2 (USB-A PTC) where U12 was; R99/R100 (CC Rd) by J1. L1 stays the XAL5030 in its pocket (see PARTS.md for why the cheaper Sunlord part doesn't fit).
   - C73/C74 (the buck's VIN caps, which were never on the board before) sit just below C15, about 3 mm from U4's VIN pins.
   - Everything new under the pack area is 1.45 mm or lower (0805 caps, 0402 resistors, the 0.85 mm PTC). The drivers sit outside it.
@@ -124,7 +124,7 @@ Layout notes for later:
 
 ## The 2S pack board
 
-`kicad-pack-2s/goosepack2s.kicad_pcb` started as a copy of the 3S pack board. U13 (now an S-8252, SOT-23-6) and J11 (now a B3B-XH-A) were swapped in place. The BQ7791501's parts are gone, and the ten new parts (U21, U22, Q4, Q5, R110–R113, C83, C84) are in a row at y 170. Like the 3S pack it has no outline yet, so DRC reports the "invalid outline" error and 143 unconnected items. The schematic passes ERC, and the board passes the schematic-parity check.
+`kicad-pack-2s/goosepack2s.kicad_pcb` started as a copy of the 3S pack board. U13 (now an HY2120-LB, SOT-23-6) and J11 (now a B3B-XH-A) were swapped in place. The BQ7791501's parts are gone, and the ten new parts (U21, U22, Q4, Q5, R110–R113, C83, C84) are in a row at y 170. Like the 3S pack it has no outline yet, so DRC reports the "invalid outline" error and 143 unconnected items. The schematic passes ERC, and the board passes the schematic-parity check.
 
 - **The cells aren't chosen yet.** The charge rate (about 0.42 A) assumes 450 mAh. For a different capacity, re-pick R33.
 - **The protector measures current across Q2 + Q3,** so its trip point moves with their temperature. There's no shunt and no TH1.
@@ -137,7 +137,7 @@ Layout notes for later:
 
 ## Ordering boards
 
-`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`). It prints a CHECK line for every SMD part without an LCSC number; the 2026-10-19 parts still have several. The motor drivers' `Texas_HTSOP-8` rotation in `JLC_ROTATION` (-90, like the other SOIC-family packages) is a guess; check U1-U3 and U15-U17 in JLC's placement preview.
+`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`). It prints a CHECK line for every SMD part without an LCSC number; only the six DRV8251As are left, because JLC doesn't stock them (see PARTS.md). The motor drivers' `Texas_HTSOP-8` rotation in `JLC_ROTATION` (-90, like the other SOIC-family packages) is a guess; check U1-U3 and U15-U17 in JLC's placement preview.
 
 ```bash
 python3 tools/fab.py

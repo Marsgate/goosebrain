@@ -15124,7 +15124,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "FH (Guangdong Fenghua)"
+		(property "Manufacturer" "Samsung Electro-Mechanics"
 			(at 220.98 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -15135,7 +15135,7 @@
 				)
 			)
 		)
-		(property "LCSC Part #" ""
+		(property "LCSC Part #" "C15195"
 			(at 220.98 173.99 0)
 			(hide yes)
 			(show_name no)

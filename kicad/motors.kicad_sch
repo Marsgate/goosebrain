@@ -6452,7 +6452,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 234.95 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6495,13 +6495,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 232.41 97.79 0)
+    (property "MPN" "0402WGF1201TCE" (at 232.41 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 232.41 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 232.41 97.79 0)
+    (property "LCSC Part #" "C25862" (at 232.41 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -6870,7 +6870,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 234.95 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6913,13 +6913,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 232.41 148.59 0)
+    (property "MPN" "0402WGF1201TCE" (at 232.41 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 232.41 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 232.41 148.59 0)
+    (property "LCSC Part #" "C25862" (at 232.41 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -7764,7 +7764,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 163.83 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7807,13 +7807,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 161.29 97.79 0)
+    (property "MPN" "0402WGF1201TCE" (at 161.29 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 161.29 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 161.29 97.79 0)
+    (property "LCSC Part #" "C25862" (at 161.29 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -8182,7 +8182,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 163.83 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8225,13 +8225,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 161.29 148.59 0)
+    (property "MPN" "0402WGF1201TCE" (at 161.29 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 161.29 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 161.29 148.59 0)
+    (property "LCSC Part #" "C25862" (at 161.29 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -9076,7 +9076,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 92.71 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9119,13 +9119,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 90.17 97.79 0)
+    (property "MPN" "0402WGF1201TCE" (at 90.17 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 90.17 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 90.17 97.79 0)
+    (property "LCSC Part #" "C25862" (at 90.17 97.79 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -9494,7 +9494,7 @@
 				)
 			)
 		)
-		(property "Value" "1.18k"
+		(property "Value" "1.2k"
 			(at 92.71 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9537,13 +9537,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1181TCE" (at 90.17 148.59 0)
+    (property "MPN" "0402WGF1201TCE" (at 90.17 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
     (property "Manufacturer" "UNI-ROYAL" (at 90.17 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 90.17 148.59 0)
+    (property "LCSC Part #" "C25862" (at 90.17 148.59 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -10592,7 +10592,7 @@
 		)
 		(uuid "6c25f8af-1842-4a4c-8389-953258243b64")
 	)
-	(text "MOTOR DRIVERS: 6x DRV8871 (one H-bridge per motor)"
+	(text "MOTOR DRIVERS: 6x DRV8251A (one H-bridge per motor)"
 		(exclude_from_sim no)
 		(at 27.94 43.18 0)
 		(effects
@@ -10604,7 +10604,7 @@
 		)
 		(uuid "0c079ce5-a0a2-480b-9af7-ef3c114eb339")
 	)
-	(text "VM = VSYS: the pack after the power switch (up to 12.6 V; DRV8871 6.5-45 V, 50 V abs max; D4 on the power sheet clamps VSYS).\nEach driver: 10 uF + 100 nF on VM (C3/C4 U1, C6/C7 U2, C10/C11 U3, C75/C76 U15, C77/C78 U16, C79/C80 U17); pad and PGND to GND.\nCurrent limit: I = 64 kV / R_ILIM (DRV8871 SLVSCY9B; 59-69 kV) -> 47k = 1.36 A (1.24-1.48 A). The 25GA-370 motors stall at ~1.5-1.6 A.\nAt the limit the driver brakes on both low-side FETs for 25 us. Six stalled motors draw ~8 A, under the pack's 14 A worst-case OCD1.\nInputs: IN1 = GPIOn_MxA, IN2 = GPIOn_MxB; both low for 1 ms = sleep (no nSLEEP/nFAULT pins).\nM2, M4, M6 are wired reversed (OUT1 to pin 2) as before, so the firmware's direction handling is unchanged."
+	(text "VM = VSYS: the pack after the power switch (5.6-8.4 V on a 2S pack, 8.4-12.6 V on 3S; DRV8251A 4.5-48 V, 50 V abs max; D4 on the power sheet clamps VSYS).\nEach driver: 10 uF + 100 nF on VM (C3/C4 U1, C6/C7 U2, C10/C11 U3, C75/C76 U15, C77/C78 U16, C79/C80 U17); GND pin and pad to GND.\nCurrent limit: I_TRIP x 1575 uA/A = V_VREF / R_IPROPI (DRV8251A SLVSFU6). VREF 2.53 V from R107 10k / R108 33k (C81) feeds all six;\nR101-R106 1.2k -> 1.34 A (+-5 %). The 25GA-370 motors stall at ~1.5-1.6 A at 12.6 V, ~1 A at 8.4 V.\nAt the limit the driver brakes on both low-side FETs for 25 us. Six stalled motors draw ~8 A.\nInputs: IN1 = GPIOn_MxA, IN2 = GPIOn_MxB; both low for ~1 ms = sleep (no nSLEEP/nFAULT pins).\nM2, M4, M6 are wired reversed (OUT1 to pin 2) as before, so the firmware's direction handling is unchanged."
 		(exclude_from_sim no)
 		(at 27.94 180.34 0)
 		(effects
@@ -10676,7 +10676,7 @@
 		(uuid "752e3a13-b537-48fe-9c65-82bbf7a85c83")
 	)
 	(label "MOT_VREF"
-		(at 111.76 168.91 0)
+		(at 259.08 62.23 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10686,7 +10686,7 @@
 		(uuid "2d863ef6-f8f7-48fd-804a-1c3f0514cb90")
 	)
 	(label "MOT_VREF"
-		(at 111.76 172.72 0)
+		(at 259.08 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10696,7 +10696,7 @@
 		(uuid "8b8ca297-5ce4-4e41-85b3-f3a7e5a6e3a4")
 	)
 	(label "MOT_VREF"
-		(at 121.92 172.72 0)
+		(at 269.24 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10707,7 +10707,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 111.76 165.1 0)
+		(at 259.08 58.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10715,7 +10715,7 @@
 		(dnp no)
 		(uuid "392d6182-6350-423f-802a-de93e6b0c924")
 		(property "Reference" "R107"
-			(at 109.22 165.1 0)
+			(at 256.54 58.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10725,7 +10725,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 114.3 165.1 0)
+			(at 261.62 58.42 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10735,7 +10735,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 109.982 165.1 90)
+			(at 257.302 58.42 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10746,7 +10746,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 165.1 0)
+			(at 259.08 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10757,7 +10757,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 111.76 165.1 0)
+			(at 259.08 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10767,13 +10767,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF1002TCE" (at 111.76 165.1 0)
+    (property "MPN" "0402WGF1002TCE" (at 259.08 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "UNI-ROYAL" (at 111.76 165.1 0)
+    (property "Manufacturer" "UNI-ROYAL" (at 259.08 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "C25744" (at 111.76 165.1 0)
+    (property "LCSC Part #" "C25744" (at 259.08 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -10793,7 +10793,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 111.76 176.53 0)
+		(at 259.08 69.85 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10801,7 +10801,7 @@
 		(dnp no)
 		(uuid "b6085cd9-c234-4788-a9ab-fd283ba8da3e")
 		(property "Reference" "R108"
-			(at 109.22 176.53 0)
+			(at 256.54 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10811,7 +10811,7 @@
 			)
 		)
 		(property "Value" "33k"
-			(at 114.3 176.53 0)
+			(at 261.62 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10821,7 +10821,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 109.982 176.53 90)
+			(at 257.302 69.85 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10832,7 +10832,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 176.53 0)
+			(at 259.08 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10843,7 +10843,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 111.76 176.53 0)
+			(at 259.08 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10853,13 +10853,13 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3302TCE" (at 111.76 176.53 0)
+    (property "MPN" "0402WGF3302TCE" (at 259.08 69.85 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "Manufacturer" "UNI-ROYAL" (at 111.76 176.53 0)
+    (property "Manufacturer" "UNI-ROYAL" (at 259.08 69.85 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 111.76 176.53 0)
+    (property "LCSC Part #" "C25779" (at 259.08 69.85 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -10879,7 +10879,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 121.92 176.53 0)
+		(at 269.24 69.85 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10887,7 +10887,7 @@
 		(dnp no)
 		(uuid "11707971-1e6a-48fe-8c6e-9916189a7cef")
 		(property "Reference" "C81"
-			(at 119.38 175.26 0)
+			(at 266.7 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10896,7 +10896,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 119.38 177.8 0)
+			(at 266.7 71.12 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10905,7 +10905,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 120.9548 172.72 0)
+			(at 268.2748 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10914,7 +10914,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 121.92 176.53 0)
+			(at 269.24 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10923,7 +10923,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 121.92 176.53 0)
+			(at 269.24 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10932,7 +10932,7 @@
 			)
 		)
 		(property "LCSC Part #" "C1525"
-			(at 124.714 180.594 0)
+			(at 272.034 73.914 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10941,7 +10941,7 @@
 			)
 		)
 		(property "MPN" "CL05B104KO5NNNC"
-			(at 121.92 176.53 0)
+			(at 269.24 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10950,7 +10950,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 121.92 176.53 0)
+			(at 269.24 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10979,7 +10979,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 111.76 161.29 0)
+		(at 259.08 54.61 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10989,7 +10989,7 @@
 		(dnp no)
 		(uuid "b73f82e6-b99d-469c-8ee3-59b02e560087")
 		(property "Reference" "#PWR0901"
-			(at 111.76 158.75 0)
+			(at 259.08 52.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11001,7 +11001,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 111.76 157.73 0)
+			(at 259.08 51.05 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11011,7 +11011,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 161.29 0)
+			(at 259.08 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11022,7 +11022,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 161.29 0)
+			(at 259.08 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11033,7 +11033,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 111.76 161.29 0)
+			(at 259.08 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11057,7 +11057,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 111.76 180.34 0)
+		(at 259.08 73.66 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11065,7 +11065,7 @@
 		(dnp no)
 		(uuid "43e1fc64-3d04-4ec2-b376-b441985e4eb4")
 		(property "Reference" "#PWR0902"
-			(at 111.76 173.99 0)
+			(at 259.08 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11076,7 +11076,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 111.76 184.15 0)
+			(at 259.08 77.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11086,7 +11086,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 180.34 0)
+			(at 259.08 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11097,7 +11097,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 180.34 0)
+			(at 259.08 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11108,7 +11108,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 111.76 180.34 0)
+			(at 259.08 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11136,7 +11136,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 121.92 180.34 0)
+		(at 269.24 73.66 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11144,7 +11144,7 @@
 		(dnp no)
 		(uuid "24ec7a97-287d-4d70-9384-aaec9ff01c86")
 		(property "Reference" "#PWR0903"
-			(at 121.92 173.99 0)
+			(at 269.24 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11155,7 +11155,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 121.92 184.15 0)
+			(at 269.24 77.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11165,7 +11165,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 121.92 180.34 0)
+			(at 269.24 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11176,7 +11176,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 121.92 180.34 0)
+			(at 269.24 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11187,7 +11187,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 121.92 180.34 0)
+			(at 269.24 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
