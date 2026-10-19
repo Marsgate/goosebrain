@@ -13472,7 +13472,7 @@
 				)
 			)
 		)
-		(property "Value" "XT30UPB-M"
+		(property "Value" "XT30PW-M"
 			(at 154.94 167.01 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13482,7 +13482,7 @@
 				)
 			)
 		)
-		(property "Footprint" "hexy:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical_EasyEDA3D"
+		(property "Footprint" "Connector_AMASS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal"
 			(at 154.94 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -13504,7 +13504,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Amass XT30 male, horizontal (right-angle) THT, 15 A. Pin 1 PACK- (GND), pin 2 PACK+; mouth out through the bottom wall"
 			(at 154.94 170.18 0)
 			(hide yes)
 			(show_name no)
@@ -13515,7 +13515,7 @@
 				)
 			)
 		)
-		(property "MPN" "XT30UPB-M"
+		(property "MPN" "XT30PW-M30.G.Y"
 			(at 154.94 170.18 0)
 			(effects
 				(font
@@ -13533,7 +13533,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C428721"
+		(property "LCSC Part #" "C431092"
 			(at 154.94 172.72 0)
 			(hide yes)
 			(show_name no)

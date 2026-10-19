@@ -43,7 +43,7 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | USB-C Rd (R99, R100) | 0402WGF5101TCE | UNI-ROYAL | 0402 | C25905 | basic | JLC | 5.1 kΩ on CC1/CC2 (the CH224A used to provide Rd) |
 | USB-A receptacle (J4) | AF 90 WJDG | SHOU HAN | THT RA | C456018 | ext | THT | `hexy:USB_A_ShouHan_AF90_WJDG` |
 | USB-A PTC (F2) | JK-nSMD050-16 | Jinrui | 1206, 0.85 mm | C2680506 | 21,796 / ext, $0.025 | Hand | 0.5 A hold, 1 A trip, 16 V; VCC to USB-A VBUS, with C59 10 µF. Replaces the SY6280 |
-| Pack connector (J3) | XT30UPB-M | Changzhou Amass Elec | THT vertical | C428721 | 68,839 / ext | THT | Male. Takes the pack's XT30U-F lead. **Pin 1 GND (PACK−), pin 2 PACK+** |
+| Pack connector (J3) | XT30PW-M30.G.Y | Changzhou Amass Elec | THT horizontal (right-angle) | C431092 | 62,641 / ext, $0.39 | THT | Male, on the bottom edge with its mouth out through the wall. Takes the pack's XT30U-F lead. **Pin 1 GND (PACK−), pin 2 PACK+.** KiCad's `Connector_AMASS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal`, whose hole pattern matches the Amass drawing: Ø1.9 mm pins 5.00 mm apart, Ø1.0 mm pegs 11.00 mm apart and 10.00 mm behind them, mating face 3.05 mm past the pegs. The footprint's silk marks pad 1 "−"; the drawing is too small to read the molded mark, so check it on the first part. Replaced the vertical XT30UPB-M (C428721), which stood about 17 mm tall with its plug in and set the box height |
 | Power switch FET (Q1) | AO4407A | UMW | SOP-8 | C2841482 | ext | JLC | −30 V, 9.5 mΩ. Gate divider R40 47k, R41 4.7k (VGS −5.1 V at a 5.6 V empty 2S pack, −11.5 V at a full 3S pack); soft start C71 10 nF (CL05B103KB5NNNC, C15195 basic; doubled with R41 halved, to keep about 70 µs), C72 100 nF |
 | Power slide switch (SW1) | SK12D07VG4 | SHOU HAN | THT RA SPDT | C393937 | ext | THT | Gate only. Lever reaches 4.0 mm past the board edge: the wall needs a slot |
 | VSYS TVS (D4) | SMF14A | Littelfuse | SOD-123FL | C207256 | 3,726 / ext | Hand | Clamps VSYS (about 19 V at 3 A, under the DRV8251A's 50 V abs max). Cathode (pad 1) on VSYS |
@@ -149,7 +149,7 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 ## Layout and mechanical notes for later
 
 - The pack board sits on the cell pack, with TH2 on its underside against the cells. The housing shows LED1 and the USB-C opening.
-- The brain needs a pack bay and room for the XT30 plug and the pack lead. The pack is now cells plus a board, so the bay grows by the board.
+- The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 83 × 51.5 × 16 mm.
 - The brain is on 4 layers now (JLC04161H-7628). The 6-layer stack was chosen because 4 layers couldn't route around the RP2354A when the board also carried the charger and protector; with those gone, 4 layers is worth trying first.
 - `tools/fab.py` builds all three boards (`--board brain|pack|pack2s`). Its `Texas_HTSOP-8` rotation for the motor drivers still needs confirming in JLC's placement preview.
 - **2S pack board:** the 10 new footprints (U21, U22, Q4, Q5, R110–R113, C83, C84) are staged in a row at y 170 below the cluster. U13 is now SOT-23-6 and J11 a B3B-XH-A, both swapped in place. Like the 3S pack, it has no outline yet.

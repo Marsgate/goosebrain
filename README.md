@@ -20,7 +20,7 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
   - TH2, a 10 kΩ NTC pressed against the cells, stops charging below 0 °C and above 60 °C.
 - **Protection:** BQ7791501 with low-side FETs and a 2 mΩ shunt. OV 4.25 V, UV 2.8 V per cell, OCD1 17.5 A (14 A worst case), OCD2 30 A, SCD 60 A, OCC 10 A, plus the 15 A fast fuse.
 - **Clearing a trip:** an over-current trip clears when the load goes away. **Unplug the pack, or switch the brain off and on.** R94 (100 kΩ, PACK− to cell −) lets the protector see the load removed even with the charger's 17 µA standby draw on the pack.
-- **The brain** takes the pack's XT30U-F lead on J3 (pin 1 GND = PACK−, pin 2 PACK+). The power switch drives Q1. With the switch off, nothing on the brain loads the pack.
+- **The brain** takes the pack's XT30U-F lead on J3, a horizontal XT30PW-M whose mouth faces out through the bottom wall (pin 1 GND = PACK−, pin 2 PACK+). The power switch drives Q1. With the switch off, nothing on the brain loads the pack.
 - **Programming:** the brain's USB-C powers the MCU through U8 alone, so you can flash it with no pack or with the switch off.
 
 ## Firmware changes
@@ -54,7 +54,7 @@ The pack's library tables point at `${KIPRJMOD}/../kicad/`.
 
 ## The brain board
 
-- **Board:** 88.5 × 47 mm, **4 layers**, 1.6 mm thick.
+- **Board:** 78 × 46.5 mm with 2 mm corner radii, **4 layers**, 1.6 mm thick. It was 88.5 × 47 mm until 2026-10-19: 532.5 mm² (12.8 %) smaller, and 10.5 mm shorter.
 - **Parts:** the part numbers and the reasons behind them are in [PARTS.md](PARTS.md). It mentions `circuit/goosebrain.py`, which is goosebrain's circuit-as-code source and isn't in this repo.
 
 ### Stackup: JLC04161H-7628
@@ -73,16 +73,19 @@ It was 6 layers (JLC06161H-3313). In3 and In4 and their GND pours are gone.
 
 ### What's on the board now
 
-- **Placement:** every part from before keeps its place. The new parts have rough spots near the parts they replace:
-  - U1/U15 (M1/M2), U2/U16 (M3/M4) in a column beside M1–M4, with their 10 µF/100 nF caps and 1.2 kΩ IPROPI resistors on their left. R107, R108 and C81 (the shared VREF divider) sit in a row just below the board edge at y 152: move them in, anywhere near +3V3. U3/U17 (M5/M6) at the left end, U17 where J11 was.
-  - F2 (USB-A PTC) where U12 was; R99/R100 (CC Rd) by J1. L1 stays the XAL5030 in its pocket (see PARTS.md for why the cheaper Sunlord part doesn't fit).
-  - C73/C74 (the buck's VIN caps, which were never on the board before) sit just below C15, about 3 mm from U4's VIN pins.
-  - Everything new under the pack area is 1.45 mm or lower (0805 caps, 0402 resistors, the 0.85 mm PTC). The drivers sit outside it.
+- **Placement (compacted 2026-10-19):** the blocks were pulled together once the charger and protector were gone. Each block moved as a unit, so the parts inside it keep their relative spots.
+  - **Top edge, left to right:** J12 (LED stick) in the top-left corner above M5, then SW1, SW2 (BOOT), J1 (USB-C) and J4 (USB-A).
+  - **Left end:** M5 with U3 beside it, M6 with U17 beside it, then the J5 IO header. R55–R60 sit in a column just right of J5, and U14/C69 (LED buffer) under J12.
+  - **Right end:** M1–M4 with U1/U15/U2/U16 and their caps and IPROPI resistors, the same column as before, moved up and in.
+  - **Bottom edge:** J3, the horizontal XT30, at the left, with its mouth out through the bottom wall. Q1 and its gate parts sit just above it.
+  - **Middle:** a strip of U11, R48, R49, F2 and C59 under J4, then the RP2354A block, then the buck block (U4, L1, C73/C74, C5/C8/C12 and the rest, unchanged as a unit). U6, R99/R100 and U8 stay under J1.
+  - **Bottom-right corner:** U9, D2, D3 and C39 (the 3.3 V rail), then R107, R108 and C81 (the shared VREF divider).
+  - **Mounting holes:** M3 holes in the two bottom corners, at (104, 142.9) and (173.9, 142.9). FID1 and FID2 sit along the bottom, FID3 under SW2. The goose logo is on the back, under the buck.
 - **Removed:** the charger, PD sink, protector, fuse, VBUS TVS, balance connector, the SY6280 and its resistors, the DRV8848s and their sense and VREF networks, R54, R80, C58, C60, C70, and the "BAL", "CHG" and charge-LED silk and fab notes.
 - **Airwires:** DRC reports 294 unconnected items.
-- **GND pours:** F.Cu, In1, In2 and B.Cu each have a board-wide GND pour. They're unfilled, so press **B** to fill them.
-- **"USB fan-out" rule areas:** five sit around the USB pads (J1, U6, R44/R45, J4, U11, R48/R49, all still there). They don't block anything. They only exempt the short fan-out segments where a pair has to split from the diff-pair gap check. Move or delete them to suit your own fan-out.
-- **DRC:** no errors. Warnings: 24 silkscreen-to-edge (from the placement), 37 silk over copper and 13 silk overlaps (mostly the new parts' reference text; tidy them while routing). The schematic-parity check flags the board-only `REF**` mounting holes. That's expected.
+- **GND pours:** F.Cu, In1, In2 and B.Cu each have a board-wide GND pour, redrawn to the new outline. They're unfilled, so press **B** to fill them.
+- **"USB fan-out" rule areas:** five sit around the USB pads (J1, U6, R44/R45, J4, U11, R48/R49), moved with their parts. They don't block anything. They only exempt the short fan-out segments where a pair has to split from the diff-pair gap check. Move or delete them to suit your own fan-out.
+- **DRC:** no clearance or courtyard errors, and no parts outside the outline. Warnings: 28 silkscreen-to-edge, 33 silk over copper and 25 silk overlaps (mostly reference text that got crowded in the compaction; tidy them while routing). The schematic-parity check flags the board-only `REF**` mounting holes. That's expected.
 - **The schematics pass ERC with no violations,** both brain and pack.
 
 **Routing is left for you.** Nothing is routed on either board.
@@ -132,8 +135,11 @@ Layout notes for later:
 
 ## Mechanical notes for later
 
-- The brain needs a pack bay and room for the XT30 plug and the pack lead. The smart pack is the cells plus its board, so the bay must grow by the pack board's thickness and parts.
-- The F.Fab notes on the brain still describe the bare Ovonic pack envelope (46.5 × 25 × 21 mm).
+- **The pack rides outside the brain's box** and plugs into J3 through the bottom wall, so the box has no pack bay.
+- **Box size = outline + 5 mm:** about 83 × 51.5 mm (it was 93.5 × 52).
+- **Box height:** about 16 mm, against about 30 mm before. The vertical XT30 with its plug in was about 17 mm tall and set the old height. Without it, the tallest parts are the right-angle connectors and J12. Check their heights against the case before you commit to 16 mm.
+- **Wall openings:** J3's mouth on the bottom wall, about 14 mm wide, centred 2.5 mm right of J3's pin 1 at x 125. The rest are unchanged: top wall for J1, J4, SW1 (lever slot), SW2 (pinhole) and J12; left wall for J5, M5 and M6; right wall for M1–M4.
+- The F.Fab notes about the old pack envelope and the vertical XT30 are gone. J3's note now describes the horizontal part.
 
 ## Ordering boards
 
