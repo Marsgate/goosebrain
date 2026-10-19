@@ -1,0 +1,83 @@
+#VRML V2.0 utf8
+# Simple project-local visual model for the AP64500SP-13 (SO-8EP).
+Transform {
+  scale 393.7008 393.7008 393.7008
+  children [
+Transform {
+  translation 0 0 0.0005
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { diffuseColor 0.08 0.08 0.08 specularColor 0.25 0.25 0.25 }
+      }
+      geometry Box { size 0.0039 0.0049 0.0010 }
+    }
+  ]
+}
+Transform {
+  translation 0 0 0.00003
+  children [
+    Shape {
+      appearance Appearance { material Material { diffuseColor 0.55 0.55 0.55 } }
+      geometry Box { size 0.0026 0.0035 0.00006 }
+    }
+  ]
+}
+Transform {
+  translation -0.00250 -0.001905 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation -0.00250 -0.000635 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation -0.00250 0.000635 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation -0.00250 0.001905 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation 0.00250 0.001905 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation 0.00250 0.000635 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation 0.00250 -0.000635 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+Transform {
+  translation 0.00250 -0.001905 0.00012
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.65 0.65 0.65 } }
+    geometry Box { size 0.00150 0.00080 0.00024 }
+  } ]
+}
+  ]
+}

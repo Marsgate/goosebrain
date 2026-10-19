@@ -1,0 +1,212 @@
+(footprint "ESC"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 1.344303 0.495928 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "9e7da76d-9174-4eef-9d1e-307729b72181")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "ESC"
+		(at 12.689055 0.473161 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "fc3d5c6a-7d46-4211-909c-6c0455a45835")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5079202d-6e0a-4866-8d3f-31d969e5fe68")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "dd48b72a-dbae-45b1-843e-811fc2f8a314")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -10.795 2.2225)
+		(end -10.795 0.3175)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "30ea1a8e-5f08-4f58-9033-48342baf632e")
+	)
+	(fp_line
+		(start -10.795 2.2225)
+		(end 10.795 2.2225)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "471424a9-e016-4e16-a384-21e234786895")
+	)
+	(fp_line
+		(start 10.795 0.3175)
+		(end 10.795 2.2225)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "462abaf0-4e48-466d-8d1a-6967c1eebb44")
+	)
+	(fp_line
+		(start 10.795 2.2225)
+		(end -10.795 2.2225)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "e40cb3fd-a8c3-4a03-a0ea-d31448bbe71f")
+	)
+	(fp_rect
+		(start -10.795 -1.5875)
+		(end 10.795 2.2225)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "5b16f9e7-c8eb-4cc5-a827-3dea941e7561")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 20.309055 0.473161 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "f1db7745-1206-4b92-8a5a-d1db6c1041df")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 8.89 0.3175)
+		(size 2.905 2.905)
+		(drill 1.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "d9865347-eb70-41ec-affe-aac1ab51e36b")
+	)
+	(pad "2" thru_hole circle
+		(at 5.08 0.3175)
+		(size 2.905 2.905)
+		(drill 1.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "d9bb149e-d482-42de-8d4a-5a702275a81b")
+	)
+	(pad "3" thru_hole circle
+		(at -6.985 0.3175)
+		(size 1.905 1.905)
+		(drill 0.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "e3deefee-a543-4a02-b9b9-983cf59aec62")
+	)
+	(pad "4" thru_hole circle
+		(at -9.525 0.3175)
+		(size 1.905 1.905)
+		(drill 0.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ae6f8025-e6de-4c92-a716-cabf2aa2aeea")
+	)
+	(pad "5" thru_hole circle
+		(at -4.445 0.3175)
+		(size 1.905 1.905)
+		(drill 0.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "d20d2ac4-57bc-4644-abb9-5393e4e401a1")
+	)
+	(pad "6" thru_hole rect
+		(at -1.905 0.3175)
+		(size 1.905 1.905)
+		(drill 0.9525)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "2756b4ba-de71-4462-827b-f3a3bced588a")
+	)
+	(zone
+		(net 0)
+		(net_name "")
+		(layer "F.SilkS")
+		(uuid "3365a0e0-793b-4c3a-999c-050b2328d286")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(filled_areas_thickness no)
+		(keepout
+			(tracks not_allowed)
+			(vias not_allowed)
+			(pads not_allowed)
+			(copperpour allowed)
+			(footprints not_allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+		)
+		(polygon
+			(pts
+				(xy -10.795 -1.5875) (xy 10.795 -1.5875) (xy 10.795 2.2225) (xy -10.795 2.2225)
+			)
+		)
+	)
+	(embedded_fonts no)
+	(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x04_P2.54mm_Vertical.step"
+		(offset
+			(xyz -9.5 -0.298 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 -90)
+		)
+	)
+)

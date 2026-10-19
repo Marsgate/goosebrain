@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "hexyhustle")(type "KiCad")(uri "${KIPRJMOD}/hexyhustle.kicad_sym")(options "")(descr ""))
+)
