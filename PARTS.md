@@ -149,7 +149,7 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 ## Layout and mechanical notes for later
 
 - The pack board sits on the cell pack, with TH2 on its underside against the cells. The housing shows LED1 and the USB-C opening.
-- The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 83 × 51.5 × 16 mm.
+- The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 78.4 × 48 × 16 mm. The board has no mounting holes: the case holds it, with a rib behind J3 to take the plug force.
 - The brain is on 4 layers now (JLC04161H-7628). The 6-layer stack was chosen because 4 layers couldn't route around the RP2354A when the board also carried the charger and protector; with those gone, 4 layers is worth trying first.
 - `tools/fab.py` builds all three boards (`--board brain|pack|pack2s`). Its `Texas_HTSOP-8` rotation for the motor drivers still needs confirming in JLC's placement preview.
 - **2S pack board:** the 10 new footprints (U21, U22, Q4, Q5, R110–R113, C83, C84) are staged in a row at y 170 below the cluster. U13 is now SOT-23-6 and J11 a B3B-XH-A, both swapped in place. Like the 3S pack, it has no outline yet.
