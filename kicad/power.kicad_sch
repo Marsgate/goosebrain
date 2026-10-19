@@ -8700,6 +8700,104 @@
 	)
 	(wire
 		(pts
+			(xy 29.21 156.21) (xy 41.91 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "025c2931-c884-4e1b-882e-7fc56edba6bf")
+	)
+	(wire
+		(pts
+			(xy 16.51 156.21) (xy 29.21 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "103fa56e-931e-48b9-94ae-37b89379d497")
+	)
+	(wire
+		(pts
+			(xy 29.21 173.99) (xy 41.91 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b0dc837-ed98-4505-9a80-5cdc7abbce3d")
+	)
+	(wire
+		(pts
+			(xy 16.51 173.99) (xy 29.21 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ae85be4-1848-42a8-848e-70dd53a2cf09")
+	)
+	(wire
+		(pts
+			(xy 29.21 156.21) (xy 29.21 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eac3fe53-3a5a-45fa-825e-e4d9b7cf5543")
+	)
+	(wire
+		(pts
+			(xy 29.21 166.37) (xy 29.21 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2844af4-b625-496c-8d22-b3838d996bfa")
+	)
+	(wire
+		(pts
+			(xy 16.51 156.21) (xy 16.51 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c2e70bd-c661-4108-9531-2aa6bf286e21")
+	)
+	(wire
+		(pts
+			(xy 16.51 166.37) (xy 16.51 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4be54199-4e67-471f-9ef6-5271fb047c2f")
+	)
+	(junction
+		(at 29.21 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "16e9c6d0-58d0-459b-9db7-734a5afd6497")
+	)
+	(junction
+		(at 29.21 173.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9874957d-e12a-42c9-8eae-e487bbe9dcd7")
+	)
+	(junction
+		(at 41.91 173.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1dec8a54-6255-4298-b485-915378d5ac00")
+	)
+	(wire
+		(pts
 			(xy 78.74 156.21) (xy 95.25 156.21)
 		)
 		(stroke
@@ -9150,6 +9248,204 @@
 				)
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/0021e6ae-34c0-486e-ac47-c8566b803df5"
 					(reference "C15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 29.21 162.56 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "27b3cd33-86b9-4e82-aa69-96be01756e28")
+		(property "Reference" "C73"
+			(at 33.58 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10uF"
+			(at 34.11 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 28.2448 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 29.21 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C15850"
+			(at 69.8501 335.2801 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL21A106KAYNNNE"
+			(at 29.21 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 29.21 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ec540b7d-058f-40f2-9d2f-189f7a0c40af")
+		)
+		(pin "1"
+			(uuid "43503459-310b-45ac-8da2-8f00985e4cb1")
+		)
+		(instances
+			(project ""
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "C73")
+					(unit 1)
+				)
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/0021e6ae-34c0-486e-ac47-c8566b803df5"
+					(reference "C73")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 16.51 162.56 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "24a412a3-4cff-44a7-bd79-18870de8cfa0")
+		(property "Reference" "C74"
+			(at 20.88 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100nF"
+			(at 21.41 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 15.5448 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 16.51 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 16.51 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C1525"
+			(at 57.1501 335.2801 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL05B104KO5NNNC"
+			(at 16.51 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 16.51 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "05898221-6a46-4d65-aff8-85e622f7b0b3")
+		)
+		(pin "1"
+			(uuid "b3c5b5f2-19af-44c9-b8c9-007876baf8ba")
+		)
+		(instances
+			(project ""
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(reference "C74")
+					(unit 1)
+				)
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/0021e6ae-34c0-486e-ac47-c8566b803df5"
+					(reference "C74")
 					(unit 1)
 				)
 			)
