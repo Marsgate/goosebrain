@@ -98,6 +98,7 @@ PASSIVES = {
     ("100nF", "0805"): ("CC0805KRX7R9BB104", "YAGEO", "C49678"),  # 50 V
     ("10uF", "0805"): ("CL21A106KAYNNNE", SAMSUNG, "C15850"),  # 25 V
     ("22uF", "1206"): ("CL31A226KPHNNNE", SAMSUNG, "C5672"),  # 10 V, Preferred
+    ("0.15", "1206"): ("RL1206FR-7W0R15L", "YAGEO", "C859925"),  # 1 %, 500 mW, 600 ppm (motor sense)
 }
 # BOOT switch (side push, top edge); set from the parts search
 # Alps SKRTLAE010: Ø2 mm actuator 1.7 mm above the board, 0.2 mm travel, 1.6 N, 100k cycles; the case pinhole
@@ -343,6 +344,19 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     The slide switch only drives the P-FET gate; motor current flows through
     the FET. Charging works with the switch off, since the charger connects to
     VBAT ahead of it.
+
+    Soft start: VSYS carries ~40 uF of ceramics (about 15-20 uF at 12 V), and
+    the DRV8848s are only rated 20 V absolute. Switched hard (the old 100k / 1k
+    gate network, a few us), that step rings through the pack leads. C71
+    (gate-drain) stretches the Miller plateau instead: the 27k / 10k gate
+    divider pulls ~0.9 mA at the plateau, so VSYS ramps at ~0.18 V/us (about
+    70 us to 12.6 V, about 3-4 A into the effective capacitance). A gate-source
+    cap alone would only delay the edge. C72 (gate-source, 21x C71) keeps a fast
+    VBAT edge, e.g. the protector's FETs closing, from coupling the gate low
+    and turning Q1 on with the switch off (Vgs about -0.55 V). Turn-off: 3-4 ms
+    of delay, then ~0.7 ms through the linear region via 27k (about 20 mJ in
+    Q1 at 5 A). On: Vgs -9.2 V at 12.6 V, -6.1 V at the 8.4 V UV point;
+    the divider draws 0.34 mA from the pack while on.
     """
     # Pack connector: a vertical male XT30 (Amass XT30UPB-M) on top beside the
     # pack's lead end; the pack's female XT30U-F plugs straight in. Pin 1 is
@@ -376,7 +390,10 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     fet["S"] += vbat
     fet["D"] += vsys
     fet["G"] += gate
-    res(ref("R"), "100k", "0402", vbat, gate)  # off by default
+    res(ref("R"), "27k", "0402", vbat, gate)  # off by default; sets the turn-off ramp
+    # Added parts: fresh refs, so later refs don't shift.
+    cap("C71", "4.7nF", "0402", gate, vsys)  # Miller cap: VSYS soft start
+    cap("C72", "100nF", "0805", vbat, gate)  # 50 V; holds Q1 off on VBAT edges
 
     switch = part(
         # THT, rated 50 V (the SMD MSK12C02 was rated 12 V and sees 12.6 V).
@@ -388,7 +405,24 @@ def battery_and_switch(vbat, vsys, bat_n, gnd):
     switch["B"] += gate  # common
     switch["A"] += sw_on  # on: gate pulled to GND
     switch["C"] += NC  # off
-    res(ref("R"), "1k", "0402", sw_on, gnd)
+    res(ref("R"), "10k", "0402", sw_on, gnd)  # sets the turn-on ramp with C71
+
+    # VSYS clamp. When the protector trips on OCD/SCD it opens both FETs, and
+    # the CHG FET then blocks current back into the pack, so motor current
+    # returned in fast decay can only charge the VSYS ceramics. 14 V standoff
+    # (above 12.6 V; behind Q1, so no leakage with the switch off); VBR
+    # 15.6-17.2 V. SMF (SOD-123FL, 200 W, 23.2 V at 8.6 A, about 0.7 Ohm
+    # dynamic): about 19 V at 3 A, under the DRV8848's 20 V absolute maximum,
+    # but about 23 V at the full 8 A six chopping bridges could return. The
+    # sense resistors keep the motors under the protector's OCD1 trip, so that
+    # case is now unlikely. An SMB part (SMBJ14A, 19 V at 8 A) has no room
+    # outside the pack on the board, and the pack allows only 1.6 mm under it.
+    tvs = part(
+        "Device", "D_TVS", "D4", "Diode_SMD:D_SMF",
+        "SMF14A", "Littelfuse", "C207256", "SMF14A",  # unidirectional, 200 W, ~1.1 mm tall
+    )
+    tvs["A1"] += vsys
+    tvs["A2"] += gnd
 
 
 @subcircuit
@@ -408,6 +442,23 @@ def buck_5v(vin, vcc, gnd):
     margin than rev 1's 15.8k / 2.7 nF, with a slower settling tail
     (R28 * C16 = 70 us) after load steps. The Eq. 18 value for 15k would be
     2-3 nF; 4.7 nF is the basic part. No Cc2 (Eq. 19) is fitted.
+
+    Inductor: Coilcraft XAL5030-222, 2.2 uH, Isat 9.2 A (30 % drop, typ;
+    the metal-composite core saturates softly), Irms 7.2 A (20 C rise),
+    DCR 13.2 mOhm typ, 5.28 x 5.48 x 3.1 mm. Its Isat meets the AP64500's
+    high-side peak current limit (6.8 / 8 / 9.2 A min / typ / max), so an
+    overload or a short on the IO header's 5 V pins ends in the buck's
+    cycle-by-cycle limit and hiccup (after 512 cycles at the limit) without
+    the inductor collapsing. The rev 1 CR4030-3R6M saturated at about 3.1 A
+    (2.3 A heating), below that limit, so any load between about 3 A and 7 A
+    ran it saturated, which heats the inductor and the buck's internal FETs.
+    A 7 x 6.6 mm part doesn't fit L1's pocket on the board (6.8 x 6.5 mm
+    between J4, D1, U4 and the pack's edge; nothing taller than 1.6 mm may
+    sit under the pack). Ripple at 500 kHz: about 2.7 A p-p at 12.6 V in
+    (55 % of 5 A, a little over the datasheet's 30-50 % guidance) and 2.0 A
+    at 9 V; peak at a 5 A load is about 6.4 A, under the 6.8 A minimum limit.
+    The crossover formula above doesn't depend on L, and 2.2 uH is inside the
+    datasheet's recommended 1-10 uH.
     """
     u = part(
         "hexyhustle", "AP64500-13", "U4", "Package_SO:Diodes_SO-8EP",
@@ -423,10 +474,14 @@ def buck_5v(vin, vcc, gnd):
     u["COMP"] += comp
 
     cap("C15", "10uF", "0805", gnd, vin)  # input bulk
+    # Second 10 uF and a 100 nF at VIN (2026-10-19): at 5 A out the input ripple is about 2.5 A RMS, too much for one
+    # 0805 (a 25 V 0805 keeps only about 3-4 uF at 12.6 V); the 100 nF takes the switching edges right at pins 2/3.
+    cap("C73", "10uF", "0805", gnd, vin)
+    cap("C74", "100nF", "0402", gnd, vin)
     cap("C14", "100nF", "0805", sw, u["BST"])  # bootstrap
     inductor = part(
-        "Device", "L", "L1", "Inductor_SMD_Wurth:L_Wurth_WE-LQSH-4020",
-        "CR4030-3R6M", "Ceaiya", "C7588667", "3.6uH",
+        "Device", "L", "L1", "hexy:L_Coilcraft_XAL5030",
+        "XAL5030-222MEC", "Coilcraft", "C920280", "2.2uH",  # Isat 9.2 A = the 9.2 A max current limit
     )
     inductor[1] += sw
     inductor[2] += vcc
@@ -599,7 +654,7 @@ def usb_a_host(dp_gpio, dm_gpio, vbus_en, vcc, gnd):
 
     22 Ohm series resistors as in Adafruit's Feather RP2040 USB Host; the PIO
     host enables the RP2354's internal pull-downs. VBUS comes from the 5 V rail
-    through a 0.5 A current-limited switch, off until firmware enables it.
+    through a current-limited switch (about 0.68 A), off until firmware enables it.
     """
     usba_dp, usba_dm, usba_vbus = Net("USBA_P"), Net("USBA_N"), Net("USBA_VBUS")
     res(ref("R"), "22", "0402", dp_gpio, usba_dp)
@@ -643,12 +698,30 @@ def usb_a_host(dp_gpio, dm_gpio, vbus_en, vcc, gnd):
 
 
 @subcircuit
-def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, caps):
-    """DRV8848 dual H-bridge driving two motors (rev 1 circuit).
+def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, caps, sense):
+    """DRV8848 dual H-bridge driving two motors, with current chopping.
 
-    motors is (motor A ref, motor B ref); caps is (VINT, VM bulk, VM bypass).
+    motors is (motor A ref, motor B ref); caps is (VINT, VM bulk, VM bypass);
+    sense is (AISEN R, BISEN R, VREF top R, VREF bottom R).
+
+    Current limit (datasheet Eq. 1, I = VREF / (6.6 x RSENSE)): VREF from VINT
+    through 15k / 10k is 1.32 V (1.25-1.39 V over VINT's 3.13-3.47 V; at least
+    the 1 V the datasheet wants for accuracy; 132 uA of VINT's 1 mA). With
+    0.15 Ohm per bridge the chopping limit is 1.33 A (about 1.26-1.40 A before
+    resistor and comparator tolerance), in line with the 1 A RMS per bridge
+    rating and under the 2 A OCP trip. Six bridges at the limit draw about
+    8 A; with the 5 V buck's input that stays under the BQ7791501's OCD1 trip
+    (35 mV / 2.5 mOhm = 14 A, 11.2 A at its -20 % tolerance). Rev 1 tied
+    xISEN to GND, which let six stalled motors sum to the OCD1 trip, and the
+    protector only recovers from that with USB plugged in (see
+    pack_protection). Sense dissipation is 0.15 W at 1 A RMS and at most
+    about 0.27 W chopping at the limit (333 mW parts). Raise the limit by
+    changing the VREF divider (up to VINT: 3.3 V gives 3.3 A, past OCP).
+    Layout: each sense resistor sits between its xISEN pin and the GND pour
+    at the driver, on short, wide copper.
     """
     vint_cap, bulk_cap, bypass_cap = caps
+    asen_r, bsen_r, vref_top_r, vref_bot_r = sense
     drv = part(
         "Driver_Motor", "DRV8848", ref_,
         "Package_SO:TSSOP-16-1EP_4.4x5mm_P0.65mm",
@@ -663,12 +736,18 @@ def motor_driver(ref_, sleep, fault, ain1, ain2, bin1, bin2, vm, gnd, motors, ca
 
     drv["VM"] += vm
     drv["GND"] += gnd  # pin 13 and the exposed pad (17)
-    # No current limiting, so the sense pins go straight to GND (data sheet).
-    drv["AISEN", "BISEN"] += gnd
+    aisen, bisen = Net("AISEN"), Net("BISEN")
+    drv["AISEN"] += aisen
+    drv["BISEN"] += bisen
+    res(asen_r, "0.15", "1206", aisen, gnd)  # chopping limit 1.33 A per bridge
+    res(bsen_r, "0.15", "1206", bisen, gnd)
 
-    vint = Net("VINT")
-    drv["VINT", "VREF"] += vint  # VREF tied to VINT
+    vint, vref = Net("VINT"), Net("DRV_VREF")
+    drv["VINT"] += vint
+    drv["VREF"] += vref
     cap(vint_cap, "2.2uF", "0603", vint, gnd)
+    res(vref_top_r, "15k", "0402", vint, vref)  # VREF = 1.32 V
+    res(vref_bot_r, "10k", "0402", vref, gnd)
     cap(bulk_cap, "10uF", "0805", gnd, vm)
     cap(bypass_cap, "100nF", "0805", vm, gnd)
 
@@ -726,8 +805,9 @@ def led_stick(din, vcc, gnd):
     inputs, VIH 2.0 V, 5 V supply) lifts the RP2354's 3.3 V PIO output to
     5 V. 330 Ohm in series at the cable damps ringing and limits current into
     the first LED's input. The stick runs from VCC (the 5 V buck): 8 LEDs at
-    full white draw up to about 0.5 A of the rail's roughly 2.3 A, so
-    firmware should cap brightness.
+    full white draw up to about 0.5 A, shared with the servos on the IO
+    ports and the dongle (the AP64500 is rated 5 A), so firmware should cap
+    brightness.
     Refs are explicit: the sequential counters would reuse R78/R79.
     """
     buf = part(
@@ -781,6 +861,17 @@ def pack_protection(pack, bat_n, gnd):
     GND is PACK-, after the back-to-back FETs (cell- -> shunt -> DSG FET ->
     CHG FET -> GND). Balancing runs through the balance lead (RIN 100 Ohm,
     about 20 mA).
+
+    Recovery: this variant clears OCD1, OCD2 and SCD on load removal only,
+    with no timer (datasheet Table 6-2), and opens both FETs meanwhile. LD
+    reads PACK- through the 470k and its internal 200k, i.e. 0.3 x PACK-,
+    and must fall below 1.3 V: whatever is left on the pack has to draw less
+    than about 6.5 uA. The BQ25798 stays on VBAT ahead of the power switch
+    and draws 17 uA typ in battery-only mode with its ADC off (about 540 uA
+    with it running), so turning the switch off probably won't clear a trip.
+    Plugging in USB will: the charger pulls PACK- below the pack's negative.
+    Not bench-tested yet. That is why the DRV8848s chop at 1.33 A per bridge
+    (motor_driver): six stalled motors can no longer sum to the OCD1 trip.
     """
     bal = part(
         "Connector_Generic", "Conn_01x04", ref("J"),
@@ -924,13 +1015,13 @@ ref("R"); ref("LED")  # R51 and LED2 burned: the GPIO status LED was removed (th
 battery_sense(vsys, sig("BAT_SENSE"), gnd)
 res(ref("R"), "10k", "0402", v3v3, sig("DRV_FAULT"))  # nFAULT pull-up
 
-for drv_ref, motors, caps in (
-    ("U1", ("M1", "M2"), ("C2", "C3", "C4")),
-    ("U2", ("M3", "M4"), ("C9", "C6", "C7")),
-    ("U3", ("M5", "M6"), ("C13", "C10", "C11")),
+for drv_ref, motors, caps, sense in (  # sense refs are added parts: fresh refs R82-R93
+    ("U1", ("M1", "M2"), ("C2", "C3", "C4"), ("R82", "R83", "R84", "R85")),
+    ("U2", ("M3", "M4"), ("C9", "C6", "C7"), ("R86", "R87", "R88", "R89")),
+    ("U3", ("M5", "M6"), ("C13", "C10", "C11"), ("R90", "R91", "R92", "R93")),
 ):
     motor_driver(drv_ref, sig("DRV_SLEEP"), sig("DRV_FAULT"), *motor_in[motors[0]], *motor_in[motors[1]],
-                 vsys, gnd, motors=motors, caps=caps)
+                 vsys, gnd, motors=motors, caps=caps, sense=sense)
 
 io_ports([sig(f"IO{k}_GPIO") for k in range(1, 7)], vcc, gnd)
 pack_protection(Net.get("PACK+"), bat_n, gnd)  # last, so earlier references stay put

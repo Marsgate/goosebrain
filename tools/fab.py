@@ -12,7 +12,8 @@ Assembly classes:
 - "Hand-place": SMD parts marked DNP (L3, bought from Digi-Key and placed by hand).
 
 Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm), so JLC lines them up without an offset.
-Rotations are KiCad's. Check each part's orientation in JLC's placement preview before paying.
+Rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which were read off JLC's placement preview.
+Check each part's orientation in that preview before paying.
 
 Usage: .venv/bin/python tools/fab.py
 """
@@ -34,6 +35,24 @@ OUT = ROOT / "build/fab"
 
 LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
           "F.Mask,B.Mask,Edge.Cuts")
+
+# JLC's part models sit at a different zero rotation from KiCad's footprints for some packages. Each entry is
+# (footprint-name regex, degrees added to KiCad's rotation), checked against pin 1 in JLC's placement preview on
+# 2026-10-18. SOT-23-5/6, SOIC, SO-8EP, TSSOP, SSOP and TDSON models came out 90 degrees counter-clockwise of their
+# pads; the 3-pin SOT-23 came out 180 degrees off. QFNs, SOT-89, two-terminal parts, the crystal, USB-C and the BOOT
+# switch matched. First match wins.
+JLC_ROTATION = [
+    (r"^SOT-23-3$", 180),
+    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|TSSOP-|SSOP-|TDSON-)", -90),
+]
+
+
+def jlc_rotation(footprint, rot):
+    name = footprint.split(":")[-1]
+    for pattern, offset in JLC_ROTATION:
+        if re.match(pattern, name):
+            return (rot + offset) % 360
+    return rot % 360
 
 # Runs inside KiCad's Python: dump every footprint with its fields, attributes and geometry.
 FOOTPRINTS = r"""
@@ -144,7 +163,7 @@ def main():
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
                 if (dx * dx + dy * dy) ** 0.5 > 0.25:
                     problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre")
-            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Top", f"{fp['rot'] % 360:.0f}"])
+            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Top", f"{jlc_rotation(fp['footprint'], fp['rot']):.0f}"])
 
     counts = {how: sum(len(m) for k, m in groups.items() if k[4] == how) for how in order}
     lines = sum(1 for k in groups if k[4] == "JLC SMT")

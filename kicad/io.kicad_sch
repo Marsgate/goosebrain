@@ -2168,7 +2168,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 48.26 0)
+			(at 139.7 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2259,7 +2259,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 66.04 0)
+			(at 139.7 66.04 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2350,7 +2350,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 83.82 0)
+			(at 139.7 83.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2441,7 +2441,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 101.60 0)
+			(at 139.7 101.60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2532,7 +2532,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 119.38 0)
+			(at 139.7 119.38 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2623,7 +2623,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 134.62 137.16 0)
+			(at 139.7 137.16 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3574,7 +3574,7 @@
 		)
 		(uuid "de8b1746-0f9e-4d3e-8188-ac843a9d8ba0")
 	)
-	(text "Header pins: 1 IO (330 R in series against shorts and hot-plugging),\n2 VCC (5 V from the buck), 3 GND.\nIO1-IO4 = GPIO16/21/22/24 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from PIO (the motors use PWM slices 0 and 2-7).\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
+	(text "Per port: pin 3k SIG (330 R in series against shorts and hot-plugging),\n3k-1 VCC (5 V from the buck), 3k-2 GND; e.g. J5A: 3 SIG, 2 VCC, 1 GND.\nIO1-IO4 = GPIO16/21/22/24 (5 V tolerant).\nIO5/IO6 = GPIO26/27 (ADC0/1): 3.3 V logic only.\nServos: drive them from PIO (the motors use PWM slices 0 and 2-7).\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
 		(exclude_from_sim no)
 		(at 86.36 152.4 0)
 		(effects
@@ -4331,7 +4331,7 @@
 			)
 		)
 		(property "Value" "LED stick"
-			(at 238.76 66.04 0)
+			(at 233.68 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4863,7 +4863,7 @@
 		)
 		(uuid "0ea49803-7583-403f-b8ba-4adac93b3931")
 	)
-	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO18 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V) -> R80 330 R -> DIN.\nPower from VCC (5 V buck): up to about 0.5 A at full white, of the rail's ~2.3 A. Cap brightness in firmware."
+	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO18 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V) -> R80 330 R -> DIN.\nPower from VCC (5 V buck, shared with the IO ports): up to about 0.5 A at full white. Cap brightness in firmware."
 		(exclude_from_sim no)
 		(at 165.1 86.36 0)
 		(effects

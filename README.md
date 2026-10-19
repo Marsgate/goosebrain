@@ -7,12 +7,12 @@ goosebrain rev 2 is a robot controller for six DC motors and six IO ports. It ru
 - **Board:** 88.5 × 47 mm, 6 layers, in a box of about 93.5 × 52 × 30 mm.
 - **MCU:** RP2354A (an RP2350A with 2 MB of flash in the package), 12 MHz crystal.
 - **USB-C** (native USB) is for programming, serial, and charging. A CH224A asks a USB-PD charger for 9 V; plain 5 V USB also works.
-- **USB-A host** for the controller dongle, driven by Pico-PIO-USB on GPIO2/3. Its 5 V supply is current-limited to 0.5 A and stays off until firmware turns it on.
-- **Motors:** three DRV8848 drivers for six motors (M1–M6, JST-XH 2-pin). They run straight from the pack through a 15 A fuse and the power switch.
+- **USB-A host** for the controller dongle, driven by Pico-PIO-USB on GPIO2/3. Its 5 V supply is current-limited to about 0.68 A (0.51–0.85 A) and stays off until firmware turns it on.
+- **Motors:** three DRV8848 drivers for six motors (M1–M6, JST-XH 2-pin). They run straight from the pack through a 15 A fuse and the power switch. Each bridge limits its current to about 1.3 A.
 - **Battery:** an Ovonic 80C 3S 450 mAh pack sits on top of the board and plugs into the vertical XT30 (J3), with its balance lead in J11.
   - Charger: BQ25798 buck-boost.
   - Protection: a BQ7791501 protector on the board (over- and under-voltage, over-current, short circuit, temperature, cell balancing).
-- **Rails:** a 5 V buck (AP64500, about 2.3 A) feeds the IO ports, the LED stick and the dongle. 3.3 V comes from an XC6206 LDO.
+- **Rails:** a 5 V buck (AP64500, up to 5 A) feeds the IO ports, the LED stick and the dongle. 3.3 V comes from an XC6206 LDO.
 - **Status:** an 8 × WS2812B LED stick on J12, plus the charger's CHG LED, which you see through a hole in the top wall.
 
 Parts, part numbers and the reasons behind them are in [circuit/PARTS.md](circuit/PARTS.md).
@@ -106,11 +106,12 @@ It writes these files to `build/fab/`:
 
 - Order Economic PCBA, top side only.
 - Upload `jlc_bom.csv` and `jlc_cpl.csv`.
-- In JLC's placement preview, check the orientation of every IC, diode, LED, crystal and the USB-C receptacle before you pay. The rotations come straight from KiCad.
+- In JLC's placement preview, check the orientation of every IC, diode, LED, crystal and the USB-C receptacle before you pay. The rotations are KiCad's plus the per-package offsets in `JLC_ROTATION` in `tools/fab.py`, read off JLC's preview.
+- Check D4 (SMF14A TVS, below U2) closely: its cathode band must face east, toward R86. Reversed, it shorts VSYS.
 - Check J1 (USB-C) closely: its footprint origin is 1.1 mm off its pad centre.
 - **Stock to check when ordering:**
-  - L3 (Abracon AOTA-B201610S3R3-101-T) isn't stocked at JLC, so buy it from Digi-Key.
-  - The AP64500 had only 19 in stock at JLC at the last check. Above that, buy it from Digi-Key too.
+  - L3 (Abracon AOTA-B201610S3R3-101-T) isn't stocked at JLC or LCSC (1 and 0 on 2026-10-19), so buy it from Digi-Key.
+  - The lowest-stocked parts on 2026-10-19: J5 (144), U13 BQ7791501 (309), L1 (1,266). `circuit/PARTS.md` lists every part's stock and alternatives.
 
 **After the boards arrive:**
 
