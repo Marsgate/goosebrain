@@ -1682,15 +1682,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 45.72 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 45.72 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 45.72 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e1d5c336-98ca-4714-8c08-4ff7e85db706")
 		)
@@ -1718,7 +1736,7 @@
 		(dnp no)
 		(uuid "09ded4ac-80f7-42c3-80e1-f19630980860")
 		(property "Reference" "R56"
-			(at 109.22 60.20 90)
+			(at 109.22 60.2 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1728,7 +1746,7 @@
 			)
 		)
 		(property "Value" "330"
-			(at 109.22 66.80 90)
+			(at 109.22 66.8 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1770,15 +1788,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 63.5 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 63.5 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 63.5 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d6bf86de-87a1-4a46-9ae3-7244c42c4ad6")
 		)
@@ -1858,15 +1894,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 81.28 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 81.28 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 81.28 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "8f8a3267-c628-4c66-b441-64a9a75c8e12")
 		)
@@ -1946,15 +2000,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 99.06 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 99.06 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 99.06 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "811108c5-4b68-47f8-99dd-c9a8389e5ee8")
 		)
@@ -2034,15 +2106,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 116.84 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 116.84 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 116.84 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0a095c1a-e7e8-4775-a08e-565bab01d9c2")
 		)
@@ -2122,15 +2212,33 @@
 				)
 			)
 		)
-    (property "MPN" "0402WGF3300TCE" (at 109.22 134.62 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 109.22 134.62 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 109.22 134.62 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "0402WGF3300TCE"
+			(at 109.22 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 109.22 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C25104"
+			(at 109.22 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "db7cdd71-8472-4be7-9434-91922a717772")
 		)
@@ -2210,15 +2318,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 48.26 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 48.26 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 48.26 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "3b458f03-4297-48a9-ad84-ef9f60f9caa4")
 		)
@@ -2301,15 +2427,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "6"
 			(uuid "5726e0ac-c086-413f-8bab-16807dd0d41d")
 		)
@@ -2340,7 +2484,7 @@
 		(dnp no)
 		(uuid "2b2f3111-a6af-4933-8f77-8435764e40c0")
 		(property "Reference" "J5"
-			(at 129.54 78.10 0)
+			(at 129.54 78.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2392,15 +2536,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 83.82 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 83.82 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 83.82 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "9"
 			(uuid "bf86b294-20f5-44bd-a8c5-6b0c3956cfbe")
 		)
@@ -2441,7 +2603,7 @@
 			)
 		)
 		(property "Value" "IO 3x6 RA"
-			(at 139.7 101.60 0)
+			(at 139.7 101.6 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2483,15 +2645,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 101.6 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 101.6 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 101.6 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "12"
 			(uuid "508db95b-fd6c-4099-a802-fc7f397bb6ac")
 		)
@@ -2574,15 +2754,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 119.38 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 119.38 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 119.38 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "15"
 			(uuid "d02444c7-f0dc-4e58-a0f4-44082f0eb86f")
 		)
@@ -2665,15 +2863,33 @@
 				)
 			)
 		)
-    (property "MPN" "2011-3X06G00RB" (at 129.54 137.16 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "WingTAT" (at 129.54 137.16 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C51953246" (at 129.54 137.16 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "2011-3X06G00RB"
+			(at 129.54 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "WingTAT"
+			(at 129.54 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C51953246"
+			(at 129.54 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "18"
 			(uuid "1c4ed301-844a-4346-be2d-49d9ad2f737b")
 		)
@@ -2755,12 +2971,15 @@
 		(uuid "d7e7af22-b0b8-4bac-9fbc-a095eab9447c")
 		(property "Reference" "#PWR302"
 			(at 121.92 50.8 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 57.15 0)
@@ -3090,12 +3309,15 @@
 		(uuid "3285ecae-6e2a-4cf6-bc05-660e5d1015e5")
 		(property "Reference" "#PWR303"
 			(at 121.92 68.58 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 74.93 0)
@@ -3165,12 +3387,15 @@
 		(uuid "f59a3895-9e0e-4675-83e5-711aa0646b26")
 		(property "Reference" "#PWR304"
 			(at 121.92 86.36 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 92.71 0)
@@ -3240,12 +3465,15 @@
 		(uuid "4c440cdb-83a2-4d3a-ae11-68b05d443a78")
 		(property "Reference" "#PWR305"
 			(at 121.92 104.14 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 110.49 0)
@@ -3315,12 +3543,15 @@
 		(uuid "321d6603-64ce-4f07-829d-897bde1ea9cd")
 		(property "Reference" "#PWR306"
 			(at 121.92 121.92 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 128.27 0)
@@ -3390,12 +3621,15 @@
 		(uuid "e62ca319-5bb6-4bc9-8c19-9711dd2cc0ac")
 		(property "Reference" "#PWR307"
 			(at 121.92 139.7 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 121.92 146.05 0)
@@ -3594,7 +3828,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "1722227a-5a05-4b1a-8309-fb6b97d11cc7")
 		(property "Reference" "U14"
 			(at 199.39 59.69 0)
@@ -3651,15 +3885,33 @@
 				)
 			)
 		)
-    (property "MPN" "SN74AHCT1G125DBVR" (at 190.5 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UMW" (at 190.5 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C20617903" (at 190.5 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "SN74AHCT1G125DBVR"
+			(at 190.5 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "UMW"
+			(at 190.5 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C20617903"
+			(at 190.5 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "ecd27536-132e-4993-a02b-83747a0b057c")
 		)
@@ -3697,6 +3949,7 @@
 		(uuid "cad5788e-9329-4d92-b2b5-04ce6b674bf1")
 		(property "Reference" "#PWR309"
 			(at 185.42 53.34 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3804,12 +4057,15 @@
 		(uuid "b11d74eb-7391-455b-b686-2562afc99ef1")
 		(property "Reference" "#PWR310"
 			(at 195.58 53.34 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 195.58 59.69 0)
@@ -3879,12 +4135,15 @@
 		(uuid "ac223450-2acc-4d63-8231-e365d829bc79")
 		(property "Reference" "#PWR311"
 			(at 185.42 73.66 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 185.42 80.01 0)
@@ -4062,6 +4321,7 @@
 		(uuid "3b871fe9-7054-4fed-ae0d-1e535c5cc605")
 		(property "Reference" "#PWR312"
 			(at 177.8 44.45 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4139,12 +4399,15 @@
 		(uuid "d97001d4-8607-4415-9602-3e79e202c8c0")
 		(property "Reference" "#PWR313"
 			(at 177.8 52.07 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 177.8 58.42 0)
@@ -4196,94 +4459,6 @@
 			(project "thegoose"
 				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
 					(reference "#PWR313")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 210.82 66.04 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "3f61dd54-7d12-4757-8853-83d81e3e3a4d")
-		(property "Reference" "R80"
-			(at 210.82 62.74 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "330"
-			(at 210.82 69.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 210.82 67.818 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 210.82 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 210.82 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-    (property "MPN" "0402WGF3300TCE" (at 210.82 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "UNI-ROYAL" (at 210.82 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C25104" (at 210.82 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-		(pin "1"
-			(uuid "980f170b-393e-4186-acd9-9d0c33ec5e69")
-		)
-		(pin "2"
-			(uuid "61b3314d-7b6e-4de9-8c17-c50aeba38dab")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "R80")
 					(unit 1)
 				)
 			)
@@ -4373,15 +4548,33 @@
 				)
 			)
 		)
-    (property "MPN" "B3B-PH-K-S(LF)(SN)" (at 233.68 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "Manufacturer" "JST" (at 233.68 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
-    (property "LCSC Part #" "C131339" (at 233.68 66.04 0)
-      (effects (font (size 1.27 1.27)) (hide yes))
-    )
+		(property "MPN" "B3B-PH-K-S(LF)(SN)"
+			(at 233.68 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" "JST"
+			(at 233.68 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C131339"
+			(at 233.68 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "b9934e85-44dc-465a-ab71-f100ee97014b")
 		)
@@ -4453,6 +4646,7 @@
 		(uuid "6e58a9c7-89b1-4ad3-875a-d823502bbbe1")
 		(property "Reference" "#PWR314"
 			(at 226.06 55.88 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4530,12 +4724,15 @@
 		(uuid "23b70d78-9f94-4853-9db4-54a667ea658a")
 		(property "Reference" "#PWR315"
 			(at 226.06 68.58 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
-				) (hide yes))
+				)
+				(hide yes)
+			)
 		)
 		(property "Value" "GND"
 			(at 226.06 74.93 0)
@@ -4592,266 +4789,6 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "Device:C")
-		(at 243.84 66.04 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5abe75cd-46a7-4f37-a7db-7b521d0ee7b1")
-		(property "Reference" "C70"
-			(at 246.38 64.77 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF"
-			(at 246.38 67.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 244.805 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 243.84 66.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "CL21A106KAYNNNE"
-			(at 243.84 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 243.84 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C15850"
-			(at 243.84 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d10c4088-d9f2-4337-b1e5-dda244f526d7")
-		)
-		(pin "2"
-			(uuid "e1e2551a-228f-410e-8809-f5d8dd3837cb")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "C70")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 243.84 62.23 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7ccb2baa-b3de-469d-b1fa-5c177354bc8a")
-		(property "Reference" "#PWR316"
-			(at 243.84 59.69 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 243.84 58.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 243.84 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 243.84 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "89d9eb23-f0f7-4bb0-a929-12434a7fdcb4")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
-					(reference "#PWR316")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 243.84 69.85 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7bd8547a-87ff-4c02-a8e9-b0c7e9ce5202")
-		(property "Reference" "#PWR317"
-			(at 243.84 67.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				) (hide yes))
-		)
-		(property "Value" "GND"
-			(at 243.84 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 243.84 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 243.84 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 243.84 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "cbcc4bdf-0d2e-4774-8888-e60815eab041")
-		)
-		(instances
-			(project "thegoose"
-				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/87de6331-4a86-430c-a320-0a0cd35186c7"
-					(reference "#PWR317")
-					(unit 1)
-				)
-			)
-		)
-	)
 	(global_label "LED_DIN"
 		(shape input)
 		(at 175.26 66.04 180)
@@ -4863,16 +4800,26 @@
 		)
 		(uuid "0ea49803-7583-403f-b8ba-4adac93b3931")
 	)
-	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO18 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V) -> R80 330 R -> DIN.\nPower from VCC (5 V buck, shared with the IO ports): up to about 0.5 A at full white. Cap brightness in firmware."
+	(wire
+		(pts
+			(xy 207.01 66.04) (xy 214.63 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "065f60a3-db98-4872-bbae-bc277c3ff350")
+	)
+	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO18 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V; hand-placed) -> DIN.\nR80 (330 R) and C70 (10 uF) were removed in the cost-down; the stick carries its own caps.\nPower from VCC (5 V buck, shared with the IO ports): up to about 0.5 A at full white. Cap brightness in firmware."
 		(exclude_from_sim no)
-		(at 165.1 86.36 0)
+		(at 165.1 104.14 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left top)
+			(justify left bottom)
 		)
-		(uuid "3be60dff-6648-4dc6-a5c4-854f81703a4c")
+		(uuid "3cb49286-ebc9-4532-ab1e-57cc1b64817f")
 	)
 	(sheet_instances
 		(path "/"

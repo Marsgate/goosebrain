@@ -1,8 +1,10 @@
-"""Build the fab package for kicad/thegoose.kicad_pcb into build/fab/.
+"""Build the fab package for the brain (kicad/thegoose.kicad_pcb, into build/fab/), the 3S battery pack
+(kicad-pack/goosepack.kicad_pcb, into build/fab-pack/) or the 2S pack (kicad-pack-2s/goosepack2s.kicad_pcb, into
+build/fab-pack2s/).
 
 Writes:
-- gerbers/: Gerbers for all 6 copper layers, mask, paste, silk and outline, plus Excellon drill files (PTH and NPTH)
-- thegoose-gerbers.zip: the gerbers/ folder, ready to upload to JLCPCB
+- gerbers/: Gerbers for all 4 copper layers, mask, paste, silk and outline, plus Excellon drill files (PTH and NPTH)
+- thegoose-gerbers.zip / goosepack-gerbers.zip / goosepack2s-gerbers.zip: the gerbers/ folder, ready to upload to JLCPCB
 - bom.csv: the full BOM, every purchased part, grouped, with MPN, manufacturer, LCSC number and how it's assembled
 - jlc_bom.csv / jlc_cpl.csv: JLC's PCBA BOM and placement files, machine-placed SMD parts only
 
@@ -15,9 +17,10 @@ Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm), so J
 Rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which were read off JLC's placement preview.
 Check each part's orientation in that preview before paying.
 
-Usage: python3 tools/fab.py
+Usage: python3 tools/fab.py [--board brain|pack|pack2s]
 """
 
+import argparse
 import csv
 import json
 import re
@@ -30,20 +33,25 @@ ROOT = Path(__file__).resolve().parent.parent
 KICAD_APP = Path("/Applications/KiCad/KiCad.app/Contents")
 KICAD_CLI = KICAD_APP / "MacOS/kicad-cli"
 KICAD_PYTHON = KICAD_APP / "Frameworks/Python.framework/Versions/Current/bin/python3"
-PCB = ROOT / "kicad/thegoose.kicad_pcb"
-OUT = ROOT / "build/fab"
+# board name -> (PCB file, output folder, Gerber zip name)
+BOARDS = {
+    "brain": (ROOT / "kicad/thegoose.kicad_pcb", ROOT / "build/fab", "thegoose-gerbers.zip"),
+    "pack": (ROOT / "kicad-pack/goosepack.kicad_pcb", ROOT / "build/fab-pack", "goosepack-gerbers.zip"),
+    "pack2s": (ROOT / "kicad-pack-2s/goosepack2s.kicad_pcb", ROOT / "build/fab-pack2s", "goosepack2s-gerbers.zip"),
+}
 
-LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
+LAYERS = ("F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
           "F.Mask,B.Mask,Edge.Cuts")
 
 # JLC's part models sit at a different zero rotation from KiCad's footprints for some packages. Each entry is
 # (footprint-name regex, degrees added to KiCad's rotation), checked against pin 1 in JLC's placement preview on
 # 2026-10-18. SOT-23-5/6, SOIC, SO-8EP, TSSOP, SSOP and TDSON models came out 90 degrees counter-clockwise of their
 # pads; the 3-pin SOT-23 came out 180 degrees off. QFNs, SOT-89, two-terminal parts, the crystal, USB-C and the BOOT
-# switch matched. First match wins.
+# switch matched. The motor drivers' Texas_HTSOP-8 (DRV8871, now DRV8251A on the same footprint) was added after that
+# check and is assumed to follow the other SOIC-family packages; confirm it in JLC's placement preview. First match wins.
 JLC_ROTATION = [
     (r"^SOT-23-3$", 180),
-    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|TSSOP-|SSOP-|TDSON-)", -90),
+    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|Texas_HTSOP-8|TSSOP-|SSOP-|TDSON-)", -90),
 ]
 
 
@@ -105,21 +113,25 @@ def assembly(fp):
 
 
 def main():
-    gerbers = OUT / "gerbers"
+    ap = argparse.ArgumentParser(description="Build the JLCPCB fab package for one board.")
+    ap.add_argument("--board", choices=BOARDS, default="brain")
+    pcb, out, zip_name = BOARDS[ap.parse_args().board]
+
+    gerbers = out / "gerbers"
     gerbers.mkdir(parents=True, exist_ok=True)
     for old in gerbers.iterdir():
         old.unlink()
 
     run(KICAD_CLI, "pcb", "export", "gerbers", "--layers", LAYERS, "--subtract-soldermask", "--check-zones",
-        "-o", gerbers, PCB)
+        "-o", gerbers, pcb)
     run(KICAD_CLI, "pcb", "export", "drill", "--format", "excellon", "--excellon-units", "mm",
-        "--excellon-separate-th", "--generate-map", "--map-format", "gerberx2", "-o", gerbers, PCB)
-    zip_path = OUT / "thegoose-gerbers.zip"
+        "--excellon-separate-th", "--generate-map", "--map-format", "gerberx2", "-o", gerbers, pcb)
+    zip_path = out / zip_name
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(gerbers.iterdir()):
             z.write(f, f.name)
 
-    fps = json.loads(run(KICAD_PYTHON, "-c", FOOTPRINTS, PCB).stdout)
+    fps = json.loads(run(KICAD_PYTHON, "-c", FOOTPRINTS, pcb).stdout)
     parts = [fp for fp in fps if fp["mpn"] and (fp["dnp"] or not fp["no_bom"])]
     problems = []
 
@@ -134,7 +146,7 @@ def main():
 
     order = {"JLC SMT": 0, "Hand-place": 1, "Hand-solder": 2}
     rows = sorted(groups.items(), key=lambda kv: (order[kv[0][4]], ref_key(sorted(f["ref"] for f in kv[1])[0])))
-    with open(OUT / "bom.csv", "w", newline="") as fh:
+    with open(out / "bom.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Item", "Qty", "References", "Value", "Footprint", "Manufacturer", "MPN", "LCSC Part #",
                     "Assembly"])
@@ -144,7 +156,7 @@ def main():
                         how])
 
     smt = [fp for fp in parts if assembly(fp) == "JLC SMT"]
-    with open(OUT / "jlc_bom.csv", "w", newline="") as fh:
+    with open(out / "jlc_bom.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])
         for (value, footprint, mpn, lcsc, how), members in rows:
@@ -153,7 +165,7 @@ def main():
             refs = sorted((f["ref"] for f in members), key=ref_key)
             w.writerow([value, ",".join(refs), footprint.split(":")[-1], lcsc])
 
-    with open(OUT / "jlc_cpl.csv", "w", newline="") as fh:
+    with open(out / "jlc_cpl.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
         for fp in sorted(smt, key=lambda f: ref_key(f["ref"])):

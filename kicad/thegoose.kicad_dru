@@ -1,60 +1,46 @@
 (version 1)
 
 # JLCPCB routed-edge limit is 0.3 mm copper to board edge. The board setup
-# value (0.5 mm) is rewritten by the KiCad MCP server on every save, so the
+# value (0.5 mm) can be rewritten by tools that save the board, so the
 # JLC value lives here.
 (rule "JLC copper to edge"
 	(constraint edge_clearance (min 0.3mm)))
 
-# The six vertical 1x3 IO headers sit side by side at 2.54 mm as one 3 x 6 block
-# (user-approved face layout). Their housings abut; the library courtyards
-# (0.5 mm margin) overlap by about 1.1 mm, which is expected here.
-(rule "IO block: 1x3 headers abut at 2.54 mm"
-	(condition "A.Reference == 'J5' || A.Reference == 'J6' || A.Reference == 'J7' || A.Reference == 'J8' || A.Reference == 'J9' || A.Reference == 'J10'")
-	(constraint courtyard_clearance (min -1.2mm)))
-
 # USB pairs (USB_P/N, the MCU-side halves USB_MCU_P/N through R44/R45, USBA_P/N and USBA_GPIO_P/N):
-# 0.15 mm tracks at a 0.20 mm gap (0.35 mm pitch) give about 90 ohm differential on F.Cu over In1 GND, and on
-# B.Cu over In4 GND, on JLC's standard 6-layer 1.6 mm stackup (JLC06161H-3313: 3313 prepreg 0.0994 mm, er 4.1;
-# JLC's calculator gives 0.1356 mm at a 0.15 mm gap for 90 ohm). The USB class clearance is only for the partner
-# track; everything else keeps 0.2 mm.
+# 0.22 mm tracks at a 0.15 mm gap give about 90 ohm differential on F.Cu or B.Cu over a solid GND plane,
+# on JLC's standard 4-layer 1.6 mm stackup JLC04161H-7628 (7628 prepreg 0.2104 mm, er 4.4, 1 oz outer copper).
+# Worked out with the Hammerstad-Jensen / Kirschning-Jansen coupled-microstrip equations (the ones KiCad's
+# calculator uses), scaled by the -13 % they read against JLC's own calculator on the old 6-layer stack.
+# Check it in JLC's impedance calculator before ordering. F.Cu pairs reference In1 (GND). B.Cu pairs reference
+# In2, so keep In2 solid GND under them, or route the pairs on F.Cu.
+# The USB class clearance is only for the partner track; everything else keeps 0.2 mm.
 (rule "USB pair to other nets"
 	(condition "A.NetClass == 'USB' && B.NetClass != 'USB'")
 	(constraint clearance (min 0.2mm)))
 (rule "USB pair geometry"
 	(condition "A.NetClass == 'USB'")
-	(constraint track_width (min 0.15mm) (opt 0.15mm) (max 0.2mm)))
+	(constraint track_width (min 0.2mm) (opt 0.22mm) (max 0.25mm)))
 # The P/N names make each pair a KiCad differential pair, so the diff-pair router (6) routes at this gap.
 # Where a pair must split to reach pads (USB-C receptacle flip pins, the ESD arrays, the series resistors, vias),
 # the segments touching a "USB fan-out" rule area are exempt; the coupled runs between them are checked.
 (rule "USB 90 ohm diff pairs"
 	(condition "A.NetClass == 'USB' && A.inDiffPair('*') && !A.intersectsArea('USB fan-out')")
-	(constraint diff_pair_gap (min 0.18mm) (opt 0.2mm) (max 0.22mm)))
+	(constraint diff_pair_gap (min 0.13mm) (opt 0.15mm) (max 0.17mm)))
 
-# Power widths match tools/review.py POWER_NETS (the power_track_width gate): any track drawn on these
-# nets must be at least this wide. Pours and zones are exempt.
+# Power widths: any track drawn on these nets must be at least this wide. Pours and zones are exempt.
 (rule "Pack path width"
 	(condition "A.NetClass == 'Pack'")
 	(constraint track_width (min 1.0mm)))
-(rule "Charger and 5 V width"
-	(condition "A.NetClass == 'Charger' || A.NetClass == '5V'")
+(rule "5 V width"
+	(condition "A.NetClass == '5V'")
 	(constraint track_width (min 0.5mm)))
 (rule "GND and motor width"
 	(condition "A.NetClass == 'GND' || A.NetClass == 'Motor'")
 	(constraint track_width (min 0.4mm)))
 
-# Default (signal) class: 0.15 mm track and space (JLC 6-layer allows 0.09 mm). Signals keep 0.2 mm from the
-# switch nodes and the pack-path pours, which sit in the Default class by name: buck SW, the RP2354 core LX, BAT_N,
-# PROT_SNS, PROT_FET_D. (The Charger, Pack, 5V, GND, Motor, Rail and USB classes are 0.2 mm already; KiCad takes the
-# larger of the two classes.)
-(rule "Signals to switch nodes and pack pours"
-	(condition "A.NetClass == 'Default' && (B.NetName == 'Net-(U4-SW)' || B.NetName == 'Net-(U10-VREG_LX)' || B.NetName == '/Power & charging/BAT_N' || B.NetName == '/Power & charging/PROT_SNS' || B.NetName == '/Power & charging/PROT_FET_D')")
+# Default (signal) class: 0.15 mm track and space (JLC 4-layer allows 0.09 mm). Signals keep 0.2 mm from the
+# switch nodes, which sit in the Default class by name: the buck SW and the RP2354 core LX. (The Pack, 5V, GND,
+# Motor, Rail and USB classes are 0.2 mm already; KiCad takes the larger of the two classes.)
+(rule "Signals to switch nodes"
+	(condition "A.NetClass == 'Default' && (B.NetName == 'Net-(U4-SW)' || B.NetName == 'Net-(U10-VREG_LX)')")
 	(constraint clearance (min 0.2mm)))
-
-# J1's shield and J5's GND pins also pass through In3, the power-plane layer, where its GND fill is only slivers
-# between the VCC/VBAT/VSYS planes. They connect with thermals on F, B, In1, In2 and In4, so on In3 they stay clear
-# of the fill instead of hanging on starved spokes.
-(rule "THT GND pads skip In3 GND fill"
-	(layer "In3.Cu")
-	(condition "A.Type == 'Pad' && A.NetName == 'GND' && (A.Reference == 'J1' || A.Reference == 'J5')")
-	(constraint zone_connection none))

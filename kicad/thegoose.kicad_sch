@@ -9,7 +9,7 @@
     (stroke (width 0.0006) (type default))
     (fill (color 0 0 0 0.0000))
     (uuid "0021e6ae-34c0-486e-ac47-c8566b803df5")
-    (property "Sheetname" "Power & charging" (at 27.94 36.83 0)
+    (property "Sheetname" "Power" (at 27.94 36.83 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
     )
     (property "Sheetfile" "power.kicad_sch" (at 27.94 64.77 0)

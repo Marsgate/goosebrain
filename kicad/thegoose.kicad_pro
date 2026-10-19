@@ -521,7 +521,7 @@
         "clearance": 0.15,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -540,7 +540,7 @@
         "clearance": 0.2,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -559,26 +559,7 @@
         "clearance": 0.2,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "Charger",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.15,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -597,7 +578,7 @@
         "clearance": 0.2,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -616,7 +597,7 @@
         "clearance": 0.2,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -635,7 +616,7 @@
         "clearance": 0.2,
         "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -652,9 +633,9 @@
       {
         "bus_width": 12,
         "clearance": 0.15,
-        "diff_pair_gap": 0.2,
+        "diff_pair_gap": 0.15,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.15,
+        "diff_pair_width": 0.22,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -662,7 +643,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.15,
+        "track_width": 0.22,
         "tuning_profile": "",
         "via_diameter": 0.45,
         "via_drill": 0.25,
@@ -677,35 +658,11 @@
     "netclass_patterns": [
       {
         "netclass": "Pack",
-        "pattern": "/Power & charging/PACK+"
-      },
-      {
-        "netclass": "Pack",
-        "pattern": "VBAT"
+        "pattern": "PACK+"
       },
       {
         "netclass": "Pack",
         "pattern": "VSYS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "VBUS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "/Power & charging/CHG_SYS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-PMID)"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-SW1)"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-SW2)"
       },
       {
         "netclass": "5V",
@@ -714,10 +671,6 @@
       {
         "netclass": "GND",
         "pattern": "GND"
-      },
-      {
-        "netclass": "Motor",
-        "pattern": "Net-(M?-OUT?)"
       },
       {
         "netclass": "Rail",
@@ -758,6 +711,18 @@
       {
         "netclass": "USB",
         "pattern": "/MCU & USB/USBA_GPIO_N"
+      },
+      {
+        "netclass": "Motor",
+        "pattern": "/Motor drivers/U*_OUT?"
+      },
+      {
+        "netclass": "5V",
+        "pattern": "Net-(J4-VBUS)"
+      },
+      {
+        "netclass": "Rail",
+        "pattern": "VBUS"
       }
     ]
   },
