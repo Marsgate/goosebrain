@@ -145,7 +145,7 @@ Layout notes for later:
 
 ## Ordering boards
 
-`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`). It prints a CHECK line for every SMD part without an LCSC number; only the six DRV8251As are left, because JLC doesn't stock them (see PARTS.md). The motor drivers' `Texas_HTSOP-8` rotation in `JLC_ROTATION` (-90, like the other SOIC-family packages) is a guess; check U1-U3 and U15-U17 in JLC's placement preview.
+`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`). It prints a CHECK line for every SMD part without an LCSC number; on the brain there are none now that the six DRV8251As have one (C5218844). The motor drivers' `Texas_HTSOP-8` rotation in `JLC_ROTATION` (-90, like the other SOIC-family packages) is a guess; check U1-U3 and U15-U17 in JLC's placement preview.
 
 ```bash
 python3 tools/fab.py

@@ -6244,7 +6244,7 @@
     (property "Manufacturer" "Texas Instruments" (at 215.9 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 215.9 88.9 0)
+    (property "LCSC Part #" "C5218844" (at 215.9 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -6662,7 +6662,7 @@
     (property "Manufacturer" "Texas Instruments" (at 215.9 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 215.9 139.7 0)
+    (property "LCSC Part #" "C5218844" (at 215.9 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -7556,7 +7556,7 @@
     (property "Manufacturer" "Texas Instruments" (at 144.78 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 144.78 88.9 0)
+    (property "LCSC Part #" "C5218844" (at 144.78 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -7974,7 +7974,7 @@
     (property "Manufacturer" "Texas Instruments" (at 144.78 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 144.78 139.7 0)
+    (property "LCSC Part #" "C5218844" (at 144.78 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -8868,7 +8868,7 @@
     (property "Manufacturer" "Texas Instruments" (at 73.66 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 73.66 88.9 0)
+    (property "LCSC Part #" "C5218844" (at 73.66 88.9 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
@@ -9286,7 +9286,7 @@
     (property "Manufacturer" "Texas Instruments" (at 73.66 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
-    (property "LCSC Part #" "" (at 73.66 139.7 0)
+    (property "LCSC Part #" "C5218844" (at 73.66 139.7 0)
       (effects (font (size 1.27 1.27)) (hide yes))
     )
 		(pin "1"
