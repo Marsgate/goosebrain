@@ -27,7 +27,7 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 
 - **Spare GPIOs:** GPIO8, GPIO9, GPIO17, GPIO19, GPIO23 and GPIO25 are now no-connects (they were I2C SDA, charger /INT, I2C SCL, DRV_FAULT, DRV_SLEEP and USBA_VBUS_EN). GPIO20 and GPIO29 stay spare.
 - **No I2C charger:** drop the charger driver. The battery voltage now comes only from the GPIO28 divider (VSYS / 4.7, so 12.6 V reads 2.68 V). It reads 0 with the switch off.
-- **The pack cuts off in hardware:** the 3S pack at 2.8 V per cell (8.4 V), the 2S pack at 3.0 V per cell (6.0 V). Warn the user well above that, at about 3.3 V per cell.
+- **The pack cuts off in hardware:** the 3S pack at 2.8 V per cell (8.4 V), the 2S pack at 2.8 V per cell (5.6 V; the HY2120 turns back on at 3.0 V per cell). Warn the user well above that, at about 3.3 V per cell.
 - **Work out the cell count at power-on** from the GPIO28 reading: above about 8.6 V it's a 3S pack, otherwise 2S. The only pack this reads wrong is a nearly flat 3S one, and the cutoff is in hardware, so the cost is only a wrong warning level.
 - **Motor speed:** the motors run about 40 % slower on a 2S pack. To make the robot behave the same on either pack, cap the 3S PWM to match.
 - **Motors:** six DRV8251As, one per motor, on the same GPIO pairs (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.2 kΩ on IPROPI, so 1.34 A). They run from 4.5 V, so a 2S pack works.
@@ -40,7 +40,7 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 3. **NTC:** warm TH2 past 45 °C and check the charge voltage drops 0.4 V (JEITA warm), and past 60 °C that charging stops.
 4. **Motors:** stall one motor and check the current chops at about 1.36 A.
 5. **2S pack:** check that the charge stops at 8.4 V, measure the charge current (about 0.42 A at 3.5 V/cell), and check that each HY2213 bleeds about 89 mA once its cell passes 4.20 V. Trip the HY2120 with a load: over-current near 18–20 A, depending on how hot Q2/Q3 are. Then check that unplugging clears it.
-6. **Brain on 2S:** at 6.0 V in, check that Q1 is fully on (about −5 V gate drive), that VCC holds 4.96 V with the servos loaded, and that the soft start still takes about 70 µs with C71 at 10 nF.
+6. **Brain on 2S:** at 5.6 V in (the 2S cutoff), check that Q1 is fully on (about −5 V gate drive), that VCC holds 4.96 V with the servos loaded, and that the soft start still takes about 70 µs with C71 at 10 nF.
 
 ## Opening it
 
