@@ -44,7 +44,7 @@ BOARDS = {
     "pack2s": (ROOT / "kicad-pack-2s/goosepack2s.kicad_pcb", ROOT / "build/fab-pack2s", "goosepack2s-gerbers.zip"),
 }
 
-LAYERS = ("F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
+LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
           "F.Mask,B.Mask,Edge.Cuts")
 
 # JLC's part models sit at a different zero rotation from KiCad's footprints for some packages. Each entry is

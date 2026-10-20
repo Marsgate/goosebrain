@@ -21,7 +21,8 @@ PCB = ROOT / "kicad/thegoose.kicad_pcb"
 GROUP = "route_recipe"
 MM = 1e6
 OX, OY = 99.95, 99.95
-LAYER = {"F": pcbnew.F_Cu, "B": pcbnew.B_Cu, "1": pcbnew.In1_Cu, "2": pcbnew.In2_Cu}
+LAYER = {"F": pcbnew.F_Cu, "B": pcbnew.B_Cu, "1": pcbnew.In1_Cu, "2": pcbnew.In2_Cu, "3": pcbnew.In3_Cu,
+         "4": pcbnew.In4_Cu}
 
 XIN, XOUT, XC = "Net-(U10-XIN)", "Net-(U10-XOUT)", "Net-(C57-Pad1)"
 LX, AVDD = "Net-(U10-VREG_LX)", "Net-(U10-VREG_AVDD)"
@@ -29,7 +30,8 @@ SW, BST = "Net-(U4-SW)", "Net-(U4-BST)"
 USB = {"P": "USB_P", "N": "USB_N", "MP": "/MCU & USB/USB_MCU_P", "MN": "/MCU & USB/USB_MCU_N",
        "AP": "/MCU & USB/USBA_P", "AN": "/MCU & USB/USBA_N", "GP": "/MCU & USB/USBA_GPIO_P",
        "GN": "/MCU & USB/USBA_GPIO_N"}
-WU = 0.22                   # USB pair track width (90 ohm at a 0.15 mm gap, see thegoose.kicad_dru)
+WU = 0.124                  # USB pair track width (90 ohm at a 0.127 mm gap on JLC06161H-3313, see thegoose.kicad_dru)
+GU = 0.127                  # USB pair gap
 
 
 class Recipe:
@@ -279,10 +281,99 @@ def u10_fanout(r):
             q = r.padof(ref, net)
             r.vias_where_free(net, [q, (q[0] + 0.6, q[1]), (q[0] - 0.6, q[1])], d=0.45, drill=0.25, n=1)
     # GND pads of the two outward caps get their own vias
-    for ref in ("C41", "C45"):
-        g = r.padof(ref, "GND")
-        r.via("GND", *g)
+    g = r.padof("C41", "GND")                        # (C45's GND pad reaches the B.Cu GND fill)
+    r.via("GND", *g)
     return V
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# U10 escapes. The 0.4 mm pitch east and south pads are too tight for the autorouter's own fan-out, so each GPIO that
+# leaves on another layer gets a short F.Cu stub fanning out to a via on a 0.7 mm pitch. Freerouting takes it from
+# the via.
+# ---------------------------------------------------------------------------------------------------------------------
+ESC_E = [(43, 29.35, -2.5), (42, 29.1, -1.8), (41, 29.1, -1.1), (40, 29.1, -0.4),      # pin, via x, via dy
+         (35, 28.4, 1.5), (34, 28.4, 2.2), (33, 28.4, 2.9), (32, 28.4, 3.6)]
+ESC_S = [24, 25, 26, 27, 28]                         # fan to a via row 21.1 mm down, 0.8 mm apart
+
+
+def u10_escapes(r):
+    cx, cy = r.pos("U10")
+    for pin, vx, vdy in ESC_E:                       # upper group fans up-right, lower group down-right
+        q = r.pad("U10", pin)
+        net = r.padnet("U10", pin)
+        vy = cy + vdy
+        bend = max(vx - 0.35 - abs(vy - q[1]), q[0] + 0.55)
+        r.track(net, "F", [q, (bend, q[1]), (vx - 0.3, vy), (vx, vy)], 0.15)
+        r.via(net, vx, vy)
+    for i, pin in enumerate(ESC_S):                  # parallel 45-degree fan to a row 0.8 mm apart
+        q = r.pad("U10", pin)
+        net = r.padnet("U10", pin)
+        vx, vy = cx + 0.6 + 0.8 * i, cy + 5.8
+        r.track(net, "F", [q, (q[0], vy - (vx - q[0])), (vx, vy)], 0.15)
+        r.via(net, vx, vy)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# U10 west side: IO1-IO6 to the vias in R55-R60's U10-side pads (a column at x 16.81, one per J5 row). Between that
+# column and the pins there is room for three F.Cu lanes west of C41's vias and J1's shell peg, so:
+# - IO2-IO4 (pins 3-5) run straight west and turn north on lanes 0.32 mm apart, the higher pin on the eastern lane.
+# - IO1 (pin 2) drops through a via just inside the pin ring and runs north on In2, west of J1's shell pegs.
+# - IO5 (pin 12) runs up the strip between the pin toes and C47/C50's vias, west between C47's two vias, and drops to
+#   In2 for the run north (it would cross IO1-IO4 on F.Cu).
+# - IO6 (pin 13) runs down the same strip, under C50, and north on F.Cu to its via.
+# ---------------------------------------------------------------------------------------------------------------------
+W_LANES = {"IO2_GPIO": 17.92, "IO3_GPIO": 17.60, "IO4_GPIO": 17.28}
+
+
+def u10_west(r):
+    w = 0.15
+
+    def ends(sig):
+        pin = next(p for p in r.fp["U10"].Pads() if p.GetNetname() == sig)
+        q = pin.GetPosition()
+        return (q.x / MM - OX, q.y / MM - OY), r.padof("R" + str(54 + int(sig[2])), sig)
+
+    for sig, x in W_LANES.items():
+        q, v = ends(sig)
+        top = v[1] + (x - v[0])                       # 45-degree run into the via from the south-east
+        if sig == "IO4_GPIO":                         # bottom pin: step onto its lane with a 45-degree jog
+            r.track(sig, "F", [q, (x + 0.2, q[1]), (x, q[1] - 0.2), (x, top), v], w)
+        else:
+            r.track(sig, "F", [q, (x, q[1]), (x, top), v], w)
+    q, v = ends("IO1_GPIO")
+    vi = (q[0] + 1.0, q[1])
+    r.track("IO1_GPIO", "F", [q, vi], w)
+    r.via("IO1_GPIO", *vi)
+    x = 17.95
+    r.track("IO1_GPIO", "2", [vi, (vi[0] - 1.3, vi[1] - 1.3), (vi[0] - 1.3, vi[1] - 2.3),
+                              (x, vi[1] - 2.3 - (vi[0] - 1.3 - x)), (x, v[1] + (x - v[0])), v], w)
+    q, v = ends("IO5_GPIO")
+    xs = q[0] - 0.71                                  # the strip between the pin toes and the 18.3 via column
+    vi = (17.55, 16.7)
+    r.track("IO5_GPIO", "F", [q, (xs, q[1]), (xs, vi[1]), vi], w)
+    r.via("IO5_GPIO", *vi)
+    r.track("IO5_GPIO", "2", [vi, (vi[0], v[1] + (vi[0] - v[0])), v], w)
+    q, v = ends("IO6_GPIO")
+    x = 17.08
+    r.track("IO6_GPIO", "F", [q, (xs, q[1]), (xs, 18.85), (x, 18.85), (x, v[1] + (x - v[0])), v], w)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# U10 south-west: M5 and M6 (pins 16-19) to the IN pins of U3 and U17. The four lines run west in the strip between
+# the pin toes and Y1's top pads, each pin one lane lower than the pin west of it, so nothing crosses: M5A straight
+# across to U3, M5B down to U3's IN2, M6A and M6B down two lanes east of U3 to U17. No signal runs over the crystal.
+# ---------------------------------------------------------------------------------------------------------------------
+def u10_southwest(r):
+    w = 0.15
+    p = {n: r.pad("U10", n) for n in (16, 17, 18, 19)}
+    u3 = {n: r.pad("U3", n) for n in (2, 3)}
+    u17 = {n: r.pad("U17", n) for n in (2, 3)}
+    r.track("GPIO12_M5A", "F", [p[16], (p[16][0], u3[3][1]), u3[3]], w)
+    y = 19.9
+    xd = u3[2][0] + 1.1 + (u3[2][1] - y)              # 45 degrees down into U3 pin 2, ending at its toe
+    r.track("GPIO13_M5B", "F", [p[17], (p[17][0], y), (xd, y), (u3[2][0] + 1.1, u3[2][1]), u3[2]], w)
+    for pin, net, y, x, dst in ((18, "GPIO14_M6A", 20.25, 15.6, u17[3]), (19, "GPIO15_M6B", 20.6, 15.95, u17[2])):
+        r.track(net, "F", [p[pin], (p[pin][0], y), (x, y), (x, dst[1]), dst], w)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -303,8 +394,8 @@ def usb_c(r):
     yt = u52[1] - 0.55
     r.track(USB["MP"], "F", [r44m, (r44m[0], yt - abs(r44m[0] - u52[0])), (u52[0], yt)], WU)
     r.track(USB["MN"], "F", [r45m, (r45m[0], yt - abs(r45m[0] - u51[0])), (u51[0], yt)], WU)
-    r.track(USB["MP"], "F", [(u52[0], yt), u52], 0.2)       # 0.2 mm into the 0.4 mm pitch pads
-    r.track(USB["MN"], "F", [(u51[0], yt), u51], 0.2)
+    r.track(USB["MP"], "F", [(u52[0], yt), u52], WU)
+    r.track(USB["MN"], "F", [(u51[0], yt), u51], WU)
     # flipped contacts B6/A7 through vias; on the back they join the pair at vias in R44/R45's J1-side pads
     vb6 = r.via(USB["P"], b6[0] - 0.1, b6[1] + 1.265)
     va7 = r.via(USB["N"], a7[0], a7[1] + 1.065)
@@ -321,6 +412,9 @@ def usb_c(r):
     r.track(USB["N"], "B", [vn, un], WU)
     xw = up[0] - 1.7
     r.track(USB["P"], "B", [vp, (xw, vp[1]), (xw, up[1]), up], WU)
+    # U6's bonded I/O pin pairs (1/6 = D+, 3/4 = D-) joined under its body
+    r.track(USB["N"], "B", [r.pad("U6", "3"), r.pad("U6", "4")], WU)
+    r.track(USB["P"], "B", [r.pad("U6", "1"), r.pad("U6", "6")], WU)
     g2, s5 = r.pad("U6", "2"), r.pad("U6", "5")
     r.track("GND", "B", [g2, (g2[0] - 1.1, g2[1])], 0.4)
     r.via("GND", g2[0] - 1.1, g2[1])
@@ -354,12 +448,11 @@ def usb_a(r):
     r48a, r49a = r.padof("R48", USB["AP"]), r.padof("R49", USB["AN"])
     jp, jn = r.pad("J4", 3), r.pad("J4", 2)
     xs = u37[0] + 0.75
-    r.track(USB["GP"], "F", [u37, (xs, u37[1])], 0.2)          # 0.2 mm out of the 0.4 mm pitch pads
-    r.track(USB["GN"], "F", [u36, (xs, u36[1])], 0.2)
-    r.track(USB["GP"], "F", [(xs, u37[1]), (xs + 0.35, r48g[1]), r48g], WU)
-    r.track(USB["GN"], "F", [(xs, u36[1]), (r49g[0] - 0.45, r49g[1]), r49g], WU)
+    xs = r48g[0] - 0.42                              # straight east between the escape groups, then fan to R48/R49
+    r.track(USB["GP"], "F", [u37, (xs, u37[1]), (xs + abs(u37[1] - r48g[1]), r48g[1]), r48g], WU)
+    r.track(USB["GN"], "F", [u36, (xs, u36[1]), (xs + abs(u36[1] - r49g[1]), r49g[1]), r49g], WU)
     yp = jp[1] + 2.3                                 # coupled run between J4's pins and J3's pads: D+ on top
-    yn = yp + WU + 0.15
+    yn = yp + WU + GU
     r.track(USB["AP"], "F", [r48a, (r48a[0] + abs(r48a[1] - yp), yp), (jp[0] - 0.4, yp), (jp[0], yp - 0.4), jp], WU)
     r.track(USB["AN"], "F", [r49a, (r49a[0] + abs(r49a[1] - yn), yn), (jn[0] - 0.4, yn), (jn[0], yn - 0.4), jn], WU)
     # back: U11 (270 deg) and the pull-downs hang off J4's own pins
@@ -367,6 +460,9 @@ def usb_a(r):
     unb = max([r.pad("U11", "3"), r.pad("U11", "4")], key=lambda q: q[1])
     r.track(USB["AP"], "B", [jp, (jp[0], upb[1] + 0.6), upb], WU)
     r.track(USB["AN"], "B", [jn, (jn[0], unb[1] + 0.6), unb], WU)
+    # U11's bonded I/O pin pairs (1/6 = D+, 3/4 = D-) joined along its pin columns
+    r.track(USB["AP"], "B", [r.pad("U11", "1"), r.pad("U11", "6")], WU)
+    r.track(USB["AN"], "B", [r.pad("U11", "3"), r.pad("U11", "4")], WU)
     rp, rn = r.padof("R109", USB["AP"]), r.padof("R114", USB["AN"])
     r.track(USB["AP"], "B", [upb, (rp[0], upb[1]), rp], 0.2)
     r.track(USB["AN"], "B", [unb, (rn[0], unb[1]), rn], 0.2)
@@ -436,7 +532,7 @@ def buck(r):
     for dx in (-0.6, 0.6):
         for dy in (-1.1, 0.0, 1.1):
             r.via("GND", cx + dx, cy + dy, d=0.6, drill=0.3)
-    # VCC out of L1 into the In2 plane
+    # VCC out of L1 onto the B.Cu trunk (vias also reach the In3 GND plane only by clearance)
     l1v = r.padof("L1", "VCC")
     for dy in (-1.6, -0.55, 0.55, 1.6):
         r.via("VCC", l1v[0], l1v[1] + dy, d=0.6, drill=0.3)
@@ -447,7 +543,7 @@ def buck(r):
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Motor drivers. OUT1/OUT2 run straight to their PH connector at 0.6 mm. VM (pin 5) drops through two vias in the
-# 100 nF cap's VSYS pad on the back into the In2 VSYS area; the 10 uF joins on the back. IPROPI leaves pin 1 through a via
+# 100 nF cap's VSYS pad on the back into the In3 VSYS area; the 10 uF joins on the back. IPROPI leaves pin 1 through a via
 # beside the pin to its 1.2k on the back. GND (pin 7, exposed pad) is the F.Cu pour plus the footprint's thermal vias.
 # ---------------------------------------------------------------------------------------------------------------------
 DRIVERS = [("U1", "M1", "C4", "C3", "R101"), ("U15", "M2", "C76", "C75", "R102"), ("U2", "M3", "C7", "C6", "R103"),
@@ -479,6 +575,13 @@ def drivers(r):
             cands = [(bv[0] + ux * 0.95 + uy * k, bv[1] + uy * 0.95 - ux * k) for k in (0.0, 0.5, -0.5)]
             for spot in r.vias_where_free("VSYS", cands, n=1):
                 r.track("VSYS", "B", [bv, spot], 1.0)
+        # right drivers: IN2, IN1 and VREF each take a short stub west to a via, so the riser channel stays clear
+        if right:
+            for pin in ("2", "3", "4"):
+                q = r.pad(u, pin)
+                vx = q[0] - 1.97
+                r.track(r.padnet(u, pin), "F", [q, (vx, q[1])], 0.15)
+                r.via(r.padnet(u, pin), vx, q[1])
         # IPROPI: via just past pin 1's outer end, then its resistor on the back
         p1 = r.pad(u, "1")
         rp = r.padof(ri, r.padnet(u, "1"))
@@ -490,7 +593,7 @@ def drivers(r):
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Battery entry: PACK+ from J3 pad 2 to Q1's source pins as an F.Cu pour; Q1's drain pins in a VSYS pour with vias into
-# the In2 VSYS area; the gate network (R40, C72 from PACK+, C71 to VSYS) on the back under Q1.
+# the In3 VSYS area; the gate network (R40, C72 from PACK+, C71 to VSYS) on the back under Q1.
 # ---------------------------------------------------------------------------------------------------------------------
 def battery(r):
     j = r.pad("J3", "2")
@@ -515,7 +618,7 @@ def battery(r):
     r.zone("PACK+", "B", [(vpk[0] - 0.5, rp[1] - 0.55), (xe, rp[1] - 0.55), (xe, cp[1] + 0.75),
                           (vpk[0] - 0.5, cp[1] + 0.75)], priority=20, clearance=0.2, min_w=0.2, solid=True,
            name="PACK+ gate net")
-    r.via("VSYS", *r.padof("R52", "VSYS"))          # battery-sense divider top, straight into In2 VSYS
+    r.via("VSYS", *r.padof("R52", "VSYS"))          # battery-sense divider top, straight into In3 VSYS
     for ref in ("C15", "C71", "D4"):
         v = r.padof(ref, "VSYS")
         r.vias_where_free("VSYS", [v, (v[0], v[1] + 0.6), (v[0], v[1] - 0.6), (v[0] + 0.6, v[1])], d=0.6, drill=0.3, n=1)
@@ -525,9 +628,8 @@ def battery(r):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# VCC side feeds. The In2 VCC area covers J5, a band under J1/J12/U14 and a channel down to L1. F2 (USB-A VBUS PTC) and
-# U11 sit outside it under J4, so a 0.5 mm B.Cu track along the top edge carries VCC to them; U11's supply pin hops
-# over to it on F.Cu under J4's body.
+# VCC side feeds. The In3 VCC area covers J5 and a band under J1/J12/U14. F2 (USB-A VBUS PTC) and U11 sit outside it
+# under J4, so a 0.5 mm B.Cu track along the top edge carries VCC to them; U11's supply pin hops over to it on In2.
 # ---------------------------------------------------------------------------------------------------------------------
 def vcc(r):
     f2v, f2b = r.padof("F2", "VCC"), r.padof("F2", "Net-(J4-VBUS)")
@@ -537,7 +639,7 @@ def vcc(r):
     u5 = r.pad("U11", "5")
     vu = (u5[0], u5[1] + 0.85)                       # U11's VCC via (usb_a)
     vh = r.via("VCC", u5[0] + 1.45, 6.9, d=0.6, drill=0.3)
-    r.track("VCC", "F", [vu, (vh[0], vu[1] - 1.45), vh], 0.5)
+    r.track("VCC", "2", [vu, (vh[0], vu[1] - 1.45), vh], 0.5)    # on In2, not under J4's shell on F.Cu
     r.track("VCC", "B", [vh, (vh[0], yt)], 0.5)
     jv = r.pad("J4", "1")
     c59 = r.padof("C59", "Net-(J4-VBUS)")
@@ -596,15 +698,17 @@ def io(r):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Planes. In1 is solid GND. In2 is GND too, with power areas only where no B.Cu signal has to run: +3V3 under U10 (and
-# L3's +1V1 corner), VCC over J5, a band under J1/J12/U14 and a channel down to L1, VSYS over the right column, Q1's
-# drain, the bottom strip, the buck's input and the left drivers. F.Cu and B.Cu get GND fills.
+# Planes (6 layers, JLC06161H-3313): F.Cu signals over In1 (solid GND); In2 signals, with a GND fill; In3 GND with the
+# power areas; In4 solid GND under B.Cu signals. In2 sits 0.11 mm above In3 (0.55 mm below In1), so In2 signals
+# reference In3: the power areas go where In2 signals don't have to run, and tools/plane_channels.py lays In3 GND under
+# any In2 signal that does. In3 power areas: +3V3 under U10 (and L3's +1V1 corner); VCC over J5 and a band under
+# J1/J12/U14; VSYS over the right column, Q1's drain, the bottom strip, the buck's input and the left drivers.
 # ---------------------------------------------------------------------------------------------------------------------
-IN2_33 = [(17.95, 6.95), (31.2, 6.95), (31.2, 12.85), (28.15, 12.85), (28.15, 19.55), (17.95, 19.55)]
-IN2_VCC = [(0.0, 0.0), (36.5, 0.0), (36.5, 7.8), (32.6, 7.8), (32.6, 6.7), (17.75, 6.7), (17.75, 16.35), (0.0, 16.35)]
+PWR_33 = [(17.95, 6.95), (31.2, 6.95), (31.2, 12.85), (28.15, 12.85), (28.15, 19.55), (17.95, 19.55)]
+PWR_VCC = [(0.0, 0.0), (36.5, 0.0), (36.5, 7.8), (32.6, 7.8), (32.6, 6.7), (17.75, 6.7), (17.75, 16.35), (0.0, 16.35)]
 
 
-def in2_vsys(W, H):
+def pwr_vsys(W, H):
     xr = W - 15.2                                    # right block: under the four right drivers and their connectors
     return [(0.0, 16.55), (15.2, 16.55), (15.2, 29.8), (26.4, 29.8), (26.4, 25.6), (31.3, 25.6), (31.3, 29.8),
             (xr, 29.8), (xr, 21.1), (45.0, 21.1), (45.0, 16.75), (xr, 16.75), (xr, 0.0), (W, 0.0), (W, H),
@@ -616,13 +720,14 @@ def planes(r):
     W, H = bb.GetWidth() / MM, bb.GetHeight() / MM
     full = [(0, 0), (W, 0), (W, H), (0, H)]
     r.zone("GND", "1", full, priority=1, clearance=0.2, min_w=0.2, solid=True, name="In1 GND")
-    r.zone("GND", "2", full, priority=1, clearance=0.2, min_w=0.2, solid=True, name="In2 GND")
-    r.zone("+3V3", "2", IN2_33, priority=10, clearance=0.2, min_w=0.2, solid=True, name="In2 +3V3")
-    r.zone("VCC", "2", IN2_VCC, priority=10, clearance=0.2, min_w=0.25, solid=True, name="In2 VCC")
-    r.zone("VSYS", "2", in2_vsys(W, H), priority=10, clearance=0.2, min_w=0.25, solid=True, name="In2 VSYS")
+    r.zone("GND", "2", full, priority=1, clearance=0.2, min_w=0.2, solid=True, name="In2 GND fill")
+    r.zone("GND", "3", full, priority=1, clearance=0.2, min_w=0.2, solid=True, name="In3 GND")
+    r.zone("+3V3", "3", PWR_33, priority=10, clearance=0.2, min_w=0.2, solid=True, name="In3 +3V3")
+    r.zone("VCC", "3", PWR_VCC, priority=10, clearance=0.2, min_w=0.25, solid=True, name="In3 VCC")
+    r.zone("VSYS", "3", pwr_vsys(W, H), priority=10, clearance=0.2, min_w=0.25, solid=True, name="In3 VSYS")
+    r.zone("GND", "4", full, priority=1, clearance=0.2, min_w=0.2, solid=True, name="In4 GND")
     r.zone("GND", "F", full, priority=1, clearance=0.2, min_w=0.2, solid="tht", name="F GND")
     r.zone("GND", "B", full, priority=1, clearance=0.2, min_w=0.2, solid="tht", name="B GND")
-
 
 def main():
     b = pcbnew.LoadBoard(str(PCB))
@@ -636,6 +741,9 @@ def main():
         b.Remove(g)
     r = Recipe(b)
     V = u10_fanout(r)
+    u10_escapes(r)
+    u10_west(r)
+    u10_southwest(r)
     usb_c(r)
     usb_a(r)
     crystal(r, V)

@@ -7,25 +7,23 @@
 	(constraint edge_clearance (min 0.3mm)))
 
 # USB pairs (USB_P/N, the MCU-side halves USB_MCU_P/N through R44/R45, USBA_P/N and USBA_GPIO_P/N):
-# 0.22 mm tracks at a 0.15 mm gap give about 90 ohm differential on F.Cu or B.Cu over a solid GND plane,
-# on JLC's standard 4-layer 1.6 mm stackup JLC04161H-7628 (7628 prepreg 0.2104 mm, er 4.4, 1 oz outer copper).
-# Worked out with the Hammerstad-Jensen / Kirschning-Jansen coupled-microstrip equations (the ones KiCad's
-# calculator uses), scaled by the -13 % they read against JLC's own calculator on the old 6-layer stack.
-# Check it in JLC's impedance calculator before ordering. F.Cu pairs reference In1 (GND). B.Cu pairs reference
-# In2, so keep In2 solid GND under them, or route the pairs on F.Cu.
+# 0.124 mm tracks at a 0.127 mm gap give 90 ohm differential on F.Cu over In1 (and on B.Cu over In4), on JLC's
+# standard 6-layer 1.6 mm stackup JLC06161H-3313 (3313 prepreg 0.0994 mm, 1 oz outer copper, finished 1.54 mm).
+# The numbers come from JLC's impedance calculator (Differential Pair, non coplanar, L1 referenced to L2, spacing
+# 0.127 mm -> width 0.1234 mm), checked on 2026-10-20. Order with impedance control on (free on 6 layers).
 # The USB class clearance is only for the partner track; everything else keeps 0.2 mm.
 (rule "USB pair to other nets"
 	(condition "A.NetClass == 'USB' && B.NetClass != 'USB'")
 	(constraint clearance (min 0.2mm)))
 (rule "USB pair geometry"
 	(condition "A.NetClass == 'USB'")
-	(constraint track_width (min 0.2mm) (opt 0.22mm) (max 0.25mm)))
+	(constraint track_width (min 0.11mm) (opt 0.124mm) (max 0.2mm)))
 # The P/N names make each pair a KiCad differential pair, so the diff-pair router (6) routes at this gap.
 # Where a pair must split to reach pads (USB-C receptacle flip pins, the ESD arrays, the series resistors, vias),
 # the segments touching a "USB fan-out" rule area are exempt; the coupled runs between them are checked.
 (rule "USB 90 ohm diff pairs"
 	(condition "A.NetClass == 'USB' && A.inDiffPair('*') && !A.intersectsArea('USB fan-out')")
-	(constraint diff_pair_gap (min 0.13mm) (opt 0.15mm) (max 0.17mm)))
+	(constraint diff_pair_gap (min 0.11mm) (opt 0.127mm) (max 0.145mm)))
 
 # Power widths: any track drawn on these nets must be at least this wide. Pours and zones are exempt.
 (rule "Pack path width"

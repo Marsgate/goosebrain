@@ -80,8 +80,8 @@ put("SW1", "F", W - 11.56, H + 0.25 - 2.475, 180)   # lever out through the bott
 put("SW2", "F", W - 3.4, H + 0.25 - 2.325, 0)       # under M4, push from the bottom wall
 
 # USB-A series resistors at the source, east of U10's pins 36/37
-put("R48", "F", 28.6, U10Y + 0.34, 0)
-put("R49", "F", 28.6, U10Y + 1.38, 0)
+put("R48", "F", 30.4, U10Y + 0.1, 0)                  # east of the escape vias for pins 32-35 and 40-43
+put("R49", "F", 30.4, U10Y + 1.14, 0)
 put("FID1", "F", 1.9, 1.9, 0)                      # left strip, where J5's plugs come in
 put("FID2", "F", 1.9, 14.6, 0)
 put("FID3", "F", 49.5, 28.4, 0)                    # below Q1, west of SW1
@@ -113,7 +113,7 @@ CAP_ON_VIA = [("C42", -2.45, 2.4, 0), ("C54", 0.05, 2.35, 90), ("C43", 2.45, 2.4
 PAD1 = {0: (-0.48, 0.0), 90: (0.0, 0.48), 180: (0.48, 0.0), 270: (0.0, -0.48)}
 for ref, vx, vy, rot in CAP_ON_VIA:
     put(ref, "B", U10X + vx - PAD1[rot][0], U10Y + vy - PAD1[rot][1], rot)
-put("C46", "B", U10X + 4.6, U10Y + 3.6, 90)         # extra +3V3 100 nF on the In2 island, SE
+put("C46", "B", 41.7, 28.9, 90)                    # extra +3V3 100 nF at U9's output
 put("C47", "B", U10X - 4.1, U10Y - 0.1, 90)         # extra +3V3 100 nF, W
 put("C50", "B", U10X - 4.1, U10Y + 2.1, 90)         # +3V3 4.7 uF, SW
 put("C52", "B", 30.4, U10Y - 2.56, 270)                    # +1V1 out under L3's +1V1 pad
@@ -167,18 +167,19 @@ put("R28", "B", 22.75, 27.0, 0)
 put("C16", "B", 22.75, 28.0, 0)
 put("R25", "B", 29.4, 24.6, 0)
 # motor VREF divider between J4 and Q1
-put("R107", "B", W - 15.9, 19.9, 0)                # motor VREF divider at the foot of the riser channel
-put("R108", "B", W - 15.9, 20.9, 0)
-put("C81", "B", W - 15.9, 21.9, 0)
+put("R107", "B", W - 15.9, 20.9, 0)                # motor VREF divider at the foot of the riser channel
+put("R108", "B", W - 15.9, 21.9, 0)
+put("C81", "B", W - 15.9, 22.9, 0)
 # IO series resistors in a column beside J5's signal pins, each level with its pin
 for k, r in enumerate(["R55", "R56", "R57", "R58", "R59", "R60"]):
     put(r, "B", 16.3, J5_Y + 2.54 * k, 180)          # pad 2 (J5 side) west, pad 1 (U10 side) east
 put("FID4", "B", 2.0, 8.0, 0)
 put("FID5", "B", 47.2, 30.6, 0)                    # under J3's right edge, by SW1
 put("FID6", "B", J1X, 2.2, 0)                      # under J1, between its shell pins
-# SWD/RUN/GND test pads south-east of Y1, where the SWD lines leave U10's south side
-for k, tp in enumerate(["TP1", "TP2", "TP3", "TP4"]):
-    put(tp, "B", 25.2 + 2.1 * (k % 2), U10Y + 5.64 + 2.1 * (k // 2), 0)
+# SWD/RUN/GND test pads in a row south-east of U10, clear of its south-side escape vias
+for k, tp in enumerate(["TP1", "TP2", "TP3"]):
+    put(tp, "B", 24.7 + 2.15 * k, 23.0, 0)
+put("TP4", "B", 24.8, 25.3, 0)                      # GND, beside U4's exposed-pad vias
 
 
 def staged_back(refs, x0, y0, step=3.2, per_row=12):
