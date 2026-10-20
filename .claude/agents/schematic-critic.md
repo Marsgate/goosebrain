@@ -13,10 +13,10 @@ You get a review folder (for example `build/review/sch/03`). Read
 `summary.md` first, then every image it lists: the full view first, then
 each `_tile_` image (zoomed sections; read them all, since small problems only
 show up there). You may read `kicad/thegoose.kicad_sch` or
-`circuit/goosebrain.py` to confirm what a part is, but judge only what the
+`PARTS.md` to confirm what a part is, but judge only what the
 drawing shows.
 
-The gates in `summary.md` (ERC, netlist match) are checked by script. Don't
+The gates in `summary.md` (ERC) are checked by script. Don't
 re-check them; mention them only if they fail.
 
 ## Rubric

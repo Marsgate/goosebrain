@@ -62,7 +62,7 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | LED stick connector (J12) | B3B-PH-K-S(LF)(SN) | JST | THT vertical | C131339 | ext | THT | Pin 1 5 V, 2 DIN, 3 GND |
 | Test pads TP1–TP4 | — | — | 1 mm round, bottom | — | — | — | SWCLK, SWDIO, RUN, GND |
 | Fiducials FID1–FID6 | — | — | 1 mm, 2 mm mask | — | — | — | Three per side: FID1–3 front, FID4–6 back |
-| Passives | UNI-ROYAL 0402WGF…/0603WAF…, Samsung CL05/CL10/CL21/CL31, FH | — | 0402–1206 | See `PASSIVES` in `circuit/goosebrain.py` | basic or preferred | JLC | Buck outputs C5/C8/C12 22 µF 1206/10 V (1.6 mm tall, partly under the pack; foam takes it) |
+| Passives | UNI-ROYAL 0402WGF…/0603WAF…, Samsung CL05/CL10/CL21/CL31, FH | — | 0402–1206 | See the BOM (`python3 tools/fab.py` writes `build/fab/bom.csv`) | basic or preferred | JLC | Buck outputs C5/C8/C12 22 µF 1206/10 V (1.6 mm tall, partly under the pack; foam takes it) |
 
 ### L1
 

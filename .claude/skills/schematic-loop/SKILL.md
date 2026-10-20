@@ -1,14 +1,13 @@
 ---
 name: schematic-loop
-description: Improve the KiCad schematic (kicad/thegoose.kicad_sch) by repeated render → critique → fix iterations through the KiCad MCP server, until it reads well and every gate still passes. Use when asked to draw, tidy, lay out or improve the schematic, or to bring the drawing in line with circuit/goosebrain.py.
+description: Improve the KiCad schematic (kicad/thegoose.kicad_sch) by repeated render → critique → fix iterations through the KiCad MCP server, until it reads well and every gate still passes. Use when asked to draw, tidy, lay out or improve the schematic.
 ---
 
 # Schematic loop: screenshot, analyse, improve
 
-The drawing is the human-readable view of the circuit. `circuit/goosebrain.py`
-(SKiDL) is the text source of truth for connectivity. The loop changes how
-the drawing looks; it never changes what is connected unless the task says
-so, and then the change goes into SKiDL **first**.
+The KiCad schematic is the source of truth for the circuit (the old SKiDL
+generator is gone). The loop changes how the drawing looks; it never changes
+what is connected unless the task says so.
 
 ## Before starting
 
@@ -24,13 +23,14 @@ so, and then the change goes into SKiDL **first**.
    .venv/bin/python tools/review.py sch
    ```
 
-   It prints the folder it wrote (e.g. `build/review/sch/01`). Both gates
-   (ERC errors, netlist matches SKiDL) must pass before you start. If the
-   netlist doesn't match, ask whether SKiDL or the drawing is right.
+   It prints the folder it wrote (e.g. `build/review/sch/01`). The ERC gate
+   must pass before you start. It also saves the netlist as
+   `schematic.net`: keep it, and diff the final run's netlist against it to
+   prove the loop changed no connections.
 
-If the task is an electrical change: edit `circuit/goosebrain.py`, run it,
-then make the drawing match through MCP until the netlist gate passes again.
-Then continue with the loop below for readability.
+If the task is an electrical change: make it in the schematic through MCP,
+check ERC and the board's schematic parity, then continue with the loop
+below for readability.
 
 ## Each iteration
 

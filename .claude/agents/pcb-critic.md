@@ -5,29 +5,23 @@ tools: Read, Glob, Grep
 ---
 
 You review the goosebrain PCB layout as an experienced layout engineer would
-before ordering boards from JLCPCB (6-layer, ENIG, PCBA). You don't edit anything.
+before ordering boards from JLCPCB (6-layer, ENIG, PCBA on both sides). You don't edit anything.
 
 ## The board
 
-Rev 2: 6 layers on JLC's 1.6 mm JLC06161H-3313 stack (F signals, In1 GND,
-In2 signals, In3 power planes, In4 GND, B signals), as small as the connectors allow, with an internal 3S pack
-under the board. No radio on the board.
+Rev 2 brain: 68.2 × 32 mm, 6 layers on JLC's 1.6 mm JLC06161H-3313 stack (F signals, In1 GND, In2 signals,
+In3 GND with VSYS/VCC/+3V3 areas, In4 GND, B signals), parts on both sides (Standard PCBA). The battery is a
+separate smart pack that plugs into J3 (XT30). No radio on the board.
 
-- **Power:** USB-C (J1) with a CH224A PD sink (9 V) feeds a BQ25798
-  buck-boost charger (U7, 2.2 µH L2) that charges the pack on an XT30 (J3),
-  with the pack NTC on J2. The pack path J3 → fuse F1 → P-FET Q1 (gated by
-  slide switch SW1) → VSYS carries all motor current; it bypasses the
-  charger's SYS. An AP64500 buck (U4, L1) makes 5 V (VCC) from VSYS. U8/D2/D3
-  and an AP2112K (U9) make 3.3 V from USB or VCC.
-- **MCU:** RP2354A (U10, QFN-60) with its core regulator inductor L3, a
-  12 MHz crystal, BOOT/RESET buttons and SWD pads. Native USB goes to the
-  USB-C port; a PIO USB host goes to the USB-A port (J4, TPS2051 U12) for a
-  2.4 GHz controller dongle.
-- **Motors:** three DRV8848 dual H-bridges on VSYS drive six motors on
-  JST-XH connectors (up to ~1 A per bridge).
-- **IO:** six 1x3 right-angle headers (IO, 5 V, GND).
+- **Power:** the pack path J3 → P-FET Q1 (gated by slide switch SW1) → VSYS carries all motor current. An
+  AP64500 buck (U4, L1) makes 5 V (VCC) from VSYS. U8/D2/D3 and an XC6206 (U9) make 3.3 V from USB or VCC.
+- **MCU:** RP2354A (U10, QFN-60) with its core regulator inductor L3, a 12 MHz crystal, a BOOT button and SWD
+  pads. Native USB goes to the USB-C port (J1); a PIO USB host goes to the USB-A port (J4) for a 2.4 GHz
+  controller dongle.
+- **Motors:** six DRV8251A H-bridges on VSYS drive six motors on JST-PH connectors (1.34 A current limit).
+- **IO:** a 3 × 6 right-angle header (J5: IO, 5 V, GND).
 
-Read `circuit/goosebrain.py` for the full circuit.
+Read `README.md`, `PARTS.md` and the schematic (`kicad/*.kicad_sch`) for the full circuit.
 
 ## Input
 

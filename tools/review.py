@@ -10,7 +10,8 @@ Each run writes a numbered folder under build/review/<sch|pcb>/ (or --out):
     images/*.png   full views plus zoomed tiles, sized for reading
 
 Gates (the hard checks every iteration must pass):
-    sch: ERC has no errors; the schematic netlist matches the SKiDL netlist.
+    sch: ERC has no errors. The schematic netlist is saved as schematic.net,
+         so a run can be diffed against an earlier one.
     pcb: DRC has no errors and no new warnings compared with --baseline;
          nothing is unrouted; schematic parity is clean; power nets meet
          their minimum track width.
@@ -34,20 +35,16 @@ KICAD_CLI = KICAD_APP / "MacOS/kicad-cli"
 KICAD_PYTHON = KICAD_APP / "Frameworks/Python.framework/Versions/Current/bin/python3"
 SCH = ROOT / "kicad/thegoose.kicad_sch"
 PCB = ROOT / "kicad/thegoose.kicad_pcb"
-SKIDL_NET = ROOT / "build/goosebrain.net"
 
-# Minimum track width (mm) per power net. Starting points, not datasheet
-# limits; pours (GND, the pack path) leave only short stubs. The pack path
-# carries all motor current, with stall peaks of several amps. The charger
-# nets carry up to 3 A once firmware raises the input limit. Motor outputs
-# carry up to ~1 A per DRV8848 bridge.
+# Minimum track width (mm) per power net, matching the net classes in
+# thegoose.kicad_pro. Pours (GND, the pack path) leave only short stubs. The
+# pack path carries all motor current, with stall peaks of several amps.
+# Motor outputs carry up to the DRV8251As' 1.34 A current limit.
 POWER_NETS = {
-    "/Power & charging/PACK+": 1.0, "VBAT": 1.0, "VSYS": 1.0,  # pack, fuse, switch
-    "VBUS": 0.5, "/Power & charging/CHG_SYS": 0.5, "Net-(U7-PMID)": 0.5,
-    "Net-(U7-SW1)": 0.5, "Net-(U7-SW2)": 0.5,
-    "VCC": 0.5, "GND": 0.4,
+    "PACK+": 1.0, "VSYS": 1.0,  # pack, through Q1
+    "VCC": 0.5, "Net-(J4-VBUS)": 0.5, "GND": 0.4,
 }
-POWER_NET_PREFIXES = {"Net-(M": 0.4}
+POWER_NET_SUFFIXES = {"_OUT1": 0.4, "_OUT2": 0.4}  # motor outputs, /Motor drivers/U*_OUT1/2
 
 # Schematic-parity findings that aren't real mismatches: board-only parts
 # (mounting holes, logo) and the empty Datasheet field.
@@ -57,10 +54,6 @@ PARITY_IGNORE_FIELDS = ("Field 'Datasheet' differs",)
 TILE_PX = 1400  # tiles are cut so text stays legible when viewed
 SCH_DPI = 300  # schematic pages are A4/A3
 PCB_DPI = 1200  # boards are small; this shows pad-level detail
-
-sys.path.insert(0, str(ROOT / "circuit"))
-from compare_netlists import fmt, load  # noqa: E402
-
 
 def run(*args, **kwargs):
     return subprocess.run([str(a) for a in args], capture_output=True, text=True, **kwargs)
@@ -126,11 +119,6 @@ def svg_to_png(svg, png, dpi):
 def review_sch(out):
     results = {"kind": "sch", "gates": {}, "images": []}
 
-    # SKiDL is the text source of truth; regenerate its netlist first.
-    skidl = run(ROOT / ".venv/bin/python", ROOT / "circuit/goosebrain.py")
-    if skidl.returncode != 0:
-        results["gates"]["skidl"] = {"pass": False, "detail": skidl.stderr[-2000:]}
-
     erc_json = out / "erc.json"
     run(KICAD_CLI, "sch", "erc", "--format", "json", "--severity-all", "-o", erc_json, SCH)
     violations = [v for s in json.loads(erc_json.read_text())["sheets"] for v in s["violations"]]
@@ -147,34 +135,13 @@ def review_sch(out):
     results["gates"]["erc_errors"] = {"pass": by_severity.get("error", 0) == 0,
                                       "detail": f"{by_severity.get('error', 0)} error(s)"}
 
-    sch_net = out / "schematic.net"
-    run(KICAD_CLI, "sch", "export", "netlist", "-o", sch_net, SCH)
-    results["gates"]["netlist_matches_skidl"] = compare_nets(sch_net, SKIDL_NET)
+    run(KICAD_CLI, "sch", "export", "netlist", "-o", out / "schematic.net", SCH)
 
     svg_dir = out / "svg"
     run(KICAD_CLI, "sch", "export", "svg", "--exclude-drawing-sheet", "-o", svg_dir, SCH)
     for svg in sorted(svg_dir.glob("*.svg")):
         results["images"] += [str(p.relative_to(out)) for p in svg_to_png(svg, out / "images" / f"{svg.stem}.png", SCH_DPI)]
     return results
-
-
-def compare_nets(actual_path, reference_path):
-    actual_parts, actual_nets = load(actual_path)
-    ref_parts, ref_nets = load(reference_path)
-    diffs = []
-    for ref in sorted(set(ref_parts) ^ set(actual_parts)):
-        diffs.append(f"part {ref} only in {'SKiDL' if ref in ref_parts else 'KiCad'}")
-    for ref in sorted(set(ref_parts) & set(actual_parts)):
-        for key in ("value", "footprint", "mpn", "lcsc"):
-            a, b = actual_parts[ref][key].strip(), ref_parts[ref][key].strip()
-            if a != b:
-                diffs.append(f"part {ref} {key}: KiCad {a!r}, SKiDL {b!r}")
-    a_conns = {n for n in actual_nets.values() if len(n) > 1}
-    r_conns = {n for n in ref_nets.values() if len(n) > 1}
-    diffs += [f"only in SKiDL: {fmt(n)}" for n in r_conns - a_conns]
-    diffs += [f"only in KiCad: {fmt(n)}" for n in a_conns - r_conns]
-    return {"pass": not diffs, "detail": "MATCH" if not diffs else f"{len(diffs)} difference(s)",
-            "diffs": diffs}
 
 
 # PCB -------------------------------------------------------------------------
@@ -262,7 +229,7 @@ def review_pcb(out, baseline):
     thin = []
     for net, info in metrics["nets"].items():
         need = POWER_NETS.get(net) or next(
-            (w for p, w in POWER_NET_PREFIXES.items() if net.startswith(p)), None)
+            (w for sfx, w in POWER_NET_SUFFIXES.items() if net.endswith(sfx)), None)
         if need and info["min_width"] is not None and info["min_width"] + 1e-6 < need:
             thin.append(f"{net}: {info['min_width']:.2f} mm < {need} mm")
     results["gates"]["power_track_width"] = {"pass": not thin, "detail": thin or "ok"}
