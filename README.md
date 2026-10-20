@@ -220,7 +220,7 @@ It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the
 |---|---|
 | Layers | 6 |
 | Thickness | 1.6 mm |
-| Surface finish | Lead-free HASL is fine (no ENIG requirement) |
+| Surface finish | **ENIG**: the front pads go through reflow twice (both sides assembled), and the hand-placed and through-hole parts are soldered after that. OSP degrades with each reflow and HASL is uneven on the QFNs. |
 | Impedance control | Yes, stackup JLC06161H-3313 |
 | Via covering | **Epoxy-filled and capped (POFV)**: the board has vias in pads. It's free on 6 layers. |
 | Assembly | **Standard PCBA, both sides** |
