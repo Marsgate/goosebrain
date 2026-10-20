@@ -6,7 +6,7 @@ This repo holds two boards that ship as one system:
 - **The smart pack** (`kicad-pack/goosepack.kicad_pro`): a small board that sits on the Ovonic 3S 450 mAh cells. It carries the charger, the protector, the 15 A fuse and its own USB-C charging port, and it plugs into the brain over an XT30 lead. Packs can be swapped, and spares can be sold.
 - **The 2S smart pack** (`kicad-pack-2s/goosepack2s.kicad_pro`, started 2026-10-19): the same pack for 2-cell batteries. The charger is set for 2S by resistors, the protector is a HYCON HY2120-LB, and two HYCON HY2213 balancers replace the BQ7791501's balancing. See "The 2S pack board" below and PARTS.md. The brain runs from either pack.
 
-The schematics are done. The brain's placement is done except for rough spots for the new parts. All routing is left for you: tracks, vias, planes and pours.
+The schematics are done. **The brain is placed on both sides and fully routed on 6 layers** (branch `double-sided`, 2026-10-20): 0 DRC errors, 0 unconnected items, ERC clean. See "The brain board" below and [ROUTING_LOG.md](ROUTING_LOG.md). The two pack boards are still unplaced and unrouted.
 
 It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsgate/goosebrain), branch `rev2-rp2350` (commit `0ed7122` plus the uncommitted changes at the time), and then split into brain + pack the same day. Nothing here syncs back to that repo.
 
@@ -26,17 +26,18 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 ## Firmware changes
 
 - **GPIO map (double-sided board, 2026-10-20):** the pins were reshuffled so each signal leaves U10 on the side facing where it goes. The MCU sheet's GPIO MAP note has the full list:
-  - Motors (IN1/IN2, one PWM slice each): M1 GPIO10/11 (slice 5), M2 GPIO0/1 (slice 0), M3 GPIO22/23 (slice 3), M4 GPIO20/21 (slice 2), M5 GPIO12/13 (slice 6), M6 GPIO14/15 (slice 7). Before: M1 4/5, M2 7/6, M3 0/1, M4 14/15, M5 10/11, M6 13/12.
-  - LED stick data: GPIO7 (was GPIO18).
-  - USB-A host: GPIO27 = D+, GPIO26 = D− (was GPIO2/3). D− is the lower pin, so configure Pico-PIO-USB with `pin_dp = 27` and `pinout = PIO_USB_PINOUT_DMDP`. GPIO26/27 aren't 5 V tolerant, but USB full-speed signals at 3.3 V.
-- **Spare GPIOs:** GPIO2–6, GPIO8, GPIO9 and GPIO29 are no-connects.
-- **IO ports:** IO1–IO6 are GPIO16, 17, 18, 19, 24 and 25 (2026-10-20; before that GPIO16, 21, 22, 24, 25 and 19). All six are 5 V tolerant, because none is on an ADC pin. IO4–IO6 can run servos from hardware PWM (slices 1B, 4A and 4B; IO5 and IO6 share slice 4, so they share a frequency), and no motor uses slice 1 or 4. IO1–IO3 share slices with M2 (0A, 0B) or IO4 (1A), so drive their servos from PIO.
+  - Motors (IN1/IN2, one PWM slice each): M1 GPIO26/27 (slice 5), M2 GPIO22/23 (slice 3), M3 GPIO20/21 (slice 2), M4 GPIO16/17 (slice 0), M5 GPIO12/13 (slice 6), M6 GPIO14/15 (slice 7).
+  - LED stick data: GPIO29.
+  - USB-A host: GPIO25 = D+, GPIO24 = D−. D− is the lower pin, so configure Pico-PIO-USB with `pin_dp = 25` and `pinout = PIO_USB_PINOUT_DMDP`.
+  - Battery sense: GPIO28 (ADC2), unchanged.
+- **Spare GPIOs:** GPIO4–7, GPIO10, GPIO11, GPIO18 and GPIO19 are no-connects.
+- **IO ports:** IO1–IO6 are GPIO0, 1, 2, 3, 8 and 9. All six are 5 V tolerant, because none is on an ADC pin (GPIO26–29). IO4–IO6 can run servos from hardware PWM (slices 1B, 4A and 4B; IO5 and IO6 share slice 4, so they share a frequency), and no motor uses slice 1 or 4. IO1 and IO2 share slice 0 with M4, and IO3 shares slice 1 with IO4, so drive their servos from PIO.
 - **No I2C charger:** drop the charger driver. The battery voltage now comes only from the GPIO28 divider (VSYS / 4.7, so 12.6 V reads 2.68 V). It reads 0 with the switch off.
 - **The pack cuts off in hardware:** the 3S pack at 2.8 V per cell (8.4 V), the 2S pack at 2.8 V per cell (5.6 V; the HY2120 turns back on at 3.0 V per cell). Warn the user well above that, at about 3.3 V per cell.
 - **Work out the cell count at power-on** from the GPIO28 reading: above about 8.6 V it's a 3S pack, otherwise 2S. The only pack this reads wrong is a nearly flat 3S one, and the cutoff is in hardware, so the cost is only a wrong warning level.
 - **Motor speed:** the motors run about 40 % slower on a 2S pack. To make the robot behave the same on either pack, cap the 3S PWM to match.
 - **Motors:** six DRV8251As, one per motor, on the GPIO pairs above (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.2 kΩ on IPROPI, so 1.34 A). They run from 4.5 V, so a 2S pack works.
-- **USB-A:** the port is always powered through a 0.5 A PTC. There is no USBA_VBUS_EN. R109/R114 (15 kΩ) are the host pull-downs on D+/D−, so Pico-PIO-USB doesn't need the GPIO pull-downs on GPIO26/27.
+- **USB-A:** the port is always powered through a 0.5 A PTC. There is no USBA_VBUS_EN. R109/R114 (15 kΩ) are the host pull-downs on D+/D−, so Pico-PIO-USB doesn't need the GPIO pull-downs on GPIO24/25.
 
 ## Bring-up tests
 
@@ -59,41 +60,66 @@ The pack's library tables point at `${KIPRJMOD}/../kicad/`.
 
 ## The brain board
 
-- **Board:** 73.4 × 43 mm with 2 mm corner radii, **4 layers**, 1.6 mm thick, and no mounting holes. It was 88.5 × 47 mm until 2026-10-19: 1,003 mm² (24 %) smaller, 15.1 mm shorter and 4 mm narrower.
+- **Board:** 68.2 × 32 mm with 1 mm corner radii, **6 layers**, 1.6 mm thick, no mounting holes, **parts on both sides**.
+  - It was 73.5 × 43.1 mm (3,169 mm²) before the double-sided build. Now it's 2,182 mm²: 31 % smaller, 5.3 mm shorter and 11.1 mm narrower.
+  - It was 88.5 × 47 mm until 2026-10-19.
 - **Parts:** the part numbers and the reasons behind them are in [PARTS.md](PARTS.md). It mentions `circuit/goosebrain.py`, which is goosebrain's circuit-as-code source and isn't in this repo.
+- **How it was built:** the placement, the routing passes, the 4-to-6-layer decision and the trade-offs are in [ROUTING_LOG.md](ROUTING_LOG.md). The copper is generated by scripts:
+  - `tools/place_double.py` places every part.
+  - `python3 tools/route_all.py` rebuilds all the copper from that placement in about 10 minutes: the scripted critical routing (`tools/route_recipe.py`), a small grid router for the rest (`tools/grid_router.py`), GND channels and stitching, and the silkscreen.
+  - Hand edits to tracks are lost on the next rebuild, so change the scripts instead.
 
-### Stackup: JLC04161H-7628
+### Stackup: JLC06161H-3313
 
 | Layer | Use | Thickness |
 |---|---|---|
-| F.Cu | signals, parts | 35 µm (1 oz) |
-| prepreg 7628 | εr 4.4 | 0.2104 mm |
+| F.Cu | parts, USB pairs, short signals, GND pour | 35 µm (1 oz) |
+| prepreg 3313 | εr 4.1 | 0.0994 mm |
 | In1.Cu | **solid GND** | 15 µm |
-| core | εr 4.6 | 1.065 mm |
-| In2.Cu | power (VSYS, VCC, PACK+, +3V3 areas) and some signals, over a GND background | 15 µm |
-| prepreg 7628 | εr 4.4 | 0.2104 mm |
-| B.Cu | signals | 35 µm (1 oz) |
+| core | | 0.55 mm |
+| In2.Cu | signals, GND fill | 15 µm |
+| prepreg 2116 | | 0.1088 mm |
+| In3.Cu | GND with the VSYS, VCC and +3V3 areas; GND channels under every In2 signal | 15 µm |
+| core | | 0.55 mm |
+| In4.Cu | **solid GND** | 15 µm |
+| prepreg 3313 | εr 4.1 | 0.0994 mm |
+| B.Cu | back-side parts, signals, GND pour | 35 µm (1 oz) |
 
-It was 6 layers (JLC06161H-3313). In3 and In4 and their GND pours are gone.
+JLC quotes 1.54 mm finished.
+
+The 4-layer stack (JLC04161H-7628) was tried first. It still left 27–60 connections unrouted after three placement passes, scripted critical routing and 30-minute Freerouting runs, and B.Cu signals would have crossed In2's power areas. Impedance control and filled vias in pads are free on 6 layers.
 
 ### What's on the board now
 
-- **Placement (compacted 2026-10-19):** the blocks were pulled together once the charger and protector were gone. Each block moved as a unit, so the parts inside it keep their relative spots.
-  - **Top edge, left to right:** J12 (LED stick) in the top-left corner above M5, then SW1, SW2 (BOOT), J1 (USB-C) and J4 (USB-A).
-  - **Left end:** M5 with U3 beside it, M6 with U17 beside it, then the J5 IO header. R55–R60 sit in a column just right of J5, and U14/C69 (LED buffer) under J12.
-  - **Right end:** M1–M4 with U1/U15/U2/U16. Each driver's IPROPI resistor and two VM caps sit in a row just below it, next to its VM pin (pin 5).
-  - **Bottom edge:** J3, the horizontal XT30, at the left, with its mouth out through the bottom wall. Q1 and its gate parts sit just above it. Between J3 and the buck, a narrow column holds D4 (VSYS TVS), C15 (VSYS bulk), R107/R108/C81 (the shared VREF divider) and FID2.
-  - **Middle:** J4, then the RP2354A block directly under it, then the buck block (U4, L1, C73/C74 at its input pins, C5/C8/C12 and the rest, unchanged as a unit). U6, R99/R100 and U8 stay under J1.
-  - **Bottom-right corner:** two rows. On top, U11, R48, R49, F2 and C59 (the USB-A ESD, series resistors, PTC and VBUS cap). Below them, U9, C39, D2 and D3 (the 3.3 V rail). U11 is about 25 mm from J4, so the port's ESD clamp is further away than ideal.
-  - **No mounting holes:** the case holds the board (see the mechanical notes). FID1 sits under J5, FID2 beside J3 and FID3 under SW2. The goose logo is on the back, under the buck.
-- **Removed:** the charger, PD sink, protector, fuse, VBUS TVS, balance connector, the SY6280 and its resistors, the DRV8848s and their sense and VREF networks, R54, R80, C58, C60, C70, and the "BAL", "CHG" and charge-LED silk and fab notes.
-- **Airwires:** DRC reports 294 unconnected items.
-- **GND pours:** F.Cu, In1, In2 and B.Cu each have a board-wide GND pour, redrawn to the new outline. They're unfilled, so press **B** to fill them.
-- **"USB fan-out" rule areas:** five sit around the USB pads (J1, U6, R44/R45, J4, U11, R48/R49), moved with their parts. They don't block anything. They only exempt the short fan-out segments where a pair has to split from the diff-pair gap check. Move or delete them to suit your own fan-out.
-- **DRC:** no clearance or courtyard errors, and no parts outside the outline. Warnings: 29 silkscreen-to-edge, 42 silk over copper and 35 silk overlaps (mostly reference text crowded by the compaction; tidy them while routing). The schematic-parity check is clean.
-- **The schematics pass ERC with no violations,** both brain and pack.
-
-**Routing is left for you.** Nothing is routed on either board.
+- **Top wall, left to right:** J1 (USB-C), J12 (LED stick, vertical PH) and J4 (USB-A). J1's and J4's plug centres are 19.5 mm apart, so an 8BitDo dongle (24 mm wide) fits next to a USB-C plug.
+- **Left wall:** J5 (the 3 × 6 right-angle IO header) at the top, then M5 and M6.
+- **Right wall:** M1–M4.
+- **Bottom wall:** J3 (horizontal XT30) with its mouth out through the wall, SW1's lever, and SW2 (BOOT) in the bottom-right corner.
+- **Front:**
+  - U10 (RP2354A, at 0°) under J1, with Y1 and L3 next to it.
+  - The buck (U4, L1, C73/C74, C14) below U10.
+  - U3/U17 beside M5/M6, and U1/U15/U2/U16 beside M1–M4.
+  - Q1 east of J3.
+- **Back** (all assembled by JLC except D4, U14 and F2), each part under or next to what it serves:
+  - U10's decoupling, each cap on its supply via
+  - U6 (USB-C ESD) and R99/R100 under J1
+  - U11, R109/R114, F2 and C59 under J4
+  - U14 and C69 under J12
+  - the 3.3 V LDO cluster (U8, U9, D2, C37–C40) under J3
+  - the buck's output caps and feedback parts under L1
+  - R55–R60 beside J5
+  - the drivers' VM caps and IPROPI resistors
+  - D4 and the Q1 gate network
+  - TP1–TP4
+  - The tallest back parts are the 1206 caps C5/C8/C12, at 1.6 mm.
+- **Fiducials:** FID1–FID3 on the front and FID4–FID6 on the back. The goose logo is on the back silkscreen near the left edge.
+- **Routing:** complete.
+  - `kicad-cli pcb drc --schematic-parity --severity-error` with zones refilled: 0 errors, 0 unconnected, 0 parity issues.
+  - ERC: 0 violations.
+  - The only DRC warnings are 8 footprints that differ from their library copies. Their silk was trimmed at the outline, and the logo was scaled to fit.
+  - 24 references are hidden: FID1–6, the caps under U10 and a few others with no clear 0.8 mm spot. They're still on the fab layers.
+- **Vias:** 0.45/0.25 mm for signals, 0.6/0.3 mm for power. Several sit in pads, so order filled and capped vias (POFV), which are free on 6 layers.
+- **"USB fan-out" rule areas:** they only exempt the short fan-out segments where a pair has to split from the diff-pair gap check.
 
 ## Routing rules
 
@@ -107,22 +133,21 @@ The net classes are set in the project file, and the custom DRC rules are in `ki
 | GND | GND | 0.4 mm min | 0.2 mm | 0.6 / 0.3 mm |
 | Motor | U*_OUT1/2 | 0.4 mm min | 0.2 mm | 0.6 / 0.3 mm |
 | Rail | +3V3, +1V1, VBUS | 0.2 mm | 0.2 mm | 0.45 / 0.25 mm |
-| USB | USB pairs | 0.22 mm | 0.15 mm (0.2 mm to other nets) | 0.45 / 0.25 mm |
+| USB | USB pairs | 0.124 mm, 0.127 mm gap | 0.12 mm (0.2 mm to other nets) | 0.45 / 0.25 mm |
 
 - **USB pairs:**
-  - Route them as differential pairs: **0.22 mm tracks with a 0.15 mm gap**.
-  - That gives about 90 Ω on F.Cu over In1 GND on JLC04161H-7628. The numbers come from the coupled-microstrip equations KiCad's calculator uses (105 Ω raw), scaled by the 13 % those equations read high against JLC's calculator on the old stackup (about 91 Ω). **Check them in JLC's impedance calculator before you order.**
-  - Route the pairs on F.Cu, with In1 solid GND under them. If a pair has to go to B.Cu, its reference is In2, so keep In2 solid GND under it there.
+  - Route them as differential pairs: **0.124 mm tracks with a 0.127 mm gap**.
+  - JLC's impedance calculator gives 90 Ω for that on F.Cu over In1 on JLC06161H-3313 (checked 2026-10-20). **Order with impedance control** and confirm the numbers in JLC's calculator before you pay.
+  - The pairs run on F.Cu over solid In1, except J1's flipped contacts, which join on the back over solid In4.
 - **Power widths:** the minimums in the table are DRC rules. Pours on those nets don't have to meet them.
-- **Pack path:** PACK+ from J3 through Q1 to VSYS carries all the motor current, with stall peaks of several amps.
+- **Pack path:** PACK+ from J3 through Q1 to VSYS carries all the motor current, with stall peaks of several amps. It runs in pours on F.Cu and B.Cu and in the In3 VSYS area, with several vias at every layer change.
 - **Switch nodes:** signals keep 0.2 mm from the buck switch node (U4 SW) and the RP2354 core regulator node (U10 VREG_LX).
-- **Around the RP2354A:** J4, the MCU block and the buck are stacked with about 0.07 mm between courtyards, so there's no room above or below the MCU on F.Cu. Fan it out sideways and drop to the inner layers early.
-- **Motor drivers:** each DRV8251A's exposed pad is GND and carries its heat. Give it a via array into In1.
+- **In2 signals** reference In3. `tools/plane_channels.py` cuts a GND channel (track + 0.5 mm each side) out of the In3 power areas under every In2 signal.
 - **Board edge:** copper keeps 0.3 mm from the edge, JLC's limit for routed edges.
 
 ## The pack board
 
-`kicad-pack/goosepack.kicad_pcb` has all 72 footprints from the pack schematic, clustered by block (charger, protector, connectors) and **not placed**. It uses the same 4-layer JLC04161H-7628 stackup. **There is no board outline yet:** it will be drawn with the pack housing, so DRC reports one "invalid outline" error and 160 unconnected items.
+`kicad-pack/goosepack.kicad_pcb` has all 72 footprints from the pack schematic, clustered by block (charger, protector, connectors) and **not placed**. It uses the 4-layer JLC04161H-7628 stackup (the brain moved to 6 layers). **There is no board outline yet:** it will be drawn with the pack housing, so DRC reports one "invalid outline" error and 160 unconnected items.
 
 Layout notes for later:
 
@@ -142,16 +167,25 @@ Layout notes for later:
 ## Mechanical notes for later
 
 - **The pack rides outside the brain's box** and plugs into J3 through the bottom wall, so the box has no pack bay.
-- **Box size = outline + 5 mm:** about 78.4 × 48 mm (it was 93.5 × 52).
-- **Box height:** about 16 mm, against about 30 mm before. The vertical XT30 with its plug in was about 17 mm tall and set the old height. Without it, the tallest parts are the right-angle connectors and J12 with its plug in. Check their heights against the case before you commit to 16 mm.
+- **Box size = outline + 5 mm:** about 73.2 × 37 mm (it was 78.5 × 48.1 before the double-sided build).
+- **Under the board:** the case must leave a **2 mm gap** under the board. Back-side parts are at most 1.6 mm tall (the 1206 caps C5/C8/C12), and through-hole leads must be clipped to 1.5 mm or less.
+- **Box height:** about 16 mm above the gap. The tallest front parts are the right-angle connectors and J12 with its plug in. Check their heights against the case before you commit.
 - **Holding the board:** there are no mounting holes, so the case needs ribs, slots or clips to hold it. Put a rib behind J3: the XT30 takes 1.2–3.5 kg to plug and unplug, and that force goes straight into the board's bottom edge.
-- **Wall openings:** J3's mouth on the bottom wall, about 14 mm wide, centred 2.5 mm right of J3's pin 1 at x 125. The rest are unchanged: top wall for J1, J4, SW1 (lever slot), SW2 (pinhole); left wall for J5, M5 and M6; right wall for M1–M4.
+- **Wall openings** (board-local mm, origin at the top-left corner of the outline, x right, y down):
+  - **Top wall:** J1 (USB-C) centred at x 23.1, and J4 (USB-A) centred at x 42.6.
+  - **Left wall:** J5's pins span y 1.75–14.45 (open y 0.5–16). M5's mouth spans about y 16.5–23.4 and M6's about y 23.5–30.4.
+  - **Right wall:** M1 y 0–7, M2 y 6.9–13.9, M3 y 13.9–20.9, M4 y 20.8–27.8.
+  - **Bottom wall:**
+    - J3's mouth, about 14 mm wide, centred at x 38.6.
+    - SW1's lever slot at x 56.6.
+    - SW2's (BOOT) plunger at x 64.8 in the bottom-right corner.
 - **J12 and the LED stick:** the strip lives in the lid, so J12 (vertical PH) needs no wall opening. Its cable goes straight up. Leave room above J12 for the plug and the bend of its wire, or put a hole in the lid right above it, and leave enough slack to open the lid without pulling on the plug.
-- The F.Fab notes about the old pack envelope and the vertical XT30 are gone. J3's note now describes the horizontal part.
+- **Motor leads** now need JST PH 2.0 mm plugs (PHR-2), rated 2 A, against the drivers' 1.34 A current limit.
+- The F.Fab notes about the old pack envelope and the vertical XT30 are gone. J3's note describes the horizontal part.
 
 ## Ordering boards
 
-`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`). It prints a CHECK line for every SMD part without an LCSC number; on the brain there are none now that the six DRV8251As have one (C5218844). The motor drivers' `Texas_HTSOP-8` rotation in `JLC_ROTATION` (-90, like the other SOIC-family packages) is a guess; check U1-U3 and U15-U17 in JLC's placement preview.
+`tools/fab.py` builds a board's fab package: the brain by default, the 3S pack with `--board pack`, or the 2S pack with `--board pack2s` (into `build/fab-pack2s/`).
 
 ```bash
 python3 tools/fab.py
@@ -167,11 +201,36 @@ python3 tools/fab.py --board pack2s
 
 It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the pack's go to `build/fab-pack/`):
 
-- `thegoose-gerbers.zip` (`goosepack-gerbers.zip` for the pack): the Gerbers and drill files.
-- `jlc_bom.csv` and `jlc_cpl.csv`: JLC's assembly BOM and placement files.
+- `thegoose-gerbers.zip` (`goosepack-gerbers.zip` for the pack): the Gerbers (all six copper layers for the brain) and drill files.
+- `jlc_bom.csv` and `jlc_cpl.csv`: JLC's assembly BOM and placement files. Back-side parts have Layer = Bottom.
 - `bom.csv`: the full BOM.
 
-**JLCPCB board options (both boards):**
+**What fab.py prints for the brain:**
+- the 79 bottom-side placements
+- the parts that get a rotation offset
+- two CHECK lines, for J1 and U8, whose footprint origin isn't their pad centre (JLC centres on its own part model)
+
+**Bottom-side rotation:** it follows kicad-jlcpcb-tools, JLC's KiCad plugin: the angle is mirrored (180° − KiCad's angle), then the package's offset is added, the same as on top.
+
+**JLCPCB board options, brain:**
+
+| Option | Setting |
+|---|---|
+| Layers | 6 |
+| Thickness | 1.6 mm |
+| Surface finish | Lead-free HASL is fine (no ENIG requirement) |
+| Impedance control | Yes, stackup JLC06161H-3313 |
+| Via covering | **Epoxy-filled and capped (POFV)**: the board has vias in pads. It's free on 6 layers. |
+| Assembly | **Standard PCBA, both sides** |
+| Panel | **Panel by JLCPCB with 5 mm edge rails** (see below) |
+
+**Edge rails:**
+- Standard PCBA needs edge rails, or a panel, on boards under 70 × 70 mm.
+- Parts overhang all four edges: J1 by 1.7 mm at the top, J3, SW1 and SW2 by up to 0.5 mm at the bottom, and M1–M6 and J5 at the sides. So ask for rails joined by mouse bites across a routed gap, not V-cut.
+- J1 is the only machine-placed part that overhangs. The overhanging through-hole parts go on after the rails are snapped off.
+- JLC's engineers confirm the panel before production.
+
+**JLCPCB board options, packs (4 layers):**
 
 | Option | Setting |
 |---|---|
@@ -183,13 +242,16 @@ It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the
 
 **Assembly:**
 
-- **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips. You hand-solder the easy extended parts, the through-hole parts and L3. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
-  - Brain, hand-placed: L1, L3, D4, U14, F2, SW2. Hand-soldered: J3, J4, J5, J12, M1–M6, SW1.
+- **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips, on both sides of the brain. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
+  - Brain, hand-placed: L1, L3 (front), D4, U14, F2 (back), SW2 (front). Hand-soldered: J3, J4, J5, J12, M1–M6, SW1.
   - Pack, hand-placed: L2, Q2, Q3, R66, TH1, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
   - 2S pack, hand-placed: L2, Q2, Q3, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
-- Order Economic PCBA, top side only, and upload `jlc_bom.csv` and `jlc_cpl.csv`.
-- In JLC's placement preview, check the orientation of every IC, diode, LED, crystal and the USB-C receptacle before you pay.
-- **D4 (SMF14A TVS):** its cathode band must face east, toward M4. Reversed, it shorts VSYS.
-- **J1 (USB-C):** its footprint origin is 1.1 mm off its pad centre.
+- **Brain:** order Standard PCBA, both sides, and upload `jlc_bom.csv` and `jlc_cpl.csv`. **Packs:** Economic PCBA, top side only.
+- **In JLC's placement preview, before you pay:**
+  - Check the orientation of every IC, diode, LED, crystal and the USB-C receptacle.
+  - Check all 79 bottom-side parts. Their rotation is mirrored, so check pin 1 of U6, U8, U9 and U11 and the polarity of D2 and D3.
+  - Check the drivers' `Texas_HTSOP-8` offset (−90°, like the other SOIC-family packages), which is still unconfirmed.
+  - Check J1's and U8's positions.
+- **D4 (SMF14A TVS, back):** its cathode band (pad 1, VSYS) must face J3, toward the board's west edge. Looking at the back, that's to your right. Reversed, it shorts VSYS.
 - **L3:** it isn't stocked at JLC, so buy it from Digi-Key and fit it before first power. Pin 1 (the dot) goes to the +1V1 side.
-- **Through-hole parts:** clip their leads flush, because the case has 1 mm under the board.
+- **Through-hole parts:** clip their leads to 1.5 mm or less, because the case leaves 2 mm under the board.

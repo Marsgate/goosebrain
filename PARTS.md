@@ -2,7 +2,7 @@
 
 Parts for the two boards: the **brain** (`kicad/`, RP2354 + motors + USB host) and the **smart pack** (`kicad-pack/`, charger + protector on the cells). **MPN is the primary ID**, and LCSC is for JLC assembly. Stock was checked on 2026-10-15 to 2026-10-19 through JLCPCB's parts API; every part new on 2026-10-19 (the brain/pack split) was checked live that day. "DK" means Digi-Key and Mouser carry the manufacturer's line; it was not checked live unless marked ✓.
 
-**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron). **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed.
+**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron), on either side of the brain. **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed.
 
 ## The split (2026-10-19)
 
@@ -12,7 +12,7 @@ Charging moved off the robot into a **smart pack**: the Ovonic 3S 450 mAh cells 
 - **No PD:** at 1C the pack can't use more than about 5 W, so PD saves no charge time.
 - **No Bluetooth** on either board: SIG fees.
 - **Brain MCU stays the chip-down RP2354A.** Rechecked: an RP2040 plus flash costs about the same and loses 5 V-tolerant IO and a PIO block; a WCH CH32V saves about $0.50 a board but needs a firmware rewrite.
-- **The brain's PCB goes from 6 layers to 4** (JLC04161H-7628) and will be routed by hand.
+- **The brain's PCB went from 6 layers to 4** (JLC04161H-7628) for the split. The double-sided build (2026-10-20) went back to **6 layers (JLC06161H-3313)** after a real 4-layer attempt left 27–60 connections unrouted; see ROUTING_LOG.md.
 
 ## Datasheet checks (2026-10-19)
 
@@ -26,7 +26,7 @@ All passed; no architecture change was needed. The full numbers are on the schem
 6. **DRV8251A current limit** (SLVSFU6, 2026-10-19; replaced the DRV8871, whose 6.5 V VM minimum a 2S pack goes below): I_TRIP × A_IPROPI = V_VREF / R_IPROPI, A_IPROPI 1575 µA/A, ±5 % (A_ERR, specified at VM ≥ 6.5 V and V_IPROPI ≤ 3.0 V). VREF is 0–3.6 V. **One shared divider from +3V3 (R107 10k / R108 33k, so 2.53 V) and 1.2 kΩ per driver → 1.34 A.** (1.18 kΩ would give 1.36 A, but JLC has only 2,341 of it as an extended part; 1.2 kΩ is preferred, with 164k in stock.) At the limit it brakes on both low-side FETs for 25 µs (t_OFF). VM 4.5–48 V, 50 V abs max; UVLO 4.05–4.35 V falling, 4.15–4.45 V rising. Inputs VIH 1.5 V, 100 kΩ pull-downs; sleeps after 0.8–1.5 ms with both inputs low. R_DS(on) 225 + 225 mΩ. Same DDA HSOP-8 package, so the footprint stays. Pinout 1 IPROPI, 2 IN2, 3 IN1, 4 VREF, 5 VM, 6 OUT1, 7 GND, 8 OUT2, pad GND: pins 1, 4 and 7 differ from the DRV8871 (GND, ILIM, PGND). Local symbol `hexyhustle:DRV8251ADDA`, drawn with IPROPI where the DRV8871's ILIM was, so R101–R106 keep their wiring.
 7. **Pack FETs (Q2/Q3):** Infineon IRF8736TRPBF, SO-8: 30 V, ±20 V gate, 3.9 mΩ typ / 4.8 mΩ max at 10 V, Qg 17 nC typ (4.5 V), RθJA 50 °C/W. At 10 A: 0.48 W max per FET, about 24 °C rise. Pins 1–3 S, 4 G, 5–8 D, the same as KiCad's `Transistor_FET:IRF8721PBF-1` symbol and the SOIC-8 footprint.
 8. **Pack thresholds with the 2 mΩ shunt:** OCD1 17.5 A (14 A at the −20 % tolerance), OCD2 30 A, SCD 60 A, OCC 10 A. Six stalled motors (about 8 A) plus the buck stay under 14 A.
-9. **USB pair impedance on JLC04161H-7628** (7628 prepreg 0.2104 mm, εr 4.4): 0.22 mm / 0.15 mm gap ≈ 90 Ω. See the README for how it was worked out; confirm it in JLC's calculator.
+9. **USB pair impedance on JLC06161H-3313** (3313 prepreg 0.0994 mm, εr 4.1, L1 over L2): 0.124 mm tracks at a 0.127 mm gap = 90 Ω differential, from JLC's impedance calculator on 2026-10-20 (0.1234 mm at 0.127 mm). Order with impedance control (free on 6 layers).
 
 ## Brain parts
 
@@ -55,13 +55,13 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | Motor IPROPI (R101–R106) | 0402WGF1201TCE | UNI-ROYAL | 0402 | C25862 | 164,223 / pref | JLC | 1.2 kΩ: 1.34 A per motor with VREF 2.53 V. R101 U1, R102 U15, R103 U2, R104 U16, R105 U3, R106 U17 |
 | Motor VREF divider (R107, R108, C81) | 0402WGF1002TCE / 0402WGF3302TCE / CL05B104KO5NNNC | UNI-ROYAL / Samsung | 0402 | C25744 / C25779 / C1525 | basic | JLC | +3V3 → 10k → MOT_VREF → 33k → GND, 100 nF on MOT_VREF. One divider feeds all six VREF pins. On the board in the column between J3 and the buck |
 | Motor VM caps | CL21A106KAYNNNE + CC0805KRX7R9BB104 | Samsung / YAGEO | 0805 | C15850 / C49678 | basic | JLC | 10 µF/25 V + 100 nF/50 V per driver: C3/C4 U1, C6/C7 U2, C10/C11 U3, C75/C76 U15, C77/C78 U16, C79/C80 U17 |
-| Motor connectors (M1–M6) | S2B-XH-A(LF)(SN) | JST | THT RA | C157931 | ext | THT | M2, M4, M6 wired reversed (OUT1 to pin 2) |
+| Motor connectors (M1–M6) | S2B-PH-K-S(LF)(SN) | JST | THT RA, PH 2.0 mm | C173752 | 219,392 / ext | THT | Was XH (S2B-XH-A) until the double-sided build. PH is rated 2 A against the drivers' 1.34 A limit; the motor leads need PHR-2 plugs. M2, M4, M6 wired reversed (OUT1 to pin 2) |
 | IO header S1–S6 (J5) | 2011-3X06G00RB | WingTAT | THT RA 3 × 6 | C51953246 | 144 / ext | THT | Low stock: fallback is the 3 × 40 strip (C51953256) cut to 3 × 6 |
 | BOOT button (SW2) | SKRTLAE010 | Alps | SMD side push | C110293 | ext | Hand | Easy to solder; 1 kΩ (R46) to QSPI_SS |
 | LED stick buffer (U14) | SN74AHCT1G125DBVR | UMW | SOT-23-5 | C20617903 | ext | Hand | 3.3 V → 5 V for the WS2812B data line. R80 and C70 removed: it drives J12 pin 2 directly |
 | LED stick connector (J12) | B3B-PH-K-S(LF)(SN) | JST | THT vertical | C131339 | ext | THT | Pin 1 5 V, 2 DIN, 3 GND |
 | Test pads TP1–TP4 | — | — | 1 mm round, bottom | — | — | — | SWCLK, SWDIO, RUN, GND |
-| Fiducials FID1–3 | — | — | 1 mm, 2 mm mask | — | — | — | |
+| Fiducials FID1–FID6 | — | — | 1 mm, 2 mm mask | — | — | — | Three per side: FID1–3 front, FID4–6 back |
 | Passives | UNI-ROYAL 0402WGF…/0603WAF…, Samsung CL05/CL10/CL21/CL31, FH | — | 0402–1206 | See `PASSIVES` in `circuit/goosebrain.py` | basic or preferred | JLC | Buck outputs C5/C8/C12 22 µF 1206/10 V (1.6 mm tall, partly under the pack; foam takes it) |
 
 ### L1
@@ -150,7 +150,7 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 ## Layout and mechanical notes for later
 
 - The pack board sits on the cell pack, with TH2 on its underside against the cells. The housing shows LED1 and the USB-C opening.
-- The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 78.4 × 48 × 16 mm. The board has no mounting holes: the case holds it, with a rib behind J3 to take the plug force.
-- The brain is on 4 layers now (JLC04161H-7628). The 6-layer stack was chosen because 4 layers couldn't route around the RP2354A when the board also carried the charger and protector; with those gone, 4 layers is worth trying first.
+- The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 73.2 × 37 mm, about 16 mm tall above a 2 mm gap under the board (back-side parts are at most 1.6 mm tall). The board has no mounting holes: the case holds it, with a rib behind J3 to take the plug force.
+- The brain is on 6 layers (JLC06161H-3313), 68.2 × 32 mm, with parts on both sides: 79 SMD parts on the back, assembled by JLC as Standard PCBA (both sides). 4 layers was tried first and didn't route; ROUTING_LOG.md has the details.
 - `tools/fab.py` builds all three boards (`--board brain|pack|pack2s`). Its `Texas_HTSOP-8` rotation for the motor drivers still needs confirming in JLC's placement preview.
 - **2S pack board:** the 10 new footprints (U21, U22, Q4, Q5, R110–R113, C83, C84) are staged in a row at y 170 below the cluster. U13 is now SOT-23-6 and J11 a B3B-XH-A, both swapped in place. Like the 3S pack, it has no outline yet.
