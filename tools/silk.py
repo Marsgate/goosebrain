@@ -233,8 +233,8 @@ def main():
             hidden.append(ref)
     b.Save(str(PCB))
     print("silk: logo %s; %d references placed, %d hidden: %s" % (
-        "at %.1f, %.1f (board-local), %d deg, %d %% (%.1f x %.1f mm)" % (logo[0] - 99.95, logo[1] - 99.95, logo[2],
-                                                                        logo[3] * 100, logo[4], logo[5])
+        "at %.1f, %.1f (board-local), %d deg, %.1f x %.1f mm" % (logo[0] - 99.95, logo[1] - 99.95, logo[2],
+                                                                logo[4], logo[5])
         if logo else "doesn't fit",
         placed, len(hidden), " ".join(sorted(hidden))))
 

@@ -317,7 +317,8 @@ def u10_escapes(r):
 # U10 west side: IO1-IO6 to the vias in R55-R60's U10-side pads (a column at x 16.81, one per J5 row). Between that
 # column and the pins there is room for three F.Cu lanes west of C41's vias and J1's shell peg, so:
 # - IO2-IO4 (pins 3-5) run straight west and turn north on lanes 0.32 mm apart, the higher pin on the eastern lane.
-# - IO1 (pin 2) drops through a via just inside the pin ring and runs north on In2, west of J1's shell pegs.
+# - IO1 (pin 2) drops through a via just inside the pin ring and runs north on B.Cu, between C41 and the R column and
+#   west of J1's shell pegs. (On In2, its GND channel in In3 would cut the VCC band off from the VCC block.)
 # - IO5 (pin 12) runs up the strip between the pin toes and C47/C50's vias, west between C47's two vias, and drops to
 #   In2 for the run north (it would cross IO1-IO4 on F.Cu).
 # - IO6 (pin 13) runs down the same strip, under C50, and north on F.Cu to its via.
@@ -344,9 +345,8 @@ def u10_west(r):
     vi = (q[0] + 1.0, q[1])
     r.track("IO1_GPIO", "F", [q, vi], w)
     r.via("IO1_GPIO", *vi)
-    x = 17.95
-    r.track("IO1_GPIO", "2", [vi, (vi[0] - 1.3, vi[1] - 1.3), (vi[0] - 1.3, vi[1] - 2.3),
-                              (x, vi[1] - 2.3 - (vi[0] - 1.3 - x)), (x, v[1] + (x - v[0])), v], w)
+    x = 17.9
+    r.track("IO1_GPIO", "B", [vi, (x, vi[1]), (x, v[1] + (x - v[0])), v], w)
     q, v = ends("IO5_GPIO")
     xs = q[0] - 0.71                                  # the strip between the pin toes and the 18.3 via column
     vi = (17.55, 16.7)
