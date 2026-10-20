@@ -91,6 +91,12 @@ JLC_PART_ROTATION = {"C16106": 180, "C51953246": -90, "C173752": 180, "C131339":
 # sits 1.15 mm toward the board edge from its pads, and the preview showed the model shifted that far out. U8's SOT-89-3
 # model sat 0.3 mm toward its tab, short of the pin pads, at the footprint origin (second preview, 2026-10-20).
 JLC_PAD_CENTRE = [r"^USB_C_Receptacle_ShouHan_", r"^SOT-89-3$"]
+# Footprints whose JLC model is centred on the middle of the pad centres, not of the pad copper: J3's XT30PW-M
+# (C431092) sits midway between its pin row and its peg row, 5 mm from each, but its pin pads (3.5 mm) are bigger than
+# its peg pads (1.4 mm), so the copper's centre is 0.525 mm toward the pins and the pins sat off-centre in their holes
+# (preview, 2026-10-20). J4's USB-A (C456018) is the same: JLC's EasyEDA footprint is centred on its pad centres, and
+# our shell pads make the copper's centre 0.525 mm off.
+JLC_PIN_CENTRE = [r"^AMASS_XT30PW-M", r"^USB_A_ShouHan_AF90"]
 
 
 def jlc_offset(footprint, lcsc=""):
@@ -121,8 +127,10 @@ for f in b.GetFootprints():
         for p in pads[1:]:
             bb.Merge(p.GetBoundingBox())
         pad_mid = [mm(bb.GetCenter().x), mm(bb.GetCenter().y)]
+        xs, ys = [p.GetPosition().x for p in pads], [p.GetPosition().y for p in pads]
+        pin_mid = [mm((min(xs) + max(xs)) // 2), mm((min(ys) + max(ys)) // 2)]
     else:
-        pad_mid = None
+        pad_mid = pin_mid = None
     # Courtyard and fab outline extents, for the panel's rail and tab clearance check
     body = None
     for it in f.GraphicalItems():
@@ -136,7 +144,7 @@ for f in b.GetFootprints():
         "smd": bool(a & pcbnew.FP_SMD), "tht": bool(a & pcbnew.FP_THROUGH_HOLE),
         "dnp": f.IsDNP(), "no_bom": f.IsExcludedFromBOM(), "side": f.GetLayerName(),
         "x": mm(f.GetPosition().x), "y": mm(f.GetPosition().y), "rot": f.GetOrientationDegrees(),
-        "pad_mid": pad_mid, "body": body, "mpn": fields.get("MPN", ""), "mfr": fields.get("Manufacturer", ""),
+        "pad_mid": pad_mid, "pin_mid": pin_mid, "body": body, "mpn": fields.get("MPN", ""), "mfr": fields.get("Manufacturer", ""),
         "lcsc": fields.get("LCSC Part #", ""),
     })
 e = b.GetBoardEdgesBoundingBox()
@@ -316,7 +324,10 @@ def main():
             if fp["pad_mid"]:
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
                 # Through-hole footprints sit on pin 1; the pad centre is nearer the middle JLC places them by
-                if fp["tht"] or any(re.match(pat, fp["footprint"].split(":")[-1]) for pat in JLC_PAD_CENTRE):
+                name = fp["footprint"].split(":")[-1]
+                if any(re.match(pat, name) for pat in JLC_PIN_CENTRE):
+                    x, y = fp["pin_mid"]
+                elif fp["tht"] or any(re.match(pat, name) for pat in JLC_PAD_CENTRE):
                     x, y = fp["pad_mid"]
                 elif (dx * dx + dy * dy) ** 0.5 > 0.25:
                     problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre "
