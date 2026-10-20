@@ -1618,7 +1618,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO7 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V; hand-placed) -> DIN.\nR80 (330 R) and C70 (10 uF) were removed in the cost-down; the stick carries its own caps.\nPower from VCC (5 V buck, shared with the IO ports): up to about 0.5 A at full white. Cap brightness in firmware."
+	(text "LED STICK (J12): off-board DIYmall 8 x WS2812B on the case's top edge, short cable.\nGPIO29 (PIO) -> U14 74AHCT1G125 (TTL in, 5 V out: WS2812B needs VIH 3.5 V; hand-placed) -> DIN.\nR80 (330 R) and C70 (10 uF) were removed in the cost-down; the stick carries its own caps.\nPower from VCC (5 V buck, shared with the IO ports): up to about 0.5 A at full white. Cap brightness in firmware."
 		(exclude_from_sim no)
 		(at 165.1 104.14 0)
 		(effects
@@ -1629,7 +1629,7 @@
 		)
 		(uuid "3cb49286-ebc9-4532-ab1e-57cc1b64817f")
 	)
-	(text "Per port: pin 3k SIG (330 R in series against shorts and hot-plugging),\n3k-1 VCC (5 V from the buck), 3k-2 GND; e.g. J5A: 3 SIG, 2 VCC, 1 GND.\nIO1-IO6 = GPIO16/17/18/19/24/25 (all 5 V tolerant, none on an ADC pin).\nServos: IO4-IO6 have free PWM (slices 1B, 4A, 4B); IO1-IO3 share\nslices with a motor or with IO4 (0A, 0B, 1A), so drive those from PIO.\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
+	(text "Per port: pin 3k SIG (330 R in series against shorts and hot-plugging),\n3k-1 VCC (5 V from the buck), 3k-2 GND; e.g. J5A: 3 SIG, 2 VCC, 1 GND.\nIO1-IO6 = GPIO0/1/2/3/8/9 (all 5 V tolerant, none on an ADC pin).\nServos: IO4-IO6 have free PWM (slices 1B, 4A, 4B); IO1-IO3 share\nslices with a motor or with IO4 (0A, 0B, 1A), so drive those from PIO.\nJ5 is one 3 x 6 right-angle header (WingTAT 2011-3X06G00RB) on the board's\nleft end, pins out through the left wall: per port GND (lowest, nearest\nthe wall), 5V (middle), SIG (top)."
 		(exclude_from_sim no)
 		(at 86.36 152.4 0)
 		(effects

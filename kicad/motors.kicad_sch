@@ -4961,7 +4961,7 @@
 		)
 		(uuid "f97bef11-8c6c-4d14-b634-44af555baa33")
 	)
-	(global_label "GPIO10_M1A"
+	(global_label "GPIO26_M1A"
 		(shape bidirectional)
 		(at 205.74 83.82 180)
 		(effects
@@ -4983,7 +4983,7 @@
 			)
 		)
 	)
-	(global_label "GPIO1_M2B"
+	(global_label "GPIO23_M2B"
 		(shape bidirectional)
 		(at 205.74 137.16 180)
 		(effects
@@ -5005,7 +5005,7 @@
 			)
 		)
 	)
-	(global_label "GPIO23_M3B"
+	(global_label "GPIO21_M3B"
 		(shape bidirectional)
 		(at 134.62 86.36 180)
 		(effects
@@ -5027,7 +5027,7 @@
 			)
 		)
 	)
-	(global_label "GPIO0_M2A"
+	(global_label "GPIO22_M2A"
 		(shape bidirectional)
 		(at 205.74 134.62 180)
 		(effects
@@ -5071,7 +5071,7 @@
 			)
 		)
 	)
-	(global_label "GPIO20_M4A"
+	(global_label "GPIO16_M4A"
 		(shape bidirectional)
 		(at 134.62 134.62 180)
 		(effects
@@ -5093,7 +5093,7 @@
 			)
 		)
 	)
-	(global_label "GPIO22_M3A"
+	(global_label "GPIO20_M3A"
 		(shape bidirectional)
 		(at 134.62 83.82 180)
 		(effects
@@ -5159,7 +5159,7 @@
 			)
 		)
 	)
-	(global_label "GPIO11_M1B"
+	(global_label "GPIO27_M1B"
 		(shape bidirectional)
 		(at 205.74 86.36 180)
 		(effects
@@ -5203,7 +5203,7 @@
 			)
 		)
 	)
-	(global_label "GPIO21_M4B"
+	(global_label "GPIO17_M4B"
 		(shape bidirectional)
 		(at 134.62 137.16 180)
 		(effects

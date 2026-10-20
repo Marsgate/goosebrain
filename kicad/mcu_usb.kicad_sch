@@ -5172,7 +5172,7 @@
 		)
 		(uuid "ca47d5a4-09bb-47c9-a72e-fcfc070461ba")
 	)
-	(text "USB-A VBUS: F2 PTC from VCC (0.5 A hold, 1 A trip,\n16 V, 1206, hand-placed); C59 10 uF at the port.\nAlways powered: no enable GPIO.\nPico-PIO-USB on GPIO27 (D+) / GPIO26 (D-) with 22 R in series.\nR109/R114 15k: host pull-downs on D+/D-."
+	(text "USB-A VBUS: F2 PTC from VCC (0.5 A hold, 1 A trip,\n16 V, 1206, hand-placed); C59 10 uF at the port.\nAlways powered: no enable GPIO.\nPico-PIO-USB on GPIO25 (D+) / GPIO24 (D-) with 22 R in series.\nR109/R114 15k: host pull-downs on D+/D-."
 		(exclude_from_sim no)
 		(at 322.58 167.64 0)
 		(effects
@@ -5206,7 +5206,7 @@
 		)
 		(uuid "da6effb5-fa4b-4277-aeb3-98dc5d5202b2")
 	)
-	(text "GPIO MAP (double-sided board, 2026-10-20)\nGPIO0/1     M2 (U15 IN1/IN2), PWM slice 0\nGPIO2-6     spare (no-connect)\nGPIO7       LED stick data (PIO WS2812, U14 level shift)\nGPIO8, 9    spare (no-connect)\nGPIO10/11   M1 (U1 IN1/IN2), slice 5\nGPIO12/13   M5 (U3 IN1/IN2), slice 6\nGPIO14/15   M6 (U17 IN1/IN2), slice 7\nGPIO16-18   IO1-IO3 (5 V tolerant)\nGPIO19      IO4 (5 V tolerant, PWM 1B)\nGPIO20/21   M4 (U16 IN1/IN2), slice 2\nGPIO22/23   M3 (U2 IN1/IN2), slice 3\nGPIO24/25   IO5/IO6 (5 V tolerant, PWM 4A/4B)\nGPIO26/27   USB-A D-/D+ (Pico-PIO-USB, pin_dp 27, PIO_USB_PINOUT_DMDP)\nGPIO28      battery sense (ADC2): the only battery reading now\nGPIO29      spare (ADC3)\nMotor pairs are PWM slices M2 0, M4 2, M3 3, M1 5, M5 6, M6 7;\nIO4-IO6 use slices 1 and 4, which no motor uses."
+	(text "GPIO MAP (double-sided board, U10 at 0 deg, 2026-10-20)\nGPIO0-3     IO1-IO4 (5 V tolerant; IO4 = PWM 1B)\nGPIO4-7     spare (no-connect)\nGPIO8/9     IO5/IO6 (5 V tolerant, PWM 4A/4B)\nGPIO10/11   spare (no-connect)\nGPIO12/13   M5 (U3 IN1/IN2), slice 6\nGPIO14/15   M6 (U17 IN1/IN2), slice 7\nGPIO16/17   M4 (U16 IN1/IN2), slice 0\nGPIO18/19   spare (no-connect)\nGPIO20/21   M3 (U2 IN1/IN2), slice 2\nGPIO22/23   M2 (U15 IN1/IN2), slice 3\nGPIO24/25   USB-A D-/D+ (Pico-PIO-USB, pin_dp 25, PIO_USB_PINOUT_DMDP)\nGPIO26/27   M1 (U1 IN1/IN2), slice 5\nGPIO28      battery sense (ADC2): the only battery reading now\nGPIO29      LED stick data (PIO WS2812, U14 level shift)\nMotor pairs are PWM slices M4 0, M3 2, M2 3, M1 5, M5 6, M6 7;\nIO4-IO6 use slices 1 and 4, which no motor uses."
 		(exclude_from_sim no)
 		(at 243.84 73.66 0)
 		(effects
@@ -5398,15 +5398,15 @@
 		(uuid "fb82c2d6-380f-4d4d-a078-1ec371673153")
 	)
 	(no_connect
-		(at 215.9 139.7)
+		(at 215.9 162.56)
 		(uuid "1cea9b2c-37d9-48a0-b6b1-a7b85b06fa7c")
 	)
 	(no_connect
-		(at 215.9 137.16)
+		(at 215.9 144.78)
 		(uuid "1f285f8b-c39e-4656-bf9c-4bcd0866500e")
 	)
 	(no_connect
-		(at 215.9 193.04)
+		(at 215.9 165.1)
 		(uuid "458123a9-920b-477b-bfd9-7da109c6ba36")
 	)
 	(no_connect
@@ -5426,7 +5426,7 @@
 		(uuid "7be8601b-e072-4ed8-9769-915606a2ba00")
 	)
 	(no_connect
-		(at 215.9 121.92)
+		(at 215.9 134.62)
 		(uuid "7cd75c19-f355-4b36-b9fc-8a83c474dca4")
 	)
 	(no_connect
@@ -5446,7 +5446,7 @@
 		(uuid "ccad0244-b132-44eb-9995-072eba734695")
 	)
 	(no_connect
-		(at 215.9 124.46)
+		(at 215.9 142.24)
 		(uuid "d9b9fedd-82eb-45e0-b511-68639df585c7")
 	)
 	(wire
@@ -6021,16 +6021,6 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 162.56) (xy 233.68 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d879c8ff-2a86-40c5-bff9-b76d3d39d03d")
-	)
-	(wire
-		(pts
 			(xy 355.6 114.3) (xy 373.38 114.3)
 		)
 		(stroke
@@ -6240,14 +6230,14 @@
 		(uuid "6833da02-6fc9-4a12-b6b2-5f5d4eabf6c1")
 	)
 	(label "USBA_GPIO_N"
-		(at 215.9 185.42 0)
+		(at 215.9 177.8 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "71339b00-89ca-4da0-a3f1-58170b3a8912")
+		(uuid "ffa536c1-b434-44d3-9528-de1df3880b0e")
 	)
 	(label "USBA_N"
 		(at 342.9 142.24 0)
@@ -6320,14 +6310,14 @@
 		(uuid "aa7e56ca-940b-47c5-9cee-390fd85fb88a")
 	)
 	(label "USBA_GPIO_P"
-		(at 215.9 187.96 0)
+		(at 215.9 180.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "eb8967ab-e250-4c7e-9ea7-6297c0148e0d")
+		(uuid "122a6e3d-5deb-4a8c-89b1-93244632fe2e")
 	)
 	(label "USB_MCU_N"
 		(at 165.1 139.7 180)
@@ -6405,7 +6395,7 @@
 			)
 		)
 	)
-	(global_label "IO2_GPIO"
+	(global_label "GPIO17_M4B"
 		(shape bidirectional)
 		(at 215.9 160.02 0)
 		(effects
@@ -6427,18 +6417,18 @@
 			)
 		)
 	)
-	(global_label "GPIO10_M1A"
+	(global_label "GPIO26_M1A"
 		(shape bidirectional)
-		(at 215.9 142.24 0)
+		(at 215.9 185.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "2f63ffc2-ec2e-4668-98d7-80098e5639df")
+		(uuid "31be171b-be89-4141-a63a-7002d481888c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 142.24 0)
+			(at 215.9 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6451,16 +6441,16 @@
 	)
 	(global_label "LED_DIN"
 		(shape bidirectional)
-		(at 215.9 134.62 0)
+		(at 215.9 193.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "5620c894-83bf-4ee3-ba4b-b94411dfc5b8")
+		(uuid "cdcf85ba-67a5-4c76-8fa8-cdb3507051e5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 134.62 0)
+			(at 215.9 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6471,7 +6461,7 @@
 			)
 		)
 	)
-	(global_label "GPIO0_M2A"
+	(global_label "IO1_GPIO"
 		(shape bidirectional)
 		(at 215.9 116.84 0)
 		(effects
@@ -6493,7 +6483,7 @@
 			)
 		)
 	)
-	(global_label "GPIO22_M3A"
+	(global_label "GPIO22_M2A"
 		(shape bidirectional)
 		(at 215.9 172.72 0)
 		(effects
@@ -6517,16 +6507,16 @@
 	)
 	(global_label "IO3_GPIO"
 		(shape bidirectional)
-		(at 233.68 162.56 0)
+		(at 215.9 121.92 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "67994b05-0b86-4985-a97e-05b7d80d1cb3")
+		(uuid "de552a0f-2726-4c84-be17-717ec9314789")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.68 162.56 0)
+			(at 215.9 121.92 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6539,16 +6529,16 @@
 	)
 	(global_label "IO5_GPIO"
 		(shape bidirectional)
-		(at 215.9 177.8 0)
+		(at 215.9 137.16 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "6b57c854-9d58-4275-ba6c-f63118108900")
+		(uuid "b3d7615a-6207-4ed9-b142-b3764269b170")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 177.8 0)
+			(at 215.9 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6559,7 +6549,7 @@
 			)
 		)
 	)
-	(global_label "GPIO20_M4A"
+	(global_label "GPIO20_M3A"
 		(shape bidirectional)
 		(at 215.9 167.64 0)
 		(effects
@@ -6581,7 +6571,7 @@
 			)
 		)
 	)
-	(global_label "GPIO21_M4B"
+	(global_label "GPIO21_M3B"
 		(shape bidirectional)
 		(at 215.9 170.18 0)
 		(effects
@@ -6605,16 +6595,16 @@
 	)
 	(global_label "IO6_GPIO"
 		(shape bidirectional)
-		(at 215.9 180.34 0)
+		(at 215.9 139.7 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "846edd90-0713-41b2-a743-de4bfe765410")
+		(uuid "41f1c67f-aa9a-4d96-be62-3f4bc0faffde")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 180.34 0)
+			(at 215.9 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6649,16 +6639,16 @@
 	)
 	(global_label "IO4_GPIO"
 		(shape bidirectional)
-		(at 215.9 165.1 0)
+		(at 215.9 124.46 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "8c3f7755-702c-455d-9832-e84b21646a00")
+		(uuid "9391766d-5057-470f-948e-d9d562cd90b8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 165.1 0)
+			(at 215.9 124.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6669,7 +6659,7 @@
 			)
 		)
 	)
-	(global_label "IO1_GPIO"
+	(global_label "GPIO16_M4A"
 		(shape bidirectional)
 		(at 233.68 157.48 0)
 		(effects
@@ -6779,7 +6769,7 @@
 			)
 		)
 	)
-	(global_label "GPIO23_M3B"
+	(global_label "GPIO23_M2B"
 		(shape bidirectional)
 		(at 215.9 175.26 0)
 		(effects
@@ -6801,7 +6791,7 @@
 			)
 		)
 	)
-	(global_label "GPIO1_M2B"
+	(global_label "IO2_GPIO"
 		(shape bidirectional)
 		(at 215.9 119.38 0)
 		(effects
@@ -6823,18 +6813,18 @@
 			)
 		)
 	)
-	(global_label "GPIO11_M1B"
+	(global_label "GPIO27_M1B"
 		(shape bidirectional)
-		(at 215.9 144.78 0)
+		(at 215.9 187.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "fe9ef3c1-f32a-48bd-adb3-c57889fc6f5f")
+		(uuid "958c1bfd-a09a-4298-bc61-44c79ec0f4dc")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 144.78 0)
+			(at 215.9 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
