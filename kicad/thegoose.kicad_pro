@@ -519,9 +519,9 @@
       {
         "bus_width": 12,
         "clearance": 0.15,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -538,9 +538,9 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -557,28 +557,9 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "line_style": 0,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "Charger",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
-        "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3,
-        "wire_width": 6
-      },
-      {
-        "bus_width": 12,
-        "clearance": 0.2,
-        "diff_pair_gap": 0.15,
-        "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -595,9 +576,9 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -614,9 +595,9 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -633,9 +614,9 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.15,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.2,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -651,10 +632,10 @@
       },
       {
         "bus_width": 12,
-        "clearance": 0.15,
-        "diff_pair_gap": 0.2,
+        "clearance": 0.12,
+        "diff_pair_gap": 0.127,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.15,
+        "diff_pair_width": 0.124,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
@@ -662,7 +643,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.15,
+        "track_width": 0.124,
         "tuning_profile": "",
         "via_diameter": 0.45,
         "via_drill": 0.25,
@@ -677,35 +658,11 @@
     "netclass_patterns": [
       {
         "netclass": "Pack",
-        "pattern": "/Power & charging/PACK+"
-      },
-      {
-        "netclass": "Pack",
-        "pattern": "VBAT"
+        "pattern": "PACK+"
       },
       {
         "netclass": "Pack",
         "pattern": "VSYS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "VBUS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "/Power & charging/CHG_SYS"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-PMID)"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-SW1)"
-      },
-      {
-        "netclass": "Charger",
-        "pattern": "Net-(U7-SW2)"
       },
       {
         "netclass": "5V",
@@ -714,10 +671,6 @@
       {
         "netclass": "GND",
         "pattern": "GND"
-      },
-      {
-        "netclass": "Motor",
-        "pattern": "Net-(M?-OUT?)"
       },
       {
         "netclass": "Rail",
@@ -758,6 +711,18 @@
       {
         "netclass": "USB",
         "pattern": "/MCU & USB/USBA_GPIO_N"
+      },
+      {
+        "netclass": "Motor",
+        "pattern": "/Motor drivers/U*_OUT?"
+      },
+      {
+        "netclass": "5V",
+        "pattern": "Net-(J4-VBUS)"
+      },
+      {
+        "netclass": "Rail",
+        "pattern": "VBUS"
       }
     ]
   },
@@ -777,6 +742,10 @@
   },
   "schematic": {
     "annotate_start_num": 0,
+    "annotation": {
+      "method": 0,
+      "sort_order": 0
+    },
     "bom_export_filename": "${PROJECTNAME}.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
@@ -856,6 +825,7 @@
       "default_line_thickness": 6.0,
       "default_text_size": 50.0,
       "field_names": [],
+      "hop_over_size_choice": 0,
       "intersheets_ref_own_page": false,
       "intersheets_ref_prefix": "",
       "intersheets_ref_short": false,
@@ -887,6 +857,7 @@
     },
     "page_layout_descr_file": "",
     "plot_directory": "",
+    "reuse_designators": true,
     "space_save_all_events": true,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
@@ -900,14 +871,32 @@
       {
         "filename": "thegoose.kicad_sch",
         "name": "thegoose",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "72b1d502-e600-4337-8ef9-b222b53a12da"
       }
-    ]
+    ],
+    "used_designators": "",
+    "variants": []
   },
   "sheets": [
     [
       "72b1d502-e600-4337-8ef9-b222b53a12da",
-      "Root"
+      "thegoose"
+    ],
+    [
+      "0021e6ae-34c0-486e-ac47-c8566b803df5",
+      "Power"
+    ],
+    [
+      "ae136f4d-e1a2-4948-8628-fbde5858c102",
+      "MCU & USB"
+    ],
+    [
+      "c7bafd38-dd09-49c3-a840-432bd31e4c95",
+      "Motor drivers"
+    ],
+    [
+      "87de6331-4a86-430c-a320-0a0cd35186c7",
+      "IO"
     ]
   ],
   "text_variables": {},

@@ -2,7 +2,7 @@
 	(version 20241229)
 	(generator "pcbnew")
 	(layer "F.Cu")
-	(descr "Two large through-hole solder pads for a dangling XT30 battery cable")
+	(descr "Two large through-hole solder pads for a dangling XT30 battery cable. Pad 1 (square) PACK-, pad 2 PACK+")
 	(tags "XT30 battery solder wire cable")
 	(property "Reference" "BT"
 		(at 0 -4 0)
@@ -23,12 +23,12 @@
 		(fill none)
 		(layer "F.SilkS")
 	)
-	(fp_text user "+BATT"
+	(fp_text user "PACK-"
 		(at -2.5 2.1 0)
 		(layer "F.SilkS")
 		(effects (font (size 1 1) (thickness 0.15)))
 	)
-	(fp_text user "GND"
+	(fp_text user "PACK+"
 		(at 2.5 2.1 0)
 		(layer "F.SilkS")
 		(effects (font (size 1 1) (thickness 0.15)))

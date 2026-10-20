@@ -1,23 +1,30 @@
-"""Build the fab package for kicad/thegoose.kicad_pcb into build/fab/.
+"""Build the fab package for the brain (kicad/thegoose.kicad_pcb, into build/fab/), the 3S battery pack
+(kicad-pack/goosepack.kicad_pcb, into build/fab-pack/) or the 2S pack (kicad-pack-2s/goosepack2s.kicad_pcb, into
+build/fab-pack2s/).
 
 Writes:
-- gerbers/: Gerbers for all 6 copper layers, mask, paste, silk and outline, plus Excellon drill files (PTH and NPTH)
-- thegoose-gerbers.zip: the gerbers/ folder, ready to upload to JLCPCB
+- gerbers/: Gerbers for all 4 copper layers, mask, paste, silk and outline, plus Excellon drill files (PTH and NPTH)
+- thegoose-gerbers.zip / goosepack-gerbers.zip / goosepack2s-gerbers.zip: the gerbers/ folder, ready to upload to JLCPCB
 - bom.csv: the full BOM, every purchased part, grouped, with MPN, manufacturer, LCSC number and how it's assembled
-- jlc_bom.csv / jlc_cpl.csv: JLC's PCBA BOM and placement files, machine-placed SMD parts only
+- jlc_bom.csv / jlc_cpl.csv: JLC's PCBA BOM and placement files, machine-placed SMD parts only (both sides on the
+  brain: order Standard PCBA, assembly side "Both Sides")
 
 Assembly classes:
 - "JLC SMT": SMD with an LCSC number and not DNP. These go in the JLC files.
 - "Hand-solder": through-hole connectors and the switch, soldered after the boards arrive.
 - "Hand-place": SMD parts marked DNP (L3, bought from Digi-Key and placed by hand).
 
-Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm), so JLC lines them up without an offset.
-Rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which were read off JLC's placement preview.
-Check each part's orientation in that preview before paying.
+Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm, seen from the top for both sides), so JLC
+lines them up without an offset. Top-side rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which
+were read off JLC's placement preview. Bottom-side parts get Layer "Bottom" and rotation (180 - KiCad + offset): JLC
+doesn't mirror bottom parts the way KiCad does (KiBot's JLCPCB template: mirror_bottom, offsets added). JLC has changed
+its bottom-side convention before, so the script lists every bottom part to check. Check each part's orientation in
+JLC's placement preview before paying.
 
-Usage: .venv/bin/python tools/fab.py
+Usage: python3 tools/fab.py [--board brain|pack|pack2s]
 """
 
+import argparse
 import csv
 import json
 import re
@@ -30,8 +37,12 @@ ROOT = Path(__file__).resolve().parent.parent
 KICAD_APP = Path("/Applications/KiCad/KiCad.app/Contents")
 KICAD_CLI = KICAD_APP / "MacOS/kicad-cli"
 KICAD_PYTHON = KICAD_APP / "Frameworks/Python.framework/Versions/Current/bin/python3"
-PCB = ROOT / "kicad/thegoose.kicad_pcb"
-OUT = ROOT / "build/fab"
+# board name -> (PCB file, output folder, Gerber zip name)
+BOARDS = {
+    "brain": (ROOT / "kicad/thegoose.kicad_pcb", ROOT / "build/fab", "thegoose-gerbers.zip"),
+    "pack": (ROOT / "kicad-pack/goosepack.kicad_pcb", ROOT / "build/fab-pack", "goosepack-gerbers.zip"),
+    "pack2s": (ROOT / "kicad-pack-2s/goosepack2s.kicad_pcb", ROOT / "build/fab-pack2s", "goosepack2s-gerbers.zip"),
+}
 
 LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,"
           "F.Mask,B.Mask,Edge.Cuts")
@@ -40,19 +51,26 @@ LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.
 # (footprint-name regex, degrees added to KiCad's rotation), checked against pin 1 in JLC's placement preview on
 # 2026-10-18. SOT-23-5/6, SOIC, SO-8EP, TSSOP, SSOP and TDSON models came out 90 degrees counter-clockwise of their
 # pads; the 3-pin SOT-23 came out 180 degrees off. QFNs, SOT-89, two-terminal parts, the crystal, USB-C and the BOOT
-# switch matched. First match wins.
+# switch matched. The motor drivers' Texas_HTSOP-8 (DRV8871, now DRV8251A on the same footprint) was added after that
+# check and is assumed to follow the other SOIC-family packages; confirm it in JLC's placement preview. First match wins.
 JLC_ROTATION = [
     (r"^SOT-23-3$", 180),
-    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|TSSOP-|SSOP-|TDSON-)", -90),
+    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|Texas_HTSOP-8|TSSOP-|SSOP-|TDSON-)", -90),
 ]
 
 
-def jlc_rotation(footprint, rot):
+def jlc_offset(footprint):
     name = footprint.split(":")[-1]
     for pattern, offset in JLC_ROTATION:
         if re.match(pattern, name):
-            return (rot + offset) % 360
-    return rot % 360
+            return offset
+    return 0
+
+
+def jlc_rotation(footprint, rot, bottom=False):
+    """JLC rotation for one part: top keeps KiCad's angle, bottom mirrors it (180 - angle); both add the offset."""
+    base = 180 - rot if bottom else rot
+    return (base + jlc_offset(footprint)) % 360
 
 # Runs inside KiCad's Python: dump every footprint with its fields, attributes and geometry.
 FOOTPRINTS = r"""
@@ -105,21 +123,25 @@ def assembly(fp):
 
 
 def main():
-    gerbers = OUT / "gerbers"
+    ap = argparse.ArgumentParser(description="Build the JLCPCB fab package for one board.")
+    ap.add_argument("--board", choices=BOARDS, default="brain")
+    pcb, out, zip_name = BOARDS[ap.parse_args().board]
+
+    gerbers = out / "gerbers"
     gerbers.mkdir(parents=True, exist_ok=True)
     for old in gerbers.iterdir():
         old.unlink()
 
     run(KICAD_CLI, "pcb", "export", "gerbers", "--layers", LAYERS, "--subtract-soldermask", "--check-zones",
-        "-o", gerbers, PCB)
+        "-o", gerbers, pcb)
     run(KICAD_CLI, "pcb", "export", "drill", "--format", "excellon", "--excellon-units", "mm",
-        "--excellon-separate-th", "--generate-map", "--map-format", "gerberx2", "-o", gerbers, PCB)
-    zip_path = OUT / "thegoose-gerbers.zip"
+        "--excellon-separate-th", "--generate-map", "--map-format", "gerberx2", "-o", gerbers, pcb)
+    zip_path = out / zip_name
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(gerbers.iterdir()):
             z.write(f, f.name)
 
-    fps = json.loads(run(KICAD_PYTHON, "-c", FOOTPRINTS, PCB).stdout)
+    fps = json.loads(run(KICAD_PYTHON, "-c", FOOTPRINTS, pcb).stdout)
     parts = [fp for fp in fps if fp["mpn"] and (fp["dnp"] or not fp["no_bom"])]
     problems = []
 
@@ -134,7 +156,7 @@ def main():
 
     order = {"JLC SMT": 0, "Hand-place": 1, "Hand-solder": 2}
     rows = sorted(groups.items(), key=lambda kv: (order[kv[0][4]], ref_key(sorted(f["ref"] for f in kv[1])[0])))
-    with open(OUT / "bom.csv", "w", newline="") as fh:
+    with open(out / "bom.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Item", "Qty", "References", "Value", "Footprint", "Manufacturer", "MPN", "LCSC Part #",
                     "Assembly"])
@@ -144,7 +166,7 @@ def main():
                         how])
 
     smt = [fp for fp in parts if assembly(fp) == "JLC SMT"]
-    with open(OUT / "jlc_bom.csv", "w", newline="") as fh:
+    with open(out / "jlc_bom.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])
         for (value, footprint, mpn, lcsc, how), members in rows:
@@ -153,23 +175,31 @@ def main():
             refs = sorted((f["ref"] for f in members), key=ref_key)
             w.writerow([value, ",".join(refs), footprint.split(":")[-1], lcsc])
 
-    with open(OUT / "jlc_cpl.csv", "w", newline="") as fh:
+    with open(out / "jlc_cpl.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
         for fp in sorted(smt, key=lambda f: ref_key(f["ref"])):
-            if fp["side"] != "F.Cu":
-                problems.append(f"{fp['ref']}: on {fp['side']}; Economic PCBA is top side only")
+            bottom = fp["side"] == "B.Cu"
             if fp["pad_mid"]:
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
                 if (dx * dx + dy * dy) ** 0.5 > 0.25:
-                    problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre")
-            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Top", f"{jlc_rotation(fp['footprint'], fp['rot']):.0f}"])
+                    problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre "
+                                    f"(the footprint's origin; JLC centres on its own part model, check the preview)")
+            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Bottom" if bottom else "Top",
+                        f"{jlc_rotation(fp['footprint'], fp['rot'], bottom):.0f}"])
+    bottom_refs = sorted((fp["ref"] for fp in smt if fp["side"] == "B.Cu"), key=ref_key)
+    offset_refs = sorted((fp["ref"] for fp in smt if jlc_offset(fp["footprint"])), key=ref_key)
 
     counts = {how: sum(len(m) for k, m in groups.items() if k[4] == how) for how in order}
     lines = sum(1 for k in groups if k[4] == "JLC SMT")
     print(f"gerbers: {len(list(gerbers.iterdir()))} files -> {zip_path.relative_to(ROOT)}")
     print(f"bom.csv: {len(groups)} lines; placements {counts}")
     print(f"jlc_bom.csv: {lines} lines; jlc_cpl.csv: {len(smt)} placements")
+    if bottom_refs:
+        print(f"bottom side: {len(bottom_refs)} placements; check their rotation in JLC's preview: "
+              + " ".join(bottom_refs))
+    if offset_refs:
+        print("rotation offsets applied (check pin 1 in JLC's preview): " + " ".join(offset_refs))
     for p in problems:
         print("CHECK:", p)
 

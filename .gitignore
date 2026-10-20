@@ -1,29 +1,28 @@
-# KiCad autosaves, locks, and editor-local files
+# KiCad autosaves, locks, local history and editor-local files
 \#auto_saved_files\#
 *_autosave*
 ~*
 *.lck
 *.kicad_prl
 fp-info-cache
+.history/
 
 # KiCad backup archives
 *-backups/
 
 # Exported manufacturing and interchange files
+build/
 gerbers/
+production/
+*.zip
 *.step
 *.stp
 
 # Generic backup files
 *.bak
 
-*.zip
-
-production/
-
 .DS_Store
-
-# SKiDL
-.venv/
-build/
 __pycache__/
+
+# Source 3D models used by the footprints (not exports)
+!kicad/3dmodels/*.step

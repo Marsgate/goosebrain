@@ -39,4 +39,15 @@
   (pad "17" thru_hole circle (at 0.0 12.7) (size 1.7 1.7) (drill 1.0) (layers "*.Cu" "*.Mask") (uuid "ec004ab8-7a92-4a9a-ab4a-9c49bf04d031"))
   (pad "18" thru_hole circle (at 2.54 12.7) (size 1.7 1.7) (drill 1.0) (layers "*.Cu" "*.Mask") (uuid "0b49d99a-00b2-41b4-b9ba-518eeddb28f1"))
   (embedded_fonts no)
-)
+  (model "${KIPRJMOD}/3dmodels/2011-3X06G00RB.step"
+  	(offset
+  		(xyz -6.74 -5.08 3)
+  	)
+  	(scale
+  		(xyz 1 1 1)
+  	)
+  	(rotate
+  		(xyz 0 0 90)
+  	)
+  )
+ )
