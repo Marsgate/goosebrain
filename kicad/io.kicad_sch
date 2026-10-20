@@ -2439,7 +2439,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "1722227a-5a05-4b1a-8309-fb6b97d11cc7")
 		(property "Reference" "U14"
 			(at 199.39 59.69 0)

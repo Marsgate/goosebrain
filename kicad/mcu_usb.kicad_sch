@@ -7746,7 +7746,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "2300fe0c-e46f-4d22-83eb-1070279ffa77")
 		(property "Reference" "F2"
 			(at 344.17 111.76 0)
@@ -10947,7 +10947,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "70ddcb92-0542-4d19-8f58-7a13bd4e7fac")
 		(property "Reference" "SW2"
 			(at 143.51 153.16 0)

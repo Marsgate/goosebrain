@@ -88,9 +88,13 @@ JLC_ROTATION = [
 # pin 1 is the right-hand pin and the housing lies on the other side of the pin row from KiCad's, a 180 degree turn.
 JLC_PART_ROTATION = {"C16106": 180, "C51953246": -90, "C173752": 180, "C131339": 180, "C431092": 180, "C393937": 180}
 # Footprints JLC centres on their pads, not the footprint origin, so the CPL gives the pad centre. J1's USB-C origin
-# sits 1.15 mm toward the board edge from its pads, and the preview showed the model shifted that far out. U8's SOT-89-3
-# model sat 0.3 mm toward its tab, short of the pin pads, at the footprint origin (second preview, 2026-10-20).
-JLC_PAD_CENTRE = [r"^USB_C_Receptacle_ShouHan_", r"^SOT-89-3$"]
+# sits 1.15 mm toward the board edge from its pads, and the preview showed the model shifted that far out.
+JLC_PAD_CENTRE = [r"^USB_C_Receptacle_ShouHan_"]
+# Parts whose JLC 3D model is off its own footprint's origin, by LCSC number: (pads to move toward, mm). The CPL point
+# moves from the footprint origin that far toward the midpoint of those pads. U8's HT7550-1 (C16106): JLC's EasyEDA
+# SOT-89-3 has its model 0.474 mm toward the tab from the footprint origin, so at our origin (the body centre) the body
+# sat toward the tab and the leads short of the pin pads (previews, 2026-10-20).
+JLC_PART_SHIFT = {"C16106": (("1", "3"), 0.474)}
 # Footprints whose JLC model is centred on the middle of the pad centres, not of the pad copper: J3's XT30PW-M
 # (C431092) sits midway between its pin row and its peg row, 5 mm from each, but its pin pads (3.5 mm) are bigger than
 # its peg pads (1.4 mm), so the copper's centre is 0.525 mm toward the pins and the pins sat off-centre in their holes
@@ -129,8 +133,9 @@ for f in b.GetFootprints():
         pad_mid = [mm(bb.GetCenter().x), mm(bb.GetCenter().y)]
         xs, ys = [p.GetPosition().x for p in pads], [p.GetPosition().y for p in pads]
         pin_mid = [mm((min(xs) + max(xs)) // 2), mm((min(ys) + max(ys)) // 2)]
+        pad_pos = {p.GetNumber(): [mm(p.GetPosition().x), mm(p.GetPosition().y)] for p in pads}
     else:
-        pad_mid = pin_mid = None
+        pad_mid = pin_mid = pad_pos = None
     # Courtyard and fab outline extents, for the panel's rail and tab clearance check
     body = None
     for it in f.GraphicalItems():
@@ -144,7 +149,7 @@ for f in b.GetFootprints():
         "smd": bool(a & pcbnew.FP_SMD), "tht": bool(a & pcbnew.FP_THROUGH_HOLE),
         "dnp": f.IsDNP(), "no_bom": f.IsExcludedFromBOM(), "side": f.GetLayerName(),
         "x": mm(f.GetPosition().x), "y": mm(f.GetPosition().y), "rot": f.GetOrientationDegrees(),
-        "pad_mid": pad_mid, "pin_mid": pin_mid, "body": body, "mpn": fields.get("MPN", ""), "mfr": fields.get("Manufacturer", ""),
+        "pad_mid": pad_mid, "pin_mid": pin_mid, "pad_pos": pad_pos, "body": body, "mpn": fields.get("MPN", ""), "mfr": fields.get("Manufacturer", ""),
         "lcsc": fields.get("LCSC Part #", ""),
     })
 e = b.GetBoardEdgesBoundingBox()
@@ -325,7 +330,13 @@ def main():
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
                 # Through-hole footprints sit on pin 1; the pad centre is nearer the middle JLC places them by
                 name = fp["footprint"].split(":")[-1]
-                if any(re.match(pat, name) for pat in JLC_PIN_CENTRE):
+                if fp["lcsc"] in JLC_PART_SHIFT:
+                    nums, d = JLC_PART_SHIFT[fp["lcsc"]]
+                    tx = sum(fp["pad_pos"][n][0] for n in nums) / len(nums) - fp["x"]
+                    ty = sum(fp["pad_pos"][n][1] for n in nums) / len(nums) - fp["y"]
+                    k = d / (tx * tx + ty * ty) ** 0.5
+                    x, y = fp["x"] + tx * k, fp["y"] + ty * k
+                elif any(re.match(pat, name) for pat in JLC_PIN_CENTRE):
                     x, y = fp["pin_mid"]
                 elif fp["tht"] or any(re.match(pat, name) for pat in JLC_PAD_CENTRE):
                     x, y = fp["pad_mid"]

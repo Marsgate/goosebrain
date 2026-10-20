@@ -16029,7 +16029,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "eacbcd17-f0a3-4226-b5cf-b982d19069d3")
 		(property "Reference" "D4"
 			(at 234.95 172.72 90)

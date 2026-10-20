@@ -295,7 +295,7 @@ J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, an
 **Assembly:**
 
 - **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips, on both sides of the brain. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
-  - Brain, hand-placed: D4, U14, F2 (back), SW2 (front). Through-hole, in the panel's JLC files (or hand-soldered): J3, J4, J5, J12, M1–M6, SW1. L1 was hand-placed until 2026-10-20; JLC places it now (the Zeng Yi HMS0530-2R2M instead of the Coilcraft XAL5030). L3 is gone: the core runs from an LDO (U12).
+  - Brain: JLC places every SMD part, D4, U14, F2 and SW2 included (they were hand-placed until 2026-10-20). Through-hole, in the panel's JLC files (or hand-soldered): J3, J4, J5, J12, M1–M6, SW1. L1 was hand-placed until 2026-10-20; JLC places it now (the Zeng Yi HMS0530-2R2M instead of the Coilcraft XAL5030). L3 is gone: the core runs from an LDO (U12).
   - Pack, hand-placed: L2, Q2, Q3, R66, TH1, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
   - 2S pack, hand-placed: L2, Q2, Q3, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
 - **Brain:** order Standard PCBA, both sides, and upload `build/fab-panel/jlc_bom.csv` and `jlc_cpl.csv`. Check every through-hole part in the preview too: their footprint origins are at pin 1, so the CPL gives the pad centre. In the previews on 2026-10-20, J5 needed the −90° offset, J3, J12 and M1–M6 came out turned 180° (housings inboard, pins at the edge), and SW1's lever pointed into the board; fab.py now adds these offsets by LCSC number. J4 sat right with none. **Packs:** Economic PCBA, top side only.
