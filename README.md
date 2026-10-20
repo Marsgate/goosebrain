@@ -25,13 +25,18 @@ It was copied on 2026-10-19 from [Marsgate/goosebrain](https://github.com/Marsga
 
 ## Firmware changes
 
-- **Spare GPIOs:** GPIO8, GPIO9, GPIO17, GPIO19, GPIO23 and GPIO25 are now no-connects (they were I2C SDA, charger /INT, I2C SCL, DRV_FAULT, DRV_SLEEP and USBA_VBUS_EN). GPIO20 and GPIO29 stay spare.
+- **GPIO map (double-sided board, 2026-10-20):** the pins were reshuffled so each signal leaves U10 on the side facing where it goes. The MCU sheet's GPIO MAP note has the full list:
+  - Motors (IN1/IN2, one PWM slice each): M1 GPIO10/11 (slice 5), M2 GPIO0/1 (slice 0), M3 GPIO22/23 (slice 3), M4 GPIO20/21 (slice 2), M5 GPIO12/13 (slice 6), M6 GPIO14/15 (slice 7). Before: M1 4/5, M2 7/6, M3 0/1, M4 14/15, M5 10/11, M6 13/12.
+  - LED stick data: GPIO7 (was GPIO18).
+  - USB-A host: GPIO27 = D+, GPIO26 = D− (was GPIO2/3). D− is the lower pin, so configure Pico-PIO-USB with `pin_dp = 27` and `pinout = PIO_USB_PINOUT_DMDP`. GPIO26/27 aren't 5 V tolerant, but USB full-speed signals at 3.3 V.
+- **Spare GPIOs:** GPIO2–6, GPIO8, GPIO9 and GPIO29 are no-connects.
+- **IO ports:** IO1–IO6 are GPIO16, 17, 18, 19, 24 and 25 (2026-10-20; before that GPIO16, 21, 22, 24, 25 and 19). All six are 5 V tolerant, because none is on an ADC pin. IO4–IO6 can run servos from hardware PWM (slices 1B, 4A and 4B; IO5 and IO6 share slice 4, so they share a frequency), and no motor uses slice 1 or 4. IO1–IO3 share slices with M2 (0A, 0B) or IO4 (1A), so drive their servos from PIO.
 - **No I2C charger:** drop the charger driver. The battery voltage now comes only from the GPIO28 divider (VSYS / 4.7, so 12.6 V reads 2.68 V). It reads 0 with the switch off.
 - **The pack cuts off in hardware:** the 3S pack at 2.8 V per cell (8.4 V), the 2S pack at 2.8 V per cell (5.6 V; the HY2120 turns back on at 3.0 V per cell). Warn the user well above that, at about 3.3 V per cell.
 - **Work out the cell count at power-on** from the GPIO28 reading: above about 8.6 V it's a 3S pack, otherwise 2S. The only pack this reads wrong is a nearly flat 3S one, and the cutoff is in hardware, so the cost is only a wrong warning level.
 - **Motor speed:** the motors run about 40 % slower on a 2S pack. To make the robot behave the same on either pack, cap the 3S PWM to match.
-- **Motors:** six DRV8251As, one per motor, on the same GPIO pairs (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.2 kΩ on IPROPI, so 1.34 A). They run from 4.5 V, so a 2S pack works.
-- **USB-A:** the port is always powered through a 0.5 A PTC. There is no USBA_VBUS_EN.
+- **Motors:** six DRV8251As, one per motor, on the GPIO pairs above (IN1 = GPIOn_MxA, IN2 = GPIOn_MxB). M2, M4 and M6 stay wired reversed. There is no DRV_SLEEP or DRV_FAULT: a driver sleeps when both inputs stay low for about 1 ms. Each driver limits itself at about 1.36 A (shared VREF 2.53 V, 1.2 kΩ on IPROPI, so 1.34 A). They run from 4.5 V, so a 2S pack works.
+- **USB-A:** the port is always powered through a 0.5 A PTC. There is no USBA_VBUS_EN. R109/R114 (15 kΩ) are the host pull-downs on D+/D−, so Pico-PIO-USB doesn't need the GPIO pull-downs on GPIO26/27.
 
 ## Bring-up tests
 

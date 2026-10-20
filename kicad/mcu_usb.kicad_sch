@@ -5172,7 +5172,7 @@
 		)
 		(uuid "ca47d5a4-09bb-47c9-a72e-fcfc070461ba")
 	)
-	(text "USB-A VBUS: F2 PTC from VCC (0.5 A hold, 1 A trip,\n16 V, 1206, hand-placed); C59 10 uF at the port.\nAlways powered: no enable GPIO.\nPico-PIO-USB on GPIO2/3 with 22 R in series."
+	(text "USB-A VBUS: F2 PTC from VCC (0.5 A hold, 1 A trip,\n16 V, 1206, hand-placed); C59 10 uF at the port.\nAlways powered: no enable GPIO.\nPico-PIO-USB on GPIO27 (D+) / GPIO26 (D-) with 22 R in series.\nR109/R114 15k: host pull-downs on D+/D-."
 		(exclude_from_sim no)
 		(at 322.58 167.64 0)
 		(effects
@@ -5206,7 +5206,7 @@
 		)
 		(uuid "da6effb5-fa4b-4277-aeb3-98dc5d5202b2")
 	)
-	(text "GPIO MAP\nGPIO0/1     M3 (U2 IN1/IN2)\nGPIO2/3     USB-A D+/D- (Pico-PIO-USB, D- = D+ + 1)\nGPIO4/5     M1 (U1 IN1/IN2)\nGPIO6/7     M2 (U15 IN2/IN1, A/B swapped)\nGPIO8, 9    spare (no-connect; were I2C SDA and charger /INT)\nGPIO10/11   M5 (U3 IN1/IN2)\nGPIO12/13   M6 (U17 IN2/IN1, A/B swapped)\nGPIO14/15   M4 (U16 IN1/IN2)\nGPIO16      IO1 (5 V tolerant)\nGPIO17      spare (no-connect; was I2C SCL)\nGPIO18      LED stick data (PIO WS2812, U14 level shift)\nGPIO19      spare (no-connect; was DRV_FAULT)\nGPIO20      spare\nGPIO21/22   IO2/IO3 (5 V tolerant)\nGPIO23      spare (no-connect; was DRV_SLEEP)\nGPIO24      IO4 (5 V tolerant)\nGPIO25      spare (no-connect; was USBA_VBUS_EN)\nGPIO26/27   IO5/IO6 (ADC0/1, 3.3 V logic only)\nGPIO28      battery sense (ADC2): the only battery reading now\nGPIO29      spare (ADC3)\nMotor pairs are PWM slices M3 0, M1 2, M2 3, M5 5, M6 6, M4 7."
+	(text "GPIO MAP (double-sided board, 2026-10-20)\nGPIO0/1     M2 (U15 IN1/IN2), PWM slice 0\nGPIO2-6     spare (no-connect)\nGPIO7       LED stick data (PIO WS2812, U14 level shift)\nGPIO8, 9    spare (no-connect)\nGPIO10/11   M1 (U1 IN1/IN2), slice 5\nGPIO12/13   M5 (U3 IN1/IN2), slice 6\nGPIO14/15   M6 (U17 IN1/IN2), slice 7\nGPIO16-18   IO1-IO3 (5 V tolerant)\nGPIO19      IO4 (5 V tolerant, PWM 1B)\nGPIO20/21   M4 (U16 IN1/IN2), slice 2\nGPIO22/23   M3 (U2 IN1/IN2), slice 3\nGPIO24/25   IO5/IO6 (5 V tolerant, PWM 4A/4B)\nGPIO26/27   USB-A D-/D+ (Pico-PIO-USB, pin_dp 27, PIO_USB_PINOUT_DMDP)\nGPIO28      battery sense (ADC2): the only battery reading now\nGPIO29      spare (ADC3)\nMotor pairs are PWM slices M2 0, M4 2, M3 3, M1 5, M5 6, M6 7;\nIO4-IO6 use slices 1 and 4, which no motor uses."
 		(exclude_from_sim no)
 		(at 243.84 73.66 0)
 		(effects
@@ -5410,7 +5410,7 @@
 		(uuid "458123a9-920b-477b-bfd9-7da109c6ba36")
 	)
 	(no_connect
-		(at 215.9 167.64)
+		(at 215.9 129.54)
 		(uuid "49da0dc0-3ee2-4320-86ef-125cdba5b749")
 	)
 	(no_connect
@@ -5426,11 +5426,11 @@
 		(uuid "7be8601b-e072-4ed8-9769-915606a2ba00")
 	)
 	(no_connect
-		(at 215.9 180.34)
+		(at 215.9 121.92)
 		(uuid "7cd75c19-f355-4b36-b9fc-8a83c474dca4")
 	)
 	(no_connect
-		(at 215.9 160.02)
+		(at 215.9 127)
 		(uuid "831bfcab-dad4-4c3a-a873-5d123abf0571")
 	)
 	(no_connect
@@ -5438,7 +5438,7 @@
 		(uuid "9eceae6c-f4ad-4f26-8a8c-145b854e6be0")
 	)
 	(no_connect
-		(at 215.9 175.26)
+		(at 215.9 132.08)
 		(uuid "cc5b8353-f684-494f-ba89-d47cfdc22cc0")
 	)
 	(no_connect
@@ -5446,7 +5446,7 @@
 		(uuid "ccad0244-b132-44eb-9995-072eba734695")
 	)
 	(no_connect
-		(at 215.9 165.1)
+		(at 215.9 124.46)
 		(uuid "d9b9fedd-82eb-45e0-b511-68639df585c7")
 	)
 	(wire
@@ -5588,16 +5588,6 @@
 			(type default)
 		)
 		(uuid "353838b9-cbc1-46e3-8a47-04e9c8ace252")
-	)
-	(wire
-		(pts
-			(xy 215.9 121.92) (xy 231.14 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "37efcbb4-71b6-4ddd-827f-0ca2ae835aaa")
 	)
 	(wire
 		(pts
@@ -5778,16 +5768,6 @@
 			(type default)
 		)
 		(uuid "804caa64-0187-4f39-8f67-94ef6940cf7d")
-	)
-	(wire
-		(pts
-			(xy 215.9 124.46) (xy 231.14 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8d04dda8-c2b2-4502-92a5-0b532690df65")
 	)
 	(wire
 		(pts
@@ -6260,7 +6240,7 @@
 		(uuid "6833da02-6fc9-4a12-b6b2-5f5d4eabf6c1")
 	)
 	(label "USBA_GPIO_N"
-		(at 231.14 124.46 0)
+		(at 215.9 185.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6340,7 +6320,7 @@
 		(uuid "aa7e56ca-940b-47c5-9cee-390fd85fb88a")
 	)
 	(label "USBA_GPIO_P"
-		(at 231.14 121.92 0)
+		(at 215.9 187.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6359,7 +6339,7 @@
 		)
 		(uuid "ffeff708-41d6-4dc0-9628-f9f9e070abef")
 	)
-	(global_label "GPIO14_M4A"
+	(global_label "GPIO14_M6A"
 		(shape bidirectional)
 		(at 215.9 152.4 0)
 		(effects
@@ -6381,7 +6361,7 @@
 			)
 		)
 	)
-	(global_label "GPIO13_M6A"
+	(global_label "GPIO13_M5B"
 		(shape bidirectional)
 		(at 215.9 149.86 0)
 		(effects
@@ -6403,7 +6383,7 @@
 			)
 		)
 	)
-	(global_label "GPIO12_M6B"
+	(global_label "GPIO12_M5A"
 		(shape bidirectional)
 		(at 215.9 147.32 0)
 		(effects
@@ -6425,18 +6405,18 @@
 			)
 		)
 	)
-	(global_label "GPIO4_M1A"
+	(global_label "IO2_GPIO"
 		(shape bidirectional)
-		(at 215.9 127 0)
+		(at 215.9 160.02 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "2caf1e5e-8200-4eae-a0a5-dc4ff39cebfd")
+		(uuid "793bb24e-5c5a-486c-871d-14f01934105a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 127 0)
+			(at 215.9 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6447,7 +6427,7 @@
 			)
 		)
 	)
-	(global_label "GPIO10_M5A"
+	(global_label "GPIO10_M1A"
 		(shape bidirectional)
 		(at 215.9 142.24 0)
 		(effects
@@ -6469,7 +6449,7 @@
 			)
 		)
 	)
-	(global_label "GPIO7_M2A"
+	(global_label "LED_DIN"
 		(shape bidirectional)
 		(at 215.9 134.62 0)
 		(effects
@@ -6491,7 +6471,7 @@
 			)
 		)
 	)
-	(global_label "GPIO0_M3A"
+	(global_label "GPIO0_M2A"
 		(shape bidirectional)
 		(at 215.9 116.84 0)
 		(effects
@@ -6513,7 +6493,7 @@
 			)
 		)
 	)
-	(global_label "IO3_GPIO"
+	(global_label "GPIO22_M3A"
 		(shape bidirectional)
 		(at 215.9 172.72 0)
 		(effects
@@ -6535,7 +6515,7 @@
 			)
 		)
 	)
-	(global_label "LED_DIN"
+	(global_label "IO3_GPIO"
 		(shape bidirectional)
 		(at 233.68 162.56 0)
 		(effects
@@ -6557,7 +6537,7 @@
 			)
 		)
 	)
-	(global_label "IO4_GPIO"
+	(global_label "IO5_GPIO"
 		(shape bidirectional)
 		(at 215.9 177.8 0)
 		(effects
@@ -6579,18 +6559,18 @@
 			)
 		)
 	)
-	(global_label "GPIO5_M1B"
+	(global_label "GPIO20_M4A"
 		(shape bidirectional)
-		(at 215.9 129.54 0)
+		(at 215.9 167.64 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "6e6919f7-3651-4c00-8c1d-fd9cd79b6ff6")
+		(uuid "fcbf5387-b431-4433-bef5-e9f93cd9a480")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 129.54 0)
+			(at 215.9 167.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6601,7 +6581,7 @@
 			)
 		)
 	)
-	(global_label "IO2_GPIO"
+	(global_label "GPIO21_M4B"
 		(shape bidirectional)
 		(at 215.9 170.18 0)
 		(effects
@@ -6623,9 +6603,9 @@
 			)
 		)
 	)
-	(global_label "IO5_GPIO"
+	(global_label "IO6_GPIO"
 		(shape bidirectional)
-		(at 215.9 185.42 0)
+		(at 215.9 180.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6634,7 +6614,7 @@
 		)
 		(uuid "846edd90-0713-41b2-a743-de4bfe765410")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 185.42 0)
+			(at 215.9 180.34 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6645,7 +6625,7 @@
 			)
 		)
 	)
-	(global_label "GPIO15_M4B"
+	(global_label "GPIO15_M6B"
 		(shape bidirectional)
 		(at 215.9 154.94 0)
 		(effects
@@ -6667,9 +6647,9 @@
 			)
 		)
 	)
-	(global_label "IO6_GPIO"
+	(global_label "IO4_GPIO"
 		(shape bidirectional)
-		(at 215.9 187.96 0)
+		(at 215.9 165.1 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6678,7 +6658,7 @@
 		)
 		(uuid "8c3f7755-702c-455d-9832-e84b21646a00")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 187.96 0)
+			(at 215.9 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6799,18 +6779,18 @@
 			)
 		)
 	)
-	(global_label "GPIO6_M2B"
+	(global_label "GPIO23_M3B"
 		(shape bidirectional)
-		(at 215.9 132.08 0)
+		(at 215.9 175.26 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "d40b4c17-e310-4fc8-b036-7405b3b5bbeb")
+		(uuid "4039faf5-6ae4-4656-bd9d-3cfb5d150143")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 215.9 132.08 0)
+			(at 215.9 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6821,7 +6801,7 @@
 			)
 		)
 	)
-	(global_label "GPIO1_M3B"
+	(global_label "GPIO1_M2B"
 		(shape bidirectional)
 		(at 215.9 119.38 0)
 		(effects
@@ -6843,7 +6823,7 @@
 			)
 		)
 	)
-	(global_label "GPIO11_M5B"
+	(global_label "GPIO11_M1B"
 		(shape bidirectional)
 		(at 215.9 144.78 0)
 		(effects
@@ -14352,6 +14332,408 @@
 				)
 			)
 		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 391.16 147.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4266c5a2-7867-4781-bdae-7aedf6629d3d")
+		(property "Reference" "R109"
+			(at 393.7 146.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "15k"
+			(at 393.7 148.59 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF1502TCE"
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part #" "C25756"
+			(at 391.16 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4ca4e84b-9547-4c11-979d-d505eca28f50")
+		)
+		(pin "2"
+			(uuid "62bc935d-d2ec-41f3-a007-7d4746b12059")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "R109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 398.78 147.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9e151103-0a28-4aa1-844e-2ff9ac2459c6")
+		(property "Reference" "R114"
+			(at 401.32 146.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "15k"
+			(at 401.32 148.59 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0402WGF1502TCE"
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part #" "C25756"
+			(at 398.78 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9813afd7-0a74-419e-90b2-14c9c34606b0")
+		)
+		(pin "2"
+			(uuid "464bf681-a333-49a1-830a-cfc2f54f8379")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "R114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 391.16 151.13 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a86045f4-1d93-43c6-90bc-85511c05c7e1")
+		(property "Reference" "#PWR904"
+			(at 391.16 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 391.16 154.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 391.16 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 391.16 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 391.16 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dfe8cdc4-d041-4de3-89db-6a6231c676fd")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "#PWR904")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 398.78 151.13 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9310de11-a035-4313-aae4-a5243692820a")
+		(property "Reference" "#PWR905"
+			(at 398.78 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 398.78 154.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 398.78 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 398.78 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 398.78 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2cd613a1-abb1-4ed6-9cfe-9e4a14f573d7")
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da/ae136f4d-e1a2-4948-8628-fbde5858c102"
+					(reference "#PWR905")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(label "USBA_P"
+		(at 391.16 143.51 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "66365755-624b-4e88-8c83-f38d48b3f1ae")
+	)
+	(label "USBA_N"
+		(at 398.78 143.51 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "082708d3-3923-40f3-a05e-01fe6a5488c6")
 	)
 	(sheet_instances
 		(path "/"
