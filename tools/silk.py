@@ -181,6 +181,9 @@ def main():
         ref = f.GetReference()
         r = f.Reference()
         s = side_of[ref]
+        if f.GetPadCount() == 0:                        # the logo
+            r.SetVisible(False)
+            continue
         if ref.startswith("FID"):
             r.SetVisible(False)
             hidden.append(ref)

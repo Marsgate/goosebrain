@@ -22739,13 +22739,14 @@
 		(uuid "74a5c382-87bb-4c32-a2f8-713984ed5693")
 		(at 140.175 103.675)
 		(property "Reference" "G***"
-			(at -1.249908 4.325471 0)
+			(at 0 0 180)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "762b4a76-34eb-46de-a308-9dd4380a60b4")
 			(effects
 				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
+					(size 1.5 1.5)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -29769,7 +29770,7 @@
 		(descr "Resistor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R109"
-			(at -1 -1.29625 90)
+			(at 1.75625 -1 0)
 			(layer "B.SilkS")
 			(uuid "c5102219-100c-46ef-8510-0233147d691a")
 			(effects
@@ -56925,6 +56926,44 @@
 		)
 	)
 	(zone
+		(net "GND")
+		(layer "In3.Cu")
+		(uuid "54deebfb-2b46-402e-a996-cd93d5771f55")
+		(name "In3 GND under In2 signals")
+		(hatch edge 0.5)
+		(priority 50)
+		(connect_pads yes
+			(clearance 0.2)
+		)
+		(min_thickness 0.2)
+		(fill yes
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 152.95 125.5) (xy 152.95 126.65) (xy 152.5 126.65) (xy 152.5 125.5)
+			)
+		)
+		(filled_polygon
+			(layer "In3.Cu")
+			(pts
+				(xy 152.95 126.65) (xy 152.5 126.65) (xy 152.5 126.6055) (xy 152.611016 126.6055) (xy 152.611018 126.6055)
+				(xy 152.719237 126.576503) (xy 152.719239 126.576501) (xy 152.719241 126.576501) (xy 152.748064 126.559859)
+				(xy 152.816263 126.520485) (xy 152.895485 126.441263) (xy 152.95 126.34684)
+			)
+		)
+		(filled_polygon
+			(layer "In3.Cu")
+			(pts
+				(xy 152.95 126.013158) (xy 152.895486 125.918739) (xy 152.895485 125.918737) (xy 152.816263 125.839515)
+				(xy 152.81626 125.839513) (xy 152.71924 125.783498) (xy 152.719242 125.783498) (xy 152.677251 125.772247)
+				(xy 152.611018 125.7545) (xy 152.5 125.7545) (xy 152.5 125.5) (xy 152.95 125.5)
+			)
+		)
+	)
+	(zone
 		(net "VCC")
 		(locked yes)
 		(layer "In3.Cu")
@@ -57572,44 +57611,6 @@
 				(xy 100.819726 100.263928) (xy 100.831734 100.262147) (xy 100.913224 100.254121) (xy 100.925731 100.25289)
 				(xy 100.925731 100.252889) (xy 100.940941 100.251392) (xy 100.946973 100.250948) (xy 100.953066 100.250649)
 				(xy 100.959144 100.2505) (xy 103.175061 100.2505)
-			)
-		)
-	)
-	(zone
-		(net "GND")
-		(layer "In3.Cu")
-		(uuid "df835f99-4a66-4f81-8ddb-2435bea46e34")
-		(name "In3 GND under In2 signals")
-		(hatch edge 0.5)
-		(priority 50)
-		(connect_pads yes
-			(clearance 0.2)
-		)
-		(min_thickness 0.2)
-		(fill yes
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 152.95 125.5) (xy 152.95 126.65) (xy 152.5 126.65) (xy 152.5 125.5)
-			)
-		)
-		(filled_polygon
-			(layer "In3.Cu")
-			(pts
-				(xy 152.95 126.65) (xy 152.5 126.65) (xy 152.5 126.6055) (xy 152.611016 126.6055) (xy 152.611018 126.6055)
-				(xy 152.719237 126.576503) (xy 152.719239 126.576501) (xy 152.719241 126.576501) (xy 152.748064 126.559859)
-				(xy 152.816263 126.520485) (xy 152.895485 126.441263) (xy 152.95 126.34684)
-			)
-		)
-		(filled_polygon
-			(layer "In3.Cu")
-			(pts
-				(xy 152.95 126.013158) (xy 152.895486 125.918739) (xy 152.895485 125.918737) (xy 152.816263 125.839515)
-				(xy 152.81626 125.839513) (xy 152.71924 125.783498) (xy 152.719242 125.783498) (xy 152.677251 125.772247)
-				(xy 152.611018 125.7545) (xy 152.5 125.7545) (xy 152.5 125.5) (xy 152.95 125.5)
 			)
 		)
 	)
@@ -61377,8 +61378,8 @@
 		)
 	)
 	(group "plane_channels"
-		(uuid "bc3a8414-b9a4-443e-ad47-afa5c288c0f3")
-		(members "df835f99-4a66-4f81-8ddb-2435bea46e34")
+		(uuid "4c39b7eb-8ed6-49f9-84c9-9a1791ba6b5e")
+		(members "54deebfb-2b46-402e-a996-cd93d5771f55")
 	)
 	(embedded_fonts no)
 )
