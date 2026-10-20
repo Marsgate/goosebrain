@@ -356,7 +356,7 @@
 		(uuid "aba40f9e-7c5e-40b0-bcda-4c918d55bdbb")
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_Push_1P1T-MP_NO_Horizontal_Alps_SKRTLAE010.step"
+	(model "${KIPRJMOD}/3dmodels/SKRTLAE010.step"
 		(offset
 			(xyz 0 0 0)
 		)

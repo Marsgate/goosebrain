@@ -138,9 +138,10 @@ Layout notes for later:
 
 - **The pack rides outside the brain's box** and plugs into J3 through the bottom wall, so the box has no pack bay.
 - **Box size = outline + 5 mm:** about 78.4 × 48 mm (it was 93.5 × 52).
-- **Box height:** about 16 mm, against about 30 mm before. The vertical XT30 with its plug in was about 17 mm tall and set the old height. Without it, the tallest parts are the right-angle connectors and J12. Check their heights against the case before you commit to 16 mm.
+- **Box height:** about 16 mm, against about 30 mm before. The vertical XT30 with its plug in was about 17 mm tall and set the old height. Without it, the tallest parts are the right-angle connectors and J12 with its plug in. Check their heights against the case before you commit to 16 mm.
 - **Holding the board:** there are no mounting holes, so the case needs ribs, slots or clips to hold it. Put a rib behind J3: the XT30 takes 1.2–3.5 kg to plug and unplug, and that force goes straight into the board's bottom edge.
-- **Wall openings:** J3's mouth on the bottom wall, about 14 mm wide, centred 2.5 mm right of J3's pin 1 at x 125. The rest are unchanged: top wall for J1, J4, SW1 (lever slot), SW2 (pinhole) and J12; left wall for J5, M5 and M6; right wall for M1–M4.
+- **Wall openings:** J3's mouth on the bottom wall, about 14 mm wide, centred 2.5 mm right of J3's pin 1 at x 125. The rest are unchanged: top wall for J1, J4, SW1 (lever slot), SW2 (pinhole); left wall for J5, M5 and M6; right wall for M1–M4.
+- **J12 and the LED stick:** the strip lives in the lid, so J12 (vertical PH) needs no wall opening. Its cable goes straight up. Leave room above J12 for the plug and the bend of its wire, or put a hole in the lid right above it, and leave enough slack to open the lid without pulling on the plug.
 - The F.Fab notes about the old pack envelope and the vertical XT30 are gone. J3's note now describes the horizontal part.
 
 ## Ordering boards

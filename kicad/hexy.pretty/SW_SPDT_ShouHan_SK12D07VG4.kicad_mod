@@ -21,4 +21,15 @@
   (pad "" thru_hole oval (at -4.15 0) (size 1.4 2.3) (drill oval 0.8 1.6) (layers "*.Cu" "*.Mask") (uuid "956392a6-7c34-44ad-9578-bce1b18af6bd"))
   (pad "" thru_hole oval (at 4.15 0) (size 1.4 2.3) (drill oval 0.8 1.6) (layers "*.Cu" "*.Mask") (uuid "19c6c11e-d97a-49ad-8374-14d603ec9c06"))
   (embedded_fonts no)
-)
+  (model "${KIPRJMOD}/3dmodels/SK12D07VG4.step"
+  	(offset
+  		(xyz 0 0 0)
+  	)
+  	(scale
+  		(xyz 1 1 1)
+  	)
+  	(rotate
+  		(xyz 0 0 180)
+  	)
+  )
+ )

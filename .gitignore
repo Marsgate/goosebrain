@@ -23,3 +23,6 @@ production/
 
 .DS_Store
 __pycache__/
+
+# Source 3D models used by the footprints (not exports)
+!kicad/3dmodels/*.step

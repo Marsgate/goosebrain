@@ -1,74 +1,10 @@
 (kicad_sch
-	(version 20250114)
+	(version 20260306)
 	(generator "eeschema")
-	(generator_version "9.0")
+	(generator_version "10.0")
 	(uuid "72b1d502-e600-4337-8ef9-b222b53a12da")
 	(paper "A4")
 	(lib_symbols)
-  (sheet (at 25.4 38.1) (size 50.8 25.4) (fields_autoplaced yes)
-    (stroke (width 0.0006) (type default))
-    (fill (color 0 0 0 0.0000))
-    (uuid "0021e6ae-34c0-486e-ac47-c8566b803df5")
-    (property "Sheetname" "Power" (at 27.94 36.83 0)
-      (effects (font (size 1.27 1.27)) (justify left bottom))
-    )
-    (property "Sheetfile" "power.kicad_sch" (at 27.94 64.77 0)
-      (effects (font (size 1.27 1.27)) (justify left top))
-    )
-    (instances
-      (project "thegoose"
-        (path "/72b1d502-e600-4337-8ef9-b222b53a12da" (page "2"))
-      )
-    )
-  )
-  (sheet (at 88.9 38.1) (size 50.8 25.4) (fields_autoplaced yes)
-    (stroke (width 0.0006) (type default))
-    (fill (color 0 0 0 0.0000))
-    (uuid "ae136f4d-e1a2-4948-8628-fbde5858c102")
-    (property "Sheetname" "MCU & USB" (at 91.44 36.83 0)
-      (effects (font (size 1.27 1.27)) (justify left bottom))
-    )
-    (property "Sheetfile" "mcu_usb.kicad_sch" (at 91.44 64.77 0)
-      (effects (font (size 1.27 1.27)) (justify left top))
-    )
-    (instances
-      (project "thegoose"
-        (path "/72b1d502-e600-4337-8ef9-b222b53a12da" (page "3"))
-      )
-    )
-  )
-  (sheet (at 152.4 38.1) (size 50.8 25.4) (fields_autoplaced yes)
-    (stroke (width 0.0006) (type default))
-    (fill (color 0 0 0 0.0000))
-    (uuid "c7bafd38-dd09-49c3-a840-432bd31e4c95")
-    (property "Sheetname" "Motor drivers" (at 154.94 36.83 0)
-      (effects (font (size 1.27 1.27)) (justify left bottom))
-    )
-    (property "Sheetfile" "motors.kicad_sch" (at 154.94 64.77 0)
-      (effects (font (size 1.27 1.27)) (justify left top))
-    )
-    (instances
-      (project "thegoose"
-        (path "/72b1d502-e600-4337-8ef9-b222b53a12da" (page "4"))
-      )
-    )
-  )
-  (sheet (at 215.9 38.1) (size 50.8 25.4) (fields_autoplaced yes)
-    (stroke (width 0.0006) (type default))
-    (fill (color 0 0 0 0.0000))
-    (uuid "87de6331-4a86-430c-a320-0a0cd35186c7")
-    (property "Sheetname" "IO" (at 218.44 36.83 0)
-      (effects (font (size 1.27 1.27)) (justify left bottom))
-    )
-    (property "Sheetfile" "io.kicad_sch" (at 218.44 64.77 0)
-      (effects (font (size 1.27 1.27)) (justify left top))
-    )
-    (instances
-      (project "thegoose"
-        (path "/72b1d502-e600-4337-8ef9-b222b53a12da" (page "5"))
-      )
-    )
-  )
 	(text "GOOSEBRAIN REV 2"
 		(exclude_from_sim no)
 		(at 25.4 25.4 0)
@@ -91,6 +27,190 @@
 			(justify left top)
 		)
 		(uuid "ea90e289-ecb5-48c0-9c5e-c7821b5dde36")
+	)
+	(sheet
+		(at 25.4 38.1)
+		(size 50.8 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "0021e6ae-34c0-486e-ac47-c8566b803df5")
+		(property "Sheetname" "Power"
+			(at 27.94 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 27.94 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 215.9 38.1)
+		(size 50.8 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "87de6331-4a86-430c-a320-0a0cd35186c7")
+		(property "Sheetname" "IO"
+			(at 218.44 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "io.kicad_sch"
+			(at 218.44 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 88.9 38.1)
+		(size 50.8 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "ae136f4d-e1a2-4948-8628-fbde5858c102")
+		(property "Sheetname" "MCU & USB"
+			(at 91.44 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu_usb.kicad_sch"
+			(at 91.44 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 152.4 38.1)
+		(size 50.8 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "c7bafd38-dd09-49c3-a840-432bd31e4c95")
+		(property "Sheetname" "Motor drivers"
+			(at 154.94 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "motors.kicad_sch"
+			(at 154.94 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "thegoose"
+				(path "/72b1d502-e600-4337-8ef9-b222b53a12da"
+					(page "4")
+				)
+			)
+		)
 	)
 	(sheet_instances
 		(path "/"
