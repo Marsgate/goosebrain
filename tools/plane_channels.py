@@ -6,7 +6,8 @@ Run with KiCad's Python after routing (tools/route_recipe.py + Freerouting):
 On JLC06161H-3313, In2 sits 0.11 mm above In3 and 0.55 mm below In1, so In2 signals reference In3, which carries the
 VSYS, VCC and +3V3 areas. This script draws one In3 GND zone, above the power areas in priority, along every In2
 track of a signal net (track width plus MARGIN each side), so no In2 signal runs over a power area or crosses the
-edge between two of them. (F.Cu references In1 and B.Cu references In4, both solid GND.) Power nets are left alone.
+edge between two of them. The zone is clipped to the power areas (plus MARGIN), since over the GND background it isn't
+needed. (F.Cu references In1 and B.Cu references In4, both solid GND.) Power nets are left alone.
 The zone sits in the PCB group "plane_channels"; each run replaces it. Refill zones afterwards.
 """
 from pathlib import Path
@@ -45,8 +46,15 @@ def main():
                        (c.x + ex - nx, c.y + ey - ny), (a.x - ex - nx, a.y - ey - ny)):
             ps.Append(int(px), int(py))
         n += 1
+    # only where a power area is: over the GND background the channel would just overlap it (and leave slivers)
+    areas = pcbnew.SHAPE_POLY_SET()
+    for z in b.Zones():
+        if z.IsOnLayer(REF) and not z.GetIsRuleArea() and z.GetNetname() in POWER and z.GetNetname() != "GND":
+            areas.BooleanAdd(z.Outline())
+    areas.Inflate(int(MARGIN * MM), pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, int(0.005 * MM))
     if n:
         ps.Simplify()
+        ps.BooleanIntersection(areas)
         z = pcbnew.ZONE(b)
         z.SetLayer(REF)
         z.SetNet(b.FindNet("GND"))
