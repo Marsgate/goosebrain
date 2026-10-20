@@ -65,17 +65,26 @@ put("J4", "F", J1X + 23.0, 13.35 - J4_DY, 180)     # pin 1 (VBUS); plug centre 1
 # flipped contacts B6/A7 through two vias, so the main path (A6/B7) has no vias.
 U10X, U10Y = J1X - 0.1, 15.7
 put("U10", "F", U10X, U10Y, 0)                      # USB on the north side, IO on the west, motors east and south
-put("R44", "F", J1X + 0.5 - 0.8, 9.9, 90)           # D+ (A6 at J1X + 0.25)
-put("R45", "F", J1X + 0.5 + 0.8, 9.9, 90)           # D- (B7 at J1X + 0.75)
+put("R44", "F", J1X - 1.28, 9.9, 90)                # D+ (A6 at J1X + 0.25)
+put("R45", "F", J1X + 0.2, 9.9, 90)                 # D- (B7 at J1X + 0.75), over pin 51, west of the core regulator
 put("Y1", "F", U10X - 1.9, U10Y + 6.83, 180)       # XIN pad (NE) under pin 21; M5/M6 leave west above it
-put("L3", "F", 29.4, U10Y - 4.21, 180)                    # LX pad west; LX runs north of pins 46/47 from pin 48
+# Core supply: the on-chip regulator isn't used (RP2350 datasheet Fig. 24). C85 (VREG_VIN 4.7 uF) right off the pins,
+# +3V3 pad over pin 49 and GND pad over pin 47 (VREG_PGND). U12 (TLV74311, 1.1 V LDO) sits in the pocket between U10's
+# NE corner and J12, at 180 deg so OUT (pin 5) is its SW pad, nearest U10; C86 (its 4.7 uF output) in the strip west
+# of it, +1V1 pad (pad 1) south; C87 (its 4.7 uF input) under its IN pad, clear of the east escape vias.
+VREG_X = U10X + 2.07                                # C85 centre; pin 48 is at U10X + 2.0
+put("C85", "F", VREG_X, U10Y - 4.65, 0)             # pads 0.5 mm off the pin toes; courtyard clear of U10
+put("U12", "F", U10X + 7.6, U10Y - 4.7, 180)        # IN/GND/EN on the east column, OUT/NC on the west
+put("C86", "F", U10X + 4.9, U10Y - 5.3, 90)         # LDO output
+put("C87", "F", U10X + 8.3, U10Y - 1.95, 270)       # LDO input, pad 1 (+3V3) north, under IN; clear of the USB-A pair
 
-# ---- buck under the MCU at the bottom; a channel at x 15-15.8 stays open for the M6 lines -------------------------
-put("L1", "F", 18.84, 27.8, 180)                    # SW pad east toward U4's SW pin, VCC pad west
-put("U4", "F", 25.52, 27.2, 180)                    # VIN pins east, SW pin at the west-bottom
-put("C74", "F", 30.0, 26.2, 180)                    # 100 nF, VSYS pad against pin 3 (VIN)
-put("C73", "F", 30.08, 28.9, 90)                    # 10 uF, VSYS pad level with pin 2 (VIN)
-put("C14", "F", 25.52, 30.9, 0)                     # BST to SW, under U4
+# ---- buck under the MCU at the bottom; a channel at x 15-16 stays open for the M6 lines --------------------------
+put("L1", "F", 18.9, 27.8, 180)                     # SW pad (pin 1) east toward U4's SW pin, VCC pad west, 0.2 mm
+                                                   # clear of the M6B lane (x 15.6 here, see u10_southwest)
+put("U4", "F", 25.72, 27.2, 180)                    # VIN pins east, SW pin at the west-bottom; courtyard clear of L1
+put("C74", "F", 30.2, 26.2, 180)                     # 100 nF, VSYS pad against pin 3 (VIN)
+put("C73", "F", 30.28, 28.9, 90)                    # 10 uF, VSYS pad level with pin 2 (VIN)
+put("C14", "F", 25.72, 30.9, 0)                     # BST to SW, under U4
 
 # ---- bottom wall: J3 (XT30) right of the buck, Q1 east of it, SW1 under U16, SW2 in the corner --------------------
 J3_DY = PORT_OV + 0.43                              # J3's face sat 0.43 mm inside the edge
@@ -121,16 +130,17 @@ for ref, vx, vy, rot in CAP_ON_VIA:
 put("C46", "B", 41.7, 30.6, 90)                    # extra +3V3 100 nF at U9's output, under D2
 put("C47", "B", U10X - 4.1, U10Y - 0.1, 90)         # extra +3V3 100 nF, W
 put("C50", "B", U10X - 4.1, U10Y + 2.1, 90)         # +3V3 4.7 uF, SW
-put("C52", "B", 30.4, U10Y - 2.56, 270)                    # +1V1 out under L3's +1V1 pad
+put("C52", "B", U10X + 0.6, U10Y + 3.35, 0)         # second +1V1 4.7 uF at DVDD pin 23, beside C54
 put("C51", "B", 27.6, U10Y - 5.36, 90)                      # VREG_AVDD 4.7u, by the pin 46 via
 put("R42", "B", 28.7, U10Y - 5.36, 270)                     # 33R +3V3 to VREG_AVDD
-put("R46", "B", U10X - 3.2, U10Y - 5.05, 90)       # QSPI_SS to SW2, west of pin 60
+put("R46", "B", U10X - 4.0, U10Y - 5.1, 0)         # QSPI_SS to SW2, west of pin 60 and of U6's D+ loop
 # crystal load caps and XOUT resistor on the back under Y1
 put("C56", "B", U10X - 0.32, U10Y + 6.8, 0)         # XIN load cap, by the via in Y1's XIN pad
 put("C57", "B", U10X - 4.0, U10Y + 6.7, 270)        # XOUT-side load cap, by Y1's SW pad
 put("R43", "B", U10X - 1.4, U10Y + 4.6, 180)        # 1k XOUT, from the via outside pin 22
 # USB-C: ESD under R44/R45, CC pull-downs beside it
-put("U6", "B", J1X + 0.5, U10Y - 4.95, 0)          # N pins on the top row (under R45), P on the bottom
+put("U6", "B", J1X + 0.5, U10Y - 4.7, 0)           # N pins on the top row (under R45), P on the bottom; VP pad
+                                                   # joins C49's +3V3 pad round the east side
 put("R99", "B", J1X + 3.25, 8.7, 270)                # CC1
 put("R100", "B", J1X - 3.5, 8.7, 270)               # CC2
 # USB-only 5 V, the OR diodes and the 3.3 V LDO under J3, between its pins (they move with J3)

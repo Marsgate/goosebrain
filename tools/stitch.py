@@ -25,7 +25,7 @@ PCB = gr.PCB
 GROUP = "stitch"
 MM = gr.MM
 RING_IN, RING_STEP, FIELD_STEP = 0.9, 2.5, 3.0
-D, DRILL = 0.45, 0.25
+D, DRILL = 0.45, 0.3
 CRT_MARGIN = 0.15
 
 

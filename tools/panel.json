@@ -1,0 +1,61 @@
+{
+    "layout": {
+        "type": "grid",
+        "rows": 1,
+        "cols": 1
+    },
+    "tabs": {
+        "type": "plugin",
+        "code": "tools/panel_tabs.py.EdgeTabs",
+        "arg": "top=5.55,31.25,57.05;bottom=4.55,48.55;width=3",
+        "fillet": "0.5mm"
+    },
+    "cuts": {
+        "type": "mousebites",
+        "drill": "0.5mm",
+        "spacing": "0.8mm",
+        "offset": "-0.25mm",
+        "prolong": "0.5mm"
+    },
+    "framing": {
+        "type": "frame",
+        "width": "5mm",
+        "hspace": "5mm",
+        "vspace": "6mm",
+        "mintotalheight": "74mm",
+        "mintotalwidth": "74mm",
+        "cuts": "none",
+        "fillet": "0mm"
+    },
+    "tooling": {
+        "type": "3hole",
+        "hoffset": "3mm",
+        "voffset": "3mm",
+        "size": "1.152mm",
+        "paste": false
+    },
+    "fiducials": {
+        "type": "3fid",
+        "hoffset": "9mm",
+        "voffset": "3.85mm",
+        "coppersize": "1mm",
+        "opening": "2mm"
+    },
+    "text": {
+        "type": "simple",
+        "text": "JLCJLCJLCJLC",
+        "anchor": "mb",
+        "voffset": "-3mm",
+        "hjustify": "center",
+        "vjustify": "center",
+        "layer": "F.SilkS",
+        "width": "1mm",
+        "height": "1mm",
+        "thickness": "0.15mm"
+    },
+    "post": {
+        "millradius": "1mm",
+        "origin": "",
+        "reconstructarcs": false
+    }
+}

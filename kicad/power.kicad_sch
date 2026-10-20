@@ -8990,7 +8990,7 @@
 		)
 		(uuid "6fb5afc5-1a04-46fa-bd1d-cf01029701f5")
 	)
-	(text "Vout = 0.8 V x (1 + R26/R27) = 4.96 V\nEN tied to VIN: always on\nR25 sets the switching frequency\nL1: Coilcraft XAL5030-222MEC, 2.2 uH, Isat 9.2 A (30 % drop) = U4's 9.2 A max limit,\nso an overload ends in the buck's limit, not saturation. Hand-placed.\nC73/C74: VIN bulk at U4's VIN pins, beside C15."
+	(text "Vout = 0.8 V x (1 + R26/R27) = 4.96 V\nEN tied to VIN: always on\nR25 sets the switching frequency\nL1: Zeng Yi HMS0530-2R2M, 2.2 uH, Isat 9.0 A typ (30 % drop): above U4's 8 A typ limit,\n0.2 A under its 9.2 A max; alloy powder, so it saturates softly. JLC places it.\nC73/C74: VIN bulk at U4's VIN pins, beside C15."
 		(exclude_from_sim no)
 		(at 106.68 187.96 0)
 		(effects
@@ -10401,7 +10401,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0b0af1ba-8fdc-4f09-b1b6-886b9b11766c")
 		(property "Reference" "L1"
@@ -10424,7 +10424,7 @@
 				)
 			)
 		)
-		(property "Footprint" "hexy:L_Coilcraft_XAL5030"
+		(property "Footprint" "hexy:L_ZengYi_HMS0530"
 			(at 83.82 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -10435,7 +10435,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8757789949045420032"
 			(at 83.82 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -10457,7 +10457,7 @@
 				)
 			)
 		)
-		(property "LCSC Part #" "C920280"
+		(property "LCSC Part #" "C18734448"
 			(at -80.0101 236.2201 0)
 			(hide yes)
 			(show_name no)
@@ -10468,7 +10468,7 @@
 				)
 			)
 		)
-		(property "MPN" "XAL5030-222MEC"
+		(property "MPN" "HMS0530-2R2M"
 			(at 83.82 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -10479,7 +10479,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Coilcraft"
+		(property "Manufacturer" "Zeng Yi"
 			(at 83.82 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -11520,7 +11520,7 @@
 				)
 			)
 		)
-		(property "LCSC Part #" "C1525"
+		(property "LCSC Part #" "C307331"
 			(at 57.1501 335.2801 0)
 			(hide yes)
 			(show_name no)
@@ -11531,7 +11531,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL05B104KO5NNNC"
+		(property "MPN" "CL05B104KB54PNC"
 			(at 16.51 162.56 0)
 			(hide yes)
 			(show_name no)

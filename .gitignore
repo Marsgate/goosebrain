@@ -26,9 +26,9 @@ __pycache__/
 
 # Source 3D models used by the footprints (not exports)
 !kicad/3dmodels/*.step
+# Printable case parts from tools/case/case.py
+!renders/case/*.step
 
 # Throwaway hand-routing copy from tools/unroute.py
 kicad/thegoose-manual.*
 
-# Build output left by the tscircuit-prototype branch (its source lives on that branch)
-tscircuit/

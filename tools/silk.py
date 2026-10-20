@@ -23,6 +23,8 @@ MM = 1e6
 H, T = 0.8, 0.15                # text height and stroke
 GAP = 0.1                       # to pads and other silk
 EDGE = 0.25                     # to the board edge
+OX = OY = 99.95                 # board top-left corner in KiCad coordinates
+LOGO_SPOTS = [(3.225, 12.825, 180)]  # board-local logo spot tried first (left strip, clear of C11's reference)
 
 
 def mm(v):
@@ -119,6 +121,14 @@ def place_logo(b, inner, obst):
             lb.Merge(g.GetBoundingBox())
         return lb
 
+    for x, y, ang in LOGO_SPOTS:                        # the chosen spot first, if it's still free
+        logo.SetOrientationDegrees(ang)
+        logo.SetPosition(pcbnew.VECTOR2I(int(round((OX + x) * MM)), int(round((OY + y) * MM))))
+        lb = extent()
+        if inner.Contains(lb.GetOrigin()) and inner.Contains(lb.GetEnd()) and not any(o.Intersects(lb) for o in blocks):
+            obst[pcbnew.B_SilkS].append((None, grow(lb, GAP)))
+            logo.Reference().SetVisible(False)
+            return ((OX + x), (OY + y), ang, 1.0, lb.GetWidth() / MM, lb.GetHeight() / MM)
     size = 1.0
     for scale in (1.0, 0.8, 0.65, 0.5):
         if scale != size:                               # shrink every shape about the logo's own centre
@@ -164,6 +174,8 @@ def main():
             for s, L in cu.items():
                 if p.IsOnLayer(L) or p.GetDrillSize().x > 0:
                     obst[s].append((None, grow(p.GetBoundingBox(), GAP)))
+        if f.GetPadCount() == 0 and f.IsFlipped():      # the logo itself: it's about to move, so it can't block
+            continue
         for g in f.GraphicalItems():
             for s in obst:
                 if g.IsOnLayer(s) and g.GetClass() != "PCB_FIELD":

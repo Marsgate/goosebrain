@@ -13,7 +13,8 @@ deterministic:
 - every copper item of another net is inflated by its clearance plus half the track width; a cell is free for a net
   only if no other net's halo covers it. Two maps: one for Default-class signals (0.15 mm to other Default nets,
   0.2 mm to everything else) and one for the other classes (0.2 mm). Drilled holes keep 0.25 mm to copper and 0.5 mm
-  to a new via's hole. F.Cu stays out from under J4's shell, and copper keeps 0.3 mm from the edge.
+  to a new via's hole. F.Cu stays out from under J4's shell, B.Cu out of the pocket by J1's west shell pad, F.Cu
+  out of the core supply corner by pins 47-50 ("VREG corner"), and copper keeps 0.3 mm from the edge.
 - each unconnected pair in the DRC report is routed with A* (8 directions, no corner cutting; a via where all three
   layers are free) from anywhere on one side's connected copper to anywhere on the other's, the rails first and then
   the shortest pairs first. Cells just outside the halo of a fine-pitch pin cost more for other nets, so a route
@@ -49,7 +50,7 @@ HOLE_CLR = 0.25                 # copper to a drilled hole
 HOLE_TO_HOLE = 0.5              # JLC, between drilled holes
 EDGE = 0.3                      # copper to board edge
 CORNER = 1.0                    # outline corner radius
-VIA_D, VIA_DRILL = 0.45, 0.25
+VIA_D, VIA_DRILL = 0.45, 0.3
 VIA_COST = 30.0                 # in cells (1.5 mm)
 IN2_POWER_COST = 1.6            # per cell on In2 over an In3 power area
 SOFT, SOFT_COST = 0.45, 4.0     # cells this far beyond a fine-pitch pad's halo cost more for other nets, so routes
@@ -57,9 +58,11 @@ FINE = 0.45                     # don't run along a pin row and seal off its esc
 LAYERS = [pcbnew.F_Cu, pcbnew.In2_Cu, pcbnew.B_Cu]
 SKIP = {"GND", "VSYS", "VCC", "PACK+"}            # carried by planes, pours and the recipe
 WIDE = {"+3V3", "+1V1", "VBUS", "Net-(D2-K)", "Net-(D2-A)"}
-SWITCH = {"Net-(U4-SW)", "Net-(U10-VREG_LX)"}
-SMALL_ZONES = {"U10 PGND", "U10 back GND", "Y1 guard", "U4 VIN", "PACK+ J3-Q1", "VSYS Q1 drain", "PACK+ gate net"}
+SWITCH = {"Net-(U4-SW)"}
+SMALL_ZONES = {"U10 back GND", "Y1 guard", "U4 VIN", "PACK+ J3-Q1", "VSYS Q1 drain", "PACK+ gate net"}
 J4_SHELL = (34.1, 0.0, 51.1, 10.55)               # no F.Cu under J4's shell (above its pin row)
+J1_WEST = (17.98, 0.0, 20.6, 7.6)                 # no B.Cu between IO1's lane and J1's west shell pad: a route there
+                                                 # cuts the B.Cu pour round the pad off into an island
 FREE, BLOCKED = -1, -2
 DIAG = math.sqrt(0.5) * G
 
@@ -240,6 +243,20 @@ def build(b, g):
     for y in range(cy0, cy1 + 1):
         for x in range(cx0, cx1 + 1):
             g.block(0, y * g.nx + x)
+    x0, y0, x1, y1 = J1_WEST
+    cx0, cy0, cx1, cy1 = g.box(x0, y0, x1, y1)
+    for y in range(cy0, cy1 + 1):
+        for x in range(cx0, cx1 + 1):
+            g.block(2, y * g.nx + x)
+    # the RP2354 core supply corner (route_recipe.vreg): no other net on F.Cu by pins 47-50 and C85
+    for z in b.Zones():
+        if z.GetIsRuleArea() and z.GetZoneName() == "VREG corner":
+            bb = z.GetBoundingBox()
+            (x0, y0), (x1, y1) = lpos(bb.GetOrigin()), lpos(bb.GetEnd())
+            cx0, cy0, cx1, cy1 = g.box(x0, y0, x1, y1)
+            for y in range(cy0, cy1 + 1):
+                for x in range(cx0, cx1 + 1):
+                    g.block(0, y * g.nx + x)
     # In3 power areas, for the In2 cost
     for poly in (rr.PWR_33, rr.PWR_VCC, rr.pwr_vsys(g.W, g.H)):
         edges = list(zip(poly, poly[1:] + poly[:1]))

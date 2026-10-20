@@ -33,12 +33,21 @@
 	(condition "A.NetClass == '5V'")
 	(constraint track_width (min 0.5mm)))
 (rule "GND and motor width"
-	(condition "A.NetClass == 'GND' || A.NetClass == 'Motor'")
+	(condition "(A.NetClass == 'GND' || A.NetClass == 'Motor') && !A.intersectsArea('VREG corner')")
 	(constraint track_width (min 0.4mm)))
 
 # Default (signal) class: 0.15 mm track and space (JLC 4-layer allows 0.09 mm). Signals keep 0.2 mm from the
-# switch nodes, which sit in the Default class by name: the buck SW and the RP2354 core LX. (The Pack, 5V, GND,
-# Motor, Rail and USB classes are 0.2 mm already; KiCad takes the larger of the two classes.)
+# buck's switch node, which sits in the Default class by name. (The Pack, 5V, GND, Motor, Rail and USB classes are
+# 0.2 mm already; KiCad takes the larger of the two classes.)
 (rule "Signals to switch nodes"
-	(condition "A.NetClass == 'Default' && (B.NetName == 'Net-(U4-SW)' || B.NetName == 'Net-(U10-VREG_LX)')")
+	(condition "A.NetClass == 'Default' && B.NetName == 'Net-(U4-SW)'")
 	(constraint clearance (min 0.2mm)))
+
+# RP2354 core supply pins (tools/route_recipe.py vreg()): the on-chip regulator isn't used (an external LDO feeds
+# DVDD), but VREG_VIN, VREG_PGND and VREG_FB still sit at the 0.4 mm pin pitch. Their stubs (C85's pins and FB's
+# GND stub) are only as wide as the 0.2 mm pads, so inside the "VREG corner" rule area 0.15 mm spacing applies, the
+# same as the Default class (JLC's 6-layer minimum is 0.09 mm), and the stubs are exempt from the GND width rule.
+# The USB rules above still hold for the USB pair beside it.
+(rule "RP2354 core supply pin spacing"
+	(condition "A.intersectsArea('VREG corner') && B.intersectsArea('VREG corner') && A.NetClass != 'USB' && B.NetClass != 'USB'")
+	(constraint clearance (min 0.15mm)))

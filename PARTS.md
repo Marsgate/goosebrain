@@ -33,7 +33,8 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | Role | MPN | Mfr | Package | LCSC | JLC stock / class | Asm | Notes |
 |---|---|---|---|---|---|---|---|
 | MCU (U10) | RP2354A | Raspberry Pi | QFN-60 7x7 | C41378174 | 11,350 / ext | JLC | DK: SC1511-A4. Hard to solder |
-| Core SMPS inductor (L3) | AOTA-B201610S3R3-101-T | Abracon | 0806 | (C42411119) | 1 at JLC, 0 at LCSC | Hand | Specified by RPi; polarity-marked (dot = pin 1 = +1V1). Buy from Digi-Key. DNP and excluded from BOM/position files |
+| Core LDO (U12) | TLV74311PDBVR | TI | SOT-23-5 | C485147 | 11,253 / ext, about $0.09 (JLC, 2026-10-20) | JLC | 1.1 V, 300 mA, 1.4–5.5 V in, stable with 1 µF out. Feeds DVDD from +3V3, so the RP2354's switching regulator and its inductor aren't used (RP2350 datasheet §6.3.7, Fig. 24). Replaced L3 (Abracon AOTA-B201610S3R3-101-T, the only inductor RPi approves, which JLC had 3 of) on 2026-10-20. VREG_FB is grounded, VREG_LX open; VREG_VIN and VREG_AVDD stay powered for the power-on reset and brown-out. Core current is tens of mA, so U12 drops about 0.1 W and U9 carries that current at 3.3 V instead of about a third of it. **Firmware:** set the VREG register's HIZ bit after boot (the on-chip regulator starts anyway and draws about 400 µA until then), and never put it in low-power mode, which ties it straight to DVDD |
+| Core supply caps (C85 VREG_VIN, C86 U12 out, C87 U12 in, C52) | CL05A475MP5NRNC | Samsung | 0402 | C23733 | basic | JLC | 4.7 µF/10 V X5R. C85 is Fig. 24's single VREG_VIN cap, on the front over pins 47/49. C86 and C87 are U12's output and input caps, beside it on the front. C52 is the second +1V1 4.7 µF, on the back at DVDD pin 23 |
 | Crystal 12 MHz (Y1) | ABM8-272-T3 | Abracon | 3225 | C20625731 | 6,171 / ext | JLC | 2× 15 pF C0G, 1 kΩ on XOUT |
 | 3.3 V LDO (U9) | XC6206P332MR-G | Torex | SOT-23-3 | C5446 | basic | JLC | 200 mA, 6 V max in. Local symbol `hexyhustle:XC6206P332MR` |
 | USB-only 5 V reg (U8) | HT7550-1 | Holtek | SOT-89-3 | C16106 | pref | JLC | 30 V in, 150 mA; load ≈ 50 mA |
@@ -49,8 +50,8 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | Power slide switch (SW1) | SK12D07VG4 | SHOU HAN | THT RA SPDT | C393937 | ext | THT | Gate only. Lever reaches 4.0 mm past the board edge: the wall needs a slot |
 | VSYS TVS (D4) | SMF14A | Littelfuse | SOD-123FL | C207256 | 3,726 / ext | Hand | Clamps VSYS (about 19 V at 3 A, under the DRV8251A's 50 V abs max). Cathode (pad 1) on VSYS |
 | 5 V buck (U4) | AP64500SP-13 | Diodes | SO-8EP | C2070920 | 3,973 / ext | JLC | Divider 39k/7.5k = 4.96 V |
-| Buck inductor (L1) | XAL5030-222MEC | Coilcraft | 5.28 × 5.48 × 3.1 mm | C920280 | 1,268 / ext, $6.72 | Hand | 2.2 µH, Isat 9.2 A (30 % drop), Irms 7.2 A, 13.2 mΩ typ. `hexy:L_Coilcraft_XAL5030`, in its old pocket. See "L1" below |
-| Buck VIN caps (C73, C74) | CL21A106KAYNNNE / CL05B104KO5NNNC | Samsung | 0805 / 0402 | C15850 / C1525 | basic | JLC | 10 µF + 100 nF. On the board since 2026-10-19 (they were schematic-only), just below C15, about 3 mm from U4's VIN pins |
+| Buck inductor (L1) | HMS0530-2R2M | Zeng Yi | 5.4 × 5.2 × 2.8 mm | C18734448 | 1,882 / ext, about $0.10 (local JLC snapshot, 2026-10-20; recheck on order day) | JLC | 2.2 µH ±20 %, Isat 9.0 A typ (30 % drop), Irms 7.7 A (ΔT 40 °C), 28.2 mΩ typ / 31.8 mΩ max, −40 to 125 °C. `hexy:L_ZengYi_HMS0530` (datasheet land: 1.9 × 2.5 mm pads at ±2.05 mm; XAL5030 STEP as a taller stand-in). Not polarised; pin 1 on SW. Replaced the hand-placed Coilcraft XAL5030-222MEC ($6.72) on 2026-10-20. See "L1" below |
+| Buck VIN caps (C73, C74) | CL21A106KAYNNNE / CL05B104KB54PNC | Samsung | 0805 / 0402 | C15850 / C307331 | basic | JLC | 10 µF/25 V + 100 nF/50 V. On the board since 2026-10-19 (they were schematic-only), just below C15, about 3 mm from U4's VIN pins. C74 was a 16 V CL05B104KO5NNNC until 2026-10-20: too close to VSYS transients (D4 clamps at up to 23 V) |
 | Motor drivers (U1, U15, U2, U16, U3, U17) | DRV8251ADDAR | TI | HSOP-8 PowerPAD | C5218844 | ext (stock and price to recheck on order day) | JLC | One per motor: M1 U1, M2 U15, M3 U2, M4 U16, M5 U3, M6 U17. 4.5–48 V, so it runs from a 2S or a 3S pack. Exposed pad to GND. `Package_SO:Texas_HTSOP-8-1EP_3.9x4.9mm…_ThermalVias`, the same as the DRV8871 it replaced. **Stocked at LCSC as C5218844 (2026-10-19):** the genuine TI part, so JLC places it as an ordinary extended part; no Global Sourcing or consigning needed. Sources disagreed on stock and price (about 16.5k at about $0.29 each for 60, against an older listing of about 9.3k at $0.73 each), so check LCSC on order day. Don't substitute C3681116: that is the DRV8251DDAR, without the A, a different part |
 | Motor IPROPI (R101–R106) | 0402WGF1201TCE | UNI-ROYAL | 0402 | C25862 | 164,223 / pref | JLC | 1.2 kΩ: 1.34 A per motor with VREF 2.53 V. R101 U1, R102 U15, R103 U2, R104 U16, R105 U3, R106 U17 |
 | Motor VREF divider (R107, R108, C81) | 0402WGF1002TCE / 0402WGF3302TCE / CL05B104KO5NNNC | UNI-ROYAL / Samsung | 0402 | C25744 / C25779 / C1525 | basic | JLC | +3V3 → 10k → MOT_VREF → 33k → GND, 100 nF on MOT_VREF. One divider feeds all six VREF pins. On the board in the column between J3 and the buck |
@@ -68,7 +69,8 @@ All passed; no architecture change was needed. The full numbers are on the schem
 
 **L1 must not saturate below the AP64500's current limit** (6.8 A min, 8 A typ, 9.2 A max): an overload or a short on the 5 V rail (the IO ports take servos through the case wall) should end in the buck's own limit and hiccup, not in a collapsed inductor.
 
-- **XAL5030-222MEC (kept):** Isat 9.2 A at a 30 % drop, the same as U4's 9.2 A maximum limit. It sits in its original pocket between J4, U4, C5/C12 and the pack's edge, with no other part moved.
+- **Zeng Yi HMS0530-2R2M (since 2026-10-20), JLC-placed at about $0.10:** Isat 9.0 A typ at a 30 % drop (the same definition as the XAL's 9.2 A), Irms 7.7 A, 28.2 mΩ typ. **The trade-off:** 9.0 A is above U4's 8 A typical limit but 0.2 A under its 9.2 A maximum, so on a U4 at the top of its limit tolerance an overload would run it about 2 % past its rated Isat before the limit trips. That's acceptable because it's an alloy-powder moulded part, which saturates gradually rather than collapsing: 2 % past Isat it has lost only a little more than 30 % of its inductance, so the peak-current limit still ends an overload or short. Normal loads (about 4.5 A out at 12.6 V in, see the README's buck test) peak near 6 A, well under Isat. Its DCR is about twice the XAL's, about 0.6 W at a 4.5 A load. It sits where the XAL did (moved 0.06 mm east, with U4, C73, C74 and C14 0.2 mm east and the M6 lanes jogged 0.35 mm west, to fit the datasheet land).
+- **XAL5030-222MEC (until 2026-10-20):** Isat 9.2 A at a 30 % drop, the same as U4's 9.2 A maximum limit, Irms 7.2 A, 13.2 mΩ typ. Hand-placed: $6.72 at JLC (C920280, 1,268 in stock).
 - **Sunlord MWSA0603S, checked and rejected on 2026-10-19.** The 2.2 µH part has Isat 10 A and Irms 9.5 A (3.3 µH: 9.5 A / 8.5 A; JLC/LCSC parametrics; Sunlord's PDF could not be opened to confirm the drop criterion), so it would qualify electrically, at $0.11. But its courtyard is 9.0 × 7.2 mm and the pocket is 6.6 mm tall between J4's courtyard (an edge connector) and the pack's edge (y = 121.95 mm), and the part is 3 mm tall, so it can't go under the pack. The only other spot, left of J4 after moving U8/C38, puts L1 about 9 mm from U4's SW pin and opens up the switch loop. To use it, J4 or the pack bay would have to move.
 - **MWSA0503S-2R2MT** (5.4 × 5.2 mm, $0.15, fits the pocket) was tried first but rejected: its 7 A Isat is under U4's typical 8 A limit.
 
@@ -137,14 +139,14 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 ## Compliance
 
 - **The pack is a separately sold product.** It needs its own FCC/CE declaration; the EMC test can share one lab campaign with the brain.
-- **UN38.3** is needed for the pack assembly (cells + board). Ovonic publishes no test summary: ask Ovonic for theirs, and ask the lab whether it covers the assembled pack or whether the pack needs its own test. A draft request is in goosebrain's `build/ovonic-un38.3-request.md`.
+- **UN38.3** is needed for the pack assembly (cells + board). Ovonic publishes no test summary: ask Ovonic for theirs, and ask the lab whether it covers the assembled pack or whether the pack needs its own test. A draft request is in `docs/ovonic-un38.3-request.md`.
 
 ## Stock and supply risks
 
-1. **L3 (1 at JLC, 0 at LCSC).** Raspberry Pi approves only this Abracon part. Buy from Digi-Key and hand-place it.
+1. **Core supply:** no longer a risk. L3 (the Abracon inductor, 3 at JLC on 2026-10-20) is gone; the TLV74311 LDO (U12, C485147) had 11,253 at JLC that day.
 2. **U13 BQ7791501PWR (309 at JLC):** covers 309 packs.
 3. **J5 IO header (144 at JLC):** above 144 boards use the cut 3 × 40 strip.
-4. **L1 XAL5030-222MEC (1,268 at JLC, $6.72)** covers about 1,268 boards; Digi-Key/Mouser stock Coilcraft too. **U7 BQ25798 (3,079)** is fine for now. Recheck both before a large order.
+4. **L1 HMS0530-2R2M (1,882 in the local JLC snapshot on 2026-10-20, about $0.10)** covers the order; recheck on order day. Fallback: the Coilcraft XAL5030-222MEC (C920280 at $6.72, or Digi-Key/Mouser), which needs its own land back (`hexy:L_Coilcraft_XAL5030`, removed from `hexy.pretty` on 2026-10-20; restore it from git history). **U7 BQ25798 (3,079)** is fine for now. Recheck both before a large order.
 5. **Single-source Chinese parts** (SHOU HAN USB-C/USB-A/switch, hongjiacheng SRV05-4/SMBJ20A, Jinrui PTC): each has common equivalents in the same package.
 
 ## Layout and mechanical notes for later
