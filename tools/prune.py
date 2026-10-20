@@ -7,8 +7,8 @@ Run with KiCad's Python on a DRC report in JSON, after tools/grid_router.py and 
 The recipe drops a via at the end of several escape stubs so a route can leave on another layer. When the router
 reaches the stub on its own layer instead, the via ends up connected on one layer only (KiCad's "via_dangling"), and a
 stub left behind by a removed via is a "track_dangling". This removes the items DRC flags, from the "route_recipe"
-and "autoroute" groups only. Before a via goes, every track end of its net that lands on the via's copper is moved to
-the via's centre, so the tracks it joined stay joined. Repeat (fill, DRC, prune) until it removes nothing.
+and "autoroute" groups only. Before a via goes, every track end of its net that lands on the via's copper gets a short
+segment to the via's centre, so the tracks it joined stay joined. Repeat (fill, DRC, prune) until it removes nothing.
 """
 import json
 import sys
@@ -34,13 +34,24 @@ def main():
         if v.GetClass() != "PCB_VIA":
             continue
         c, r = v.GetPosition(), v.GetWidth(pcbnew.F_Cu) / 2 + 10000
+        joins = []
         for t in b.GetTracks():
             if t.GetClass() == "PCB_VIA" or t.GetNetCode() != v.GetNetCode() or t in gone:
                 continue
-            for get, put in ((t.GetStart, t.SetStart), (t.GetEnd, t.SetEnd)):
-                e = get()
-                if (e.x - c.x) ** 2 + (e.y - c.y) ** 2 <= r * r:
-                    put(c)
+            for e in (t.GetStart(), t.GetEnd()):
+                if e != c and (e.x - c.x) ** 2 + (e.y - c.y) ** 2 <= r * r:
+                    joins.append((t, pcbnew.VECTOR2I(e)))
+        # join each end to the via's centre with a short segment rather than moving the end: the segment stays
+        # inside the via's copper, so it can't break a clearance the way a moved (now slanted) track can
+        for t, e in joins:
+            s = pcbnew.PCB_TRACK(b)
+            s.SetStart(e)
+            s.SetEnd(c)
+            s.SetLayer(t.GetLayer())
+            s.SetWidth(t.GetWidth())
+            s.SetNetCode(t.GetNetCode())
+            b.Add(s)
+            t.GetParentGroup().AddItem(s) if t.GetParentGroup() else None
     for t in gone:
         t.GetParentGroup().RemoveItem(t)
         b.Remove(t)

@@ -113,7 +113,7 @@ The 4-layer stack (JLC04161H-7628) was tried first. It still left 27–60 connec
   - D4 and the Q1 gate network
   - TP1–TP4
   - The tallest back parts are the 1206 caps C5/C8/C12, at 1.6 mm.
-- **Fiducials:** FID1–FID3 on the front and FID4–FID6 on the back. The goose logo is on the back silkscreen near the left edge.
+- **Fiducials:** FID1–FID3 on the front and FID4–FID6 on the back. The goose logo is on the back silkscreen, wherever tools/silk.py finds room.
 - **Routing:** complete.
   - `kicad-cli pcb drc --schematic-parity --severity-error` with zones refilled: 0 errors, 0 unconnected, 0 parity issues.
   - ERC: 0 violations.
@@ -168,19 +168,20 @@ Layout notes for later:
 ## Mechanical notes for later
 
 - **The pack rides outside the brain's box** and plugs into J3 through the bottom wall, so the box has no pack bay.
-- **Box size = outline + 5 mm:** about 73.2 × 37 mm (it was 78.5 × 48.1 before the double-sided build).
+- **Every port is flush with the case wall.** The ports overhang the board edge by the wall plus 0.25 mm clearance: J1 (USB-C), J4 (USB-A) and J3 (XT30) by 1.4 mm at the top and bottom, and M1–M6 and J5 by 1.9 mm at the sides. So the top and bottom walls are 1.15 mm thick and the side walls 1.65 mm. J1's shell pads sit at the 0.3 mm copper-to-edge limit, so it can't go further out.
+- **Box size:** about 72.1 × 34.8 × 15.6 mm (it was 78.5 × 48.1 mm in plan before the double-sided build).
 - **Under the board:** the case must leave a **2 mm gap** under the board. Back-side parts are at most 1.6 mm tall (the 1206 caps C5/C8/C12), and through-hole leads must be clipped to 1.5 mm or less.
-- **Box height:** about 16 mm above the gap. The tallest front parts are the right-angle connectors and J12 with its plug in. Check their heights against the case before you commit.
+- **Box height:** 1.5 mm floor, the 2 mm gap, the 1.6 mm board, 9 mm above it and a 1.5 mm lid. The tallest front part is J4 at 7.7 mm above the board, and the LED stick hangs under the lid over J3 (5 mm tall).
 - **Holding the board:** there are no mounting holes, so the case needs ribs, slots or clips to hold it. Put a rib behind J3: the XT30 takes 1.2–3.5 kg to plug and unplug, and that force goes straight into the board's bottom edge.
 - **Wall openings** (board-local mm, origin at the top-left corner of the outline, x right, y down):
-  - **Top wall:** J1 (USB-C) centred at x 23.1, and J4 (USB-A) centred at x 42.6.
+  - **Top wall:** J1 (USB-C) centred at x 23.1, and J4 (USB-A) centred at x 42.6. Both faces at y −1.4.
   - **Left wall:** J5's pins span y 1.75–14.45 (open y 0.5–16). M5's mouth spans about y 16.5–23.4 and M6's about y 23.5–30.4.
   - **Right wall:** M1 y 0–7, M2 y 6.9–13.9, M3 y 13.9–20.9, M4 y 20.8–27.8.
   - **Bottom wall:**
-    - J3's mouth, about 14 mm wide, centred at x 38.6.
-    - SW1's lever slot at x 56.6.
-    - SW2's (BOOT) plunger at x 64.8 in the bottom-right corner.
-- **J12 and the LED stick:** the strip lives in the lid, so J12 (vertical PH) needs no wall opening. Its cable goes straight up. Leave room above J12 for the plug and the bend of its wire, or put a hole in the lid right above it, and leave enough slack to open the lid without pulling on the plug.
+    - J3's mouth, about 14 mm wide, centred at x 38.6, face at y 33.4.
+    - SW1's lever slot at x 56.6. The lever reaches y 35.1, 1.7 mm past the wall.
+    - SW2's (BOOT) plunger at x 64.8 in the bottom-right corner. It ends at the board edge, so the case has a pin hole there.
+- **J12 and the LED stick:** the stick lives under a diffuser window in the lid, over the middle of the board, so J12 (vertical PH) needs no wall or lid opening. Its plug leaves about 2 mm under the lid for the wire's bend, so use a plug whose wire can turn right away, and leave enough slack to open the lid without pulling on the plug.
 - **Motor leads** now need JST PH 2.0 mm plugs (PHR-2), rated 2 A, against the drivers' 1.34 A current limit.
 - The F.Fab notes about the old pack envelope and the vertical XT30 are gone. J3's note describes the horizontal part.
 
@@ -227,7 +228,7 @@ It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the
 
 **Edge rails:**
 - Standard PCBA needs edge rails, or a panel, on boards under 70 × 70 mm.
-- Parts overhang all four edges: J1 by 1.7 mm at the top, J3, SW1 and SW2 by up to 0.5 mm at the bottom, and M1–M6 and J5 at the sides. So ask for rails joined by mouse bites across a routed gap, not V-cut.
+- Parts overhang all four edges: J1 and J4 by 1.4 mm at the top, J3 by 1.4 mm and SW1's lever by 3.1 mm at the bottom, and M1–M6 and J5 by 1.9 mm at the sides. So ask for rails joined by mouse bites across a routed gap, not V-cut, at least 3.5 mm wide at the bottom so it clears SW1's lever.
 - J1 is the only machine-placed part that overhangs. The overhanging through-hole parts go on after the rails are snapped off.
 - JLC's engineers confirm the panel before production.
 

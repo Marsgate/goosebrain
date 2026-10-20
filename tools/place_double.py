@@ -26,6 +26,9 @@ OX, OY = 99.95, 99.95          # board top-left corner in KiCad coordinates (unc
 W, H = 68.2, 32.0              # outline (a 2 mm riser channel between J4 and the right drivers)
 R_CORNER = 1.0                 # corner radius
 
+PORT_OV = 1.4                  # USB-C, USB-A and XT30 faces this far past the top/bottom edge: flush with a
+                               # 1.15 mm case wall at 0.25 mm from the board (J1's shell pads set the limit)
+
 PITCH = 6.95                   # right-wall PH connectors stack at this pitch (courtyards just touch)
 TOP = 0.0                      # courtyard top of the first connector in the right column
 
@@ -52,9 +55,10 @@ for i, (m, u) in enumerate([("M1", "U1"), ("M2", "U15"), ("M3", "U2"), ("M4", "U
 # ---- top wall: J1 (USB-C) over the MCU, J12 (LED stick, vertical) in the gap, J4 (USB-A) --------------------------
 # J1 and J4 plug centres are 19.5 mm apart: a 24 mm wide dongle in J4 clears a USB-C cable in J1.
 J1X = 23.1
-put("J1", "F", J1X, 2.555, 180)                     # mouth 1.65 mm past the wall
+put("J1", "F", J1X, 2.555 - 0.27, 180)              # face PORT_OV past the edge; shell pads 0.3 mm from it
 put("J12", "F", J1X + 7.62, 6.67, 90)            # courtyard touches J1's
-put("J4", "F", J1X + 23.0, 13.35, 180)             # pin 1 (VBUS); plug centre 19.5 mm east of J1's
+J4_DY = PORT_OV + 0.355                             # J4's face sat 0.355 mm inside the edge
+put("J4", "F", J1X + 23.0, 13.35 - J4_DY, 180)     # pin 1 (VBUS); plug centre 19.5 mm east of J1's
 
 # ---- MCU straight under J1: the USB pair runs down J1's A6/B7 contacts, through R44/R45 into pins 52/51 ------------
 # U6 (ESD) sits on the back under R44/R45: it taps the pair through vias in R44/R45's J1-side pads and takes the
@@ -74,9 +78,10 @@ put("C73", "F", 30.08, 28.9, 90)                    # 10 uF, VSYS pad level with
 put("C14", "F", 25.52, 30.9, 0)                     # BST to SW, under U4
 
 # ---- bottom wall: J3 (XT30) right of the buck, Q1 east of it, SW1 under U16, SW2 in the corner --------------------
-put("J3", "F", 36.1, H + 0.5 - 13.64, 180)          # mouth out through the bottom wall, courtyard 0.5 past it
+J3_DY = PORT_OV + 0.43                              # J3's face sat 0.43 mm inside the edge
+put("J3", "F", 36.1, H + 0.5 - 13.64 + J3_DY, 180)  # face PORT_OV past the bottom edge
 put("Q1", "F", 48.75, 20.5, 90)                     # source pins (PACK+) at the bottom-west, drain (VSYS) on top
-put("SW1", "F", W - 11.56, H + 0.25 - 2.475, 180)   # lever out through the bottom wall
+put("SW1", "F", W - 11.56, H + 0.75 - 2.475, 180)   # lever 1.7 mm past the case wall
 put("SW2", "F", W - 3.4, H + 0.25 - 2.325, 0)       # under M4, push from the bottom wall
 
 # USB-A series resistors at the source, east of U10's pins 36/37
@@ -113,7 +118,7 @@ CAP_ON_VIA = [("C42", -2.45, 2.4, 0), ("C54", 0.05, 2.35, 90), ("C43", 2.45, 2.4
 PAD1 = {0: (-0.48, 0.0), 90: (0.0, 0.48), 180: (0.48, 0.0), 270: (0.0, -0.48)}
 for ref, vx, vy, rot in CAP_ON_VIA:
     put(ref, "B", U10X + vx - PAD1[rot][0], U10Y + vy - PAD1[rot][1], rot)
-put("C46", "B", 41.7, 28.9, 90)                    # extra +3V3 100 nF at U9's output
+put("C46", "B", 41.7, 30.6, 90)                    # extra +3V3 100 nF at U9's output, under D2
 put("C47", "B", U10X - 4.1, U10Y - 0.1, 90)         # extra +3V3 100 nF, W
 put("C50", "B", U10X - 4.1, U10Y + 2.1, 90)         # +3V3 4.7 uF, SW
 put("C52", "B", 30.4, U10Y - 2.56, 270)                    # +1V1 out under L3's +1V1 pad
@@ -128,25 +133,25 @@ put("R43", "B", U10X - 1.4, U10Y + 4.6, 180)        # 1k XOUT, from the via outs
 put("U6", "B", J1X + 0.5, U10Y - 4.95, 0)          # N pins on the top row (under R45), P on the bottom
 put("R99", "B", J1X + 3.25, 8.7, 270)                # CC1
 put("R100", "B", J1X - 3.5, 8.7, 270)               # CC2
-# USB-only 5 V, the OR diodes and the 3.3 V LDO under J3
-put("U8", "B", 34.4, 24.4, 0)
-put("C37", "B", 38.4, 22.8, 0)
-put("C38", "B", 38.4, 24.5, 0)
-put("D2", "B", 42.6, 24.4, 90)
-put("U9", "B", 38.9, 27.4, 0)
-put("C39", "B", 35.4, 28.3, 90)
+# USB-only 5 V, the OR diodes and the 3.3 V LDO under J3, between its pins (they move with J3)
+put("U8", "B", 34.4, 24.4 + J3_DY, 0)
+put("C37", "B", 38.4, 22.8 + J3_DY, 0)
+put("C38", "B", 38.4, 24.5 + J3_DY, 0)
+put("D2", "B", 42.6, 24.4 + J3_DY, 90)
+put("U9", "B", 38.9, 27.4 + J3_DY, 0)
+put("C39", "B", 35.4, 28.3 + J3_DY, 90)
 put("C40", "B", 44.7, 24.4, 90)
 put("D3", "B", 17.05, 19.6, 90)                     # VCC OR diode, VCC pad on the B.Cu VCC trunk
 # USB-A: ESD at J4's signal pins, 15k host pull-downs beside it, PTC and VBUS cap by pin 1
 J4P1 = J1X + 23.0                                   # J4 pin 1 (VBUS); pins 2/3 (D-/D+) at -2.5/-4.5
-put("U11", "B", J4P1 - 3.5, 9.45, 270)              # D+ column over J4 pin 3, D- over pin 2
-put("R109", "B", J4P1 - 6.2, 9.8, 90)
-put("R114", "B", J4P1 - 0.8, 9.8, 90)
-put("F2", "B", J4P1 + 0.5, 5.6, 270)               # VCC pad north, J4-VBUS pad south toward pin 1
-put("C59", "B", J4P1 + 3.3, 5.6, 90)
+put("U11", "B", J4P1 - 3.5, 9.45 - J4_DY, 270)      # D+ column over J4 pin 3, D- over pin 2
+put("R109", "B", J4P1 - 6.2, 9.8 - J4_DY, 90)
+put("R114", "B", J4P1 - 0.8, 9.8 - J4_DY, 90)
+put("F2", "B", J4P1 + 0.5, 5.6 - J4_DY, 270)       # VCC pad north, J4-VBUS pad south toward pin 1
+put("C59", "B", J4P1 + 3.3, 5.6 - J4_DY, 90)
 # LED buffer under J12's east side
 put("U14", "B", 34.75, 4.0, 90)
-put("C69", "B", 34.75, 7.3, 0)
+put("C69", "B", 37.6, 4.0, 90)                      # east of U14: J4's shell peg is under its old spot
 # power entry: gate network at Q1's gate, R41 at the switch, VSYS bulk and TVS under the drain side
 put("C72", "B", 47.9, 23.95, 0)                    # PACK+ pads of R40/C72 face west onto a small B.Cu PACK+ patch
 put("R40", "B", 47.5, 22.4, 0)

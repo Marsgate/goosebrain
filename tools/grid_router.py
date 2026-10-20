@@ -59,7 +59,7 @@ SKIP = {"GND", "VSYS", "VCC", "PACK+"}            # carried by planes, pours and
 WIDE = {"+3V3", "+1V1", "VBUS", "Net-(D2-K)", "Net-(D2-A)"}
 SWITCH = {"Net-(U4-SW)", "Net-(U10-VREG_LX)"}
 SMALL_ZONES = {"U10 PGND", "U10 back GND", "Y1 guard", "U4 VIN", "PACK+ J3-Q1", "VSYS Q1 drain", "PACK+ gate net"}
-J4_SHELL = (34.1, 0.0, 51.1, 12.3)                # no F.Cu under J4's shell (above its pin row)
+J4_SHELL = (34.1, 0.0, 51.1, 10.55)               # no F.Cu under J4's shell (above its pin row)
 FREE, BLOCKED = -1, -2
 DIAG = math.sqrt(0.5) * G
 

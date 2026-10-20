@@ -638,7 +638,7 @@ def vcc(r):
     r.track("VCC", "B", [v0, (f2v[0], yt), f2v], 0.5)
     u5 = r.pad("U11", "5")
     vu = (u5[0], u5[1] + 0.85)                       # U11's VCC via (usb_a)
-    vh = r.via("VCC", u5[0] + 1.45, 6.9, d=0.6, drill=0.3)
+    vh = r.via("VCC", u5[0] + 1.45, u5[1] - 3.685, d=0.6, drill=0.3)   # moves with U11 (and J4)
     r.track("VCC", "2", [vu, (vh[0], vu[1] - 1.45), vh], 0.5)    # on In2, not under J4's shell on F.Cu
     r.track("VCC", "B", [vh, (vh[0], yt)], 0.5)
     jv = r.pad("J4", "1")
@@ -702,16 +702,17 @@ def io(r):
 # power areas; In4 solid GND under B.Cu signals. In2 sits 0.11 mm above In3 (0.55 mm below In1), so In2 signals
 # reference In3: the power areas go where In2 signals don't have to run, and tools/plane_channels.py lays In3 GND under
 # any In2 signal that does. In3 power areas: +3V3 under U10 (and L3's +1V1 corner); VCC over J5 and a band under
-# J1/J12/U14; VSYS over the right column, Q1's drain, the bottom strip, the buck's input and the left drivers.
+# J1/J12/U14 (and C69 east of U14); VSYS over the right column, Q1's drain, the bottom strip, the buck's input and the left drivers.
 # ---------------------------------------------------------------------------------------------------------------------
 PWR_33 = [(17.95, 6.95), (31.2, 6.95), (31.2, 12.85), (28.15, 12.85), (28.15, 19.55), (17.95, 19.55)]
-PWR_VCC = [(0.0, 0.0), (36.5, 0.0), (36.5, 7.8), (32.6, 7.8), (32.6, 6.7), (17.75, 6.7), (17.75, 16.35), (0.0, 16.35)]
+PWR_VCC = [(0.0, 0.0), (38.4, 0.0), (38.4, 6.3), (36.5, 6.3), (36.5, 7.8), (32.6, 7.8), (32.6, 6.7), (17.75, 6.7), (17.75, 16.35), (0.0, 16.35)]
 
 
 def pwr_vsys(W, H):
     xr = W - 15.2                                    # right block: under the four right drivers and their connectors
-    return [(0.0, 16.55), (15.2, 16.55), (15.2, 29.8), (26.4, 29.8), (26.4, 25.6), (31.3, 25.6), (31.3, 29.8),
-            (xr, 29.8), (xr, 21.1), (45.0, 21.1), (45.0, 16.75), (xr, 16.75), (xr, 0.0), (W, 0.0), (W, H),
+    # the bottom strip east of the buck starts at y 28.6, so it passes north of J3's pegs (y 30.7)
+    return [(0.0, 16.55), (15.2, 16.55), (15.2, 29.8), (26.4, 29.8), (26.4, 25.6), (31.3, 25.6), (31.3, 28.6),
+            (xr, 28.6), (xr, 21.1), (45.0, 21.1), (45.0, 16.75), (xr, 16.75), (xr, 0.0), (W, 0.0), (W, H),
             (0.0, H)]
 
 
