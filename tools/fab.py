@@ -6,16 +6,20 @@ Writes:
 - gerbers/: Gerbers for all 4 copper layers, mask, paste, silk and outline, plus Excellon drill files (PTH and NPTH)
 - thegoose-gerbers.zip / goosepack-gerbers.zip / goosepack2s-gerbers.zip: the gerbers/ folder, ready to upload to JLCPCB
 - bom.csv: the full BOM, every purchased part, grouped, with MPN, manufacturer, LCSC number and how it's assembled
-- jlc_bom.csv / jlc_cpl.csv: JLC's PCBA BOM and placement files, machine-placed SMD parts only
+- jlc_bom.csv / jlc_cpl.csv: JLC's PCBA BOM and placement files, machine-placed SMD parts only (both sides on the
+  brain: order Standard PCBA, assembly side "Both Sides")
 
 Assembly classes:
 - "JLC SMT": SMD with an LCSC number and not DNP. These go in the JLC files.
 - "Hand-solder": through-hole connectors and the switch, soldered after the boards arrive.
 - "Hand-place": SMD parts marked DNP (L3, bought from Digi-Key and placed by hand).
 
-Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm), so JLC lines them up without an offset.
-Rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which were read off JLC's placement preview.
-Check each part's orientation in that preview before paying.
+Coordinates use the same absolute frame as the Gerbers (X right, Y up, mm, seen from the top for both sides), so JLC
+lines them up without an offset. Top-side rotations are KiCad's plus the per-package offsets in JLC_ROTATION, which
+were read off JLC's placement preview. Bottom-side parts get Layer "Bottom" and rotation (180 - KiCad + offset): JLC
+doesn't mirror bottom parts the way KiCad does (KiBot's JLCPCB template: mirror_bottom, offsets added). JLC has changed
+its bottom-side convention before, so the script lists every bottom part to check. Check each part's orientation in
+JLC's placement preview before paying.
 
 Usage: python3 tools/fab.py [--board brain|pack|pack2s]
 """
@@ -55,12 +59,18 @@ JLC_ROTATION = [
 ]
 
 
-def jlc_rotation(footprint, rot):
+def jlc_offset(footprint):
     name = footprint.split(":")[-1]
     for pattern, offset in JLC_ROTATION:
         if re.match(pattern, name):
-            return (rot + offset) % 360
-    return rot % 360
+            return offset
+    return 0
+
+
+def jlc_rotation(footprint, rot, bottom=False):
+    """JLC rotation for one part: top keeps KiCad's angle, bottom mirrors it (180 - angle); both add the offset."""
+    base = 180 - rot if bottom else rot
+    return (base + jlc_offset(footprint)) % 360
 
 # Runs inside KiCad's Python: dump every footprint with its fields, attributes and geometry.
 FOOTPRINTS = r"""
@@ -169,19 +179,27 @@ def main():
         w = csv.writer(fh)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
         for fp in sorted(smt, key=lambda f: ref_key(f["ref"])):
-            if fp["side"] != "F.Cu":
-                problems.append(f"{fp['ref']}: on {fp['side']}; Economic PCBA is top side only")
+            bottom = fp["side"] == "B.Cu"
             if fp["pad_mid"]:
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
                 if (dx * dx + dy * dy) ** 0.5 > 0.25:
-                    problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre")
-            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Top", f"{jlc_rotation(fp['footprint'], fp['rot']):.0f}"])
+                    problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre "
+                                    f"(the footprint's origin; JLC centres on its own part model, check the preview)")
+            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Bottom" if bottom else "Top",
+                        f"{jlc_rotation(fp['footprint'], fp['rot'], bottom):.0f}"])
+    bottom_refs = sorted((fp["ref"] for fp in smt if fp["side"] == "B.Cu"), key=ref_key)
+    offset_refs = sorted((fp["ref"] for fp in smt if jlc_offset(fp["footprint"])), key=ref_key)
 
     counts = {how: sum(len(m) for k, m in groups.items() if k[4] == how) for how in order}
     lines = sum(1 for k in groups if k[4] == "JLC SMT")
     print(f"gerbers: {len(list(gerbers.iterdir()))} files -> {zip_path.relative_to(ROOT)}")
     print(f"bom.csv: {len(groups)} lines; placements {counts}")
     print(f"jlc_bom.csv: {lines} lines; jlc_cpl.csv: {len(smt)} placements")
+    if bottom_refs:
+        print(f"bottom side: {len(bottom_refs)} placements; check their rotation in JLC's preview: "
+              + " ".join(bottom_refs))
+    if offset_refs:
+        print("rotation offsets applied (check pin 1 in JLC's preview): " + " ".join(offset_refs))
     for p in problems:
         print("CHECK:", p)
 
