@@ -210,7 +210,9 @@ It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the
 **What fab.py prints for the brain:**
 - the 79 bottom-side placements
 - the parts that get a rotation offset
-- two CHECK lines, for J1 and U8, whose footprint origin isn't their pad centre (JLC centres on its own part model)
+- one CHECK line, for U8, whose footprint origin is 0.3 mm off its pad centre (it lined up in JLC's preview)
+
+J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, and JLC centres it on the pads, so the CPL gives J1's pad centre. U8's HT7550-1 (C16106) model sits 180° off the other SOT-89s, so it gets its own offset. The drivers' `Texas_HTSOP-8` needs no offset. All three were read off JLC's placement preview on 2026-10-20.
 
 **Bottom-side rotation:** it follows kicad-jlcpcb-tools, JLC's KiCad plugin: the angle is mirrored (180° − KiCad's angle), then the package's offset is added, the same as on top.
 
@@ -252,8 +254,7 @@ It needs KiCad 10 in `/Applications` and writes these files to `build/fab/` (the
 - **In JLC's placement preview, before you pay:**
   - Check the orientation of every IC, diode, LED, crystal and the USB-C receptacle.
   - Check all 79 bottom-side parts. Their rotation is mirrored, so check pin 1 of U6, U8, U9 and U11 and the polarity of D2 and D3.
-  - Check the drivers' `Texas_HTSOP-8` offset (−90°, like the other SOIC-family packages), which is still unconfirmed.
-  - Check J1's and U8's positions.
+  - Check that the drivers (U1–U3, U15–U17) have their pins on the long sides, over the pads, that U8's pin 1 is next to its ▲, and that J1's contacts sit over its pads.
 - **D4 (SMF14A TVS, back):** its cathode band (pad 1, VSYS) must face J3, toward the board's west edge. Looking at the back, that's to your right. Reversed, it shorts VSYS.
 - **L3:** it isn't stocked at JLC, so buy it from Digi-Key and fit it before first power. Pin 1 (the dot) goes to the +1V1 side.
 - **Through-hole parts:** clip their leads to 1.5 mm or less, because the case leaves 2 mm under the board.

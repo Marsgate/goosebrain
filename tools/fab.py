@@ -51,26 +51,33 @@ LAYERS = ("F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.
 # (footprint-name regex, degrees added to KiCad's rotation), checked against pin 1 in JLC's placement preview on
 # 2026-10-18. SOT-23-5/6, SOIC, SO-8EP, TSSOP, SSOP and TDSON models came out 90 degrees counter-clockwise of their
 # pads; the 3-pin SOT-23 came out 180 degrees off. QFNs, SOT-89, two-terminal parts, the crystal, USB-C and the BOOT
-# switch matched. The motor drivers' Texas_HTSOP-8 (DRV8871, now DRV8251A on the same footprint) was added after that
-# check and is assumed to follow the other SOIC-family packages; confirm it in JLC's placement preview. First match wins.
+# switch matched. The motor drivers' Texas_HTSOP-8 (DRV8251A) matches with no offset (preview, 2026-10-20). First
+# match wins.
 JLC_ROTATION = [
     (r"^SOT-23-3$", 180),
-    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|Texas_HTSOP-8|TSSOP-|SSOP-|TDSON-)", -90),
+    (r"^(SOT-23-[56]|SOIC-|Diodes_SO-8EP|TSSOP-|SSOP-|TDSON-)", -90),
 ]
+# Parts whose JLC model sits at its own rotation, by LCSC number, added to the package offset. U8's HT7550-1 (C16106,
+# SOT-89-3 on the back) came out 180 degrees off in the preview on 2026-10-20.
+JLC_PART_ROTATION = {"C16106": 180}
+# Footprints JLC centres on their pads, not the footprint origin, so the CPL gives the pad centre. J1's USB-C origin
+# sits 1.15 mm toward the board edge from its pads, and the preview showed the model shifted that far out.
+JLC_PAD_CENTRE = [r"^USB_C_Receptacle_ShouHan_"]
 
 
-def jlc_offset(footprint):
+def jlc_offset(footprint, lcsc=""):
     name = footprint.split(":")[-1]
+    extra = JLC_PART_ROTATION.get(lcsc, 0)
     for pattern, offset in JLC_ROTATION:
         if re.match(pattern, name):
-            return offset
-    return 0
+            return offset + extra
+    return extra
 
 
-def jlc_rotation(footprint, rot, bottom=False):
+def jlc_rotation(footprint, rot, bottom=False, lcsc=""):
     """JLC rotation for one part: top keeps KiCad's angle, bottom mirrors it (180 - angle); both add the offset."""
     base = 180 - rot if bottom else rot
-    return (base + jlc_offset(footprint)) % 360
+    return (base + jlc_offset(footprint, lcsc)) % 360
 
 # Runs inside KiCad's Python: dump every footprint with its fields, attributes and geometry.
 FOOTPRINTS = r"""
@@ -180,15 +187,18 @@ def main():
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
         for fp in sorted(smt, key=lambda f: ref_key(f["ref"])):
             bottom = fp["side"] == "B.Cu"
+            x, y = fp["x"], fp["y"]
             if fp["pad_mid"]:
                 dx, dy = fp["pad_mid"][0] - fp["x"], fp["pad_mid"][1] - fp["y"]
-                if (dx * dx + dy * dy) ** 0.5 > 0.25:
+                if any(re.match(pat, fp["footprint"].split(":")[-1]) for pat in JLC_PAD_CENTRE):
+                    x, y = fp["pad_mid"]
+                elif (dx * dx + dy * dy) ** 0.5 > 0.25:
                     problems.append(f"{fp['ref']}: anchor is {dx:+.2f}/{dy:+.2f} mm off its pad centre "
                                     f"(the footprint's origin; JLC centres on its own part model, check the preview)")
-            w.writerow([fp["ref"], f"{fp['x']:.4f}", f"{-fp['y']:.4f}", "Bottom" if bottom else "Top",
-                        f"{jlc_rotation(fp['footprint'], fp['rot'], bottom):.0f}"])
+            w.writerow([fp["ref"], f"{x:.4f}", f"{-y:.4f}", "Bottom" if bottom else "Top",
+                        f"{jlc_rotation(fp['footprint'], fp['rot'], bottom, fp['lcsc']):.0f}"])
     bottom_refs = sorted((fp["ref"] for fp in smt if fp["side"] == "B.Cu"), key=ref_key)
-    offset_refs = sorted((fp["ref"] for fp in smt if jlc_offset(fp["footprint"])), key=ref_key)
+    offset_refs = sorted((fp["ref"] for fp in smt if jlc_offset(fp["footprint"], fp["lcsc"])), key=ref_key)
 
     counts = {how: sum(len(m) for k, m in groups.items() if k[4] == how) for how in order}
     lines = sum(1 for k in groups if k[4] == "JLC SMT")
