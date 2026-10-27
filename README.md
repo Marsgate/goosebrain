@@ -6,7 +6,7 @@ This repo holds two boards that ship as one system:
 - **The smart pack** (`kicad-pack/goosepack.kicad_pro`): a small board that sits on the Ovonic 3S 450 mAh cells. It carries the charger, the protector, the 15 A fuse and its own USB-C charging port, and it plugs into the brain over an XT30 lead. Packs can be swapped, and spares can be sold.
 - **The 2S smart pack** (`kicad-pack-2s/goosepack2s.kicad_pro`, started 2026-10-19): the same pack for 2-cell batteries. The charger is set for 2S by resistors, the protector is a HYCON HY2120-LB, and two HYCON HY2213 balancers replace the BQ7791501's balancing. See "The 2S pack board" below and PARTS.md. The brain runs from either pack.
 
-The schematics are done. **The brain is placed on both sides and fully routed on 6 layers** (branch `double-sided`, 2026-10-20): 0 DRC errors, 0 unconnected items, ERC clean. See "The brain board" below and [ROUTING_LOG.md](ROUTING_LOG.md). The two pack boards are still unplaced and unrouted.
+The schematics are done. **The brain is placed on both sides and fully routed on 6 layers** (branch `double-sided`, 2026-10-20): 0 DRC errors, 0 unconnected items, ERC clean. See "The brain board" below and [ROUTING_LOG.md](ROUTING_LOG.md). The 3S pack board is placed and routed on 4 layers (2026-10-27, see "The pack board"); the 2S pack board is still unplaced and unrouted.
 
 It was developed in a separate repo (goosebrain-manual), copied on 2026-10-19 from branch `rev2-rp2350` (commit `0ed7122` plus the uncommitted changes at the time) and split into brain + pack the same day. On 2026-10-20 that work, with its full history, was merged back into [Marsgate/goosebrain](https://github.com/Marsgate/goosebrain) `main`. The old SKiDL circuit generator (`circuit/`) was retired then: the KiCad schematics are the source of truth.
 
@@ -17,7 +17,7 @@ It was developed in a separate repo (goosebrain-manual), copied on 2026-10-19 fr
   - The ILIM_HIZ divider (39k / 24k from REGN) caps the input at about **1.04 A** (0.94–1.13 A over REGN tolerance). That gives about 0.44 A into the cells at 3.5 V/cell (1C) and 0.38 A at 4.1 V/cell, so a full charge takes about **1.2–1.3 h**.
   - A PC's USB-A port (BC1.2 SDP) is limited to 0.5 A, so charging from one takes about twice as long.
   - **The green LED on the pack** is lit while charging, off when full, and blinks on a fault.
-  - TH2, a 10 kΩ NTC pressed against the cells, stops charging below 0 °C and above 60 °C.
+  - **There is no cell thermistor** (removed 2026-10-26: the cells sit on the board's top side, with the parts, so no NTC can press on them). R79, a fixed 10 kΩ in TH2's old place, holds the charger's TS pin at the 25 °C point, so it always charges at the full rate and JEITA never kicks in. The protector's NTC (TH1, by the FETs) still trips on the board's temperature.
 - **Protection:** BQ7791501 with low-side FETs and a 2 mΩ shunt. OV 4.25 V, UV 2.8 V per cell, OCD1 17.5 A (14 A worst case), OCD2 30 A, SCD 60 A, OCC 10 A, plus the 15 A fast fuse.
 - **Clearing a trip:** an over-current trip clears when the load goes away. **Unplug the pack, or switch the brain off and on.** R94 (100 kΩ, PACK− to cell −) lets the protector see the load removed even with the charger's 17 µA standby draw on the pack.
 - **The brain** takes the pack's XT30U-F lead on J3, a horizontal XT30PW-M whose mouth faces out through the bottom wall (pin 1 GND = PACK−, pin 2 PACK+). The power switch drives Q1. With the switch off, nothing on the brain loads the pack.
@@ -49,7 +49,7 @@ It was developed in a separate repo (goosebrain-manual), copied on 2026-10-19 fr
 
 1. **Pack charge current:** with a USB-C charger, measure the cell current at about 3.5 V/cell (expect about 0.42–0.44 A) and at 4.1 V/cell (about 0.36–0.38 A). Also try a C-to-C cable from a PD-only charger: the datasheet doesn't say what the BQ25798's D+/D− detection reports for a source with open D+/D−. If it reports SDP, charging is limited to 0.5 A in.
 2. **Trip recovery:** short the pack output through a 10 A-rated load to trip OCD, then check that unplugging the pack clears it. Trip it again with the brain connected and check that the brain's power switch clears it.
-3. **NTC:** warm TH2 past 45 °C and check the charge voltage drops 0.4 V (JEITA warm), and past 60 °C that charging stops.
+3. **TS:** with USB-C in, check that TS (U7 pin 16) sits at about 59 % of REGN, inside the 10–45 °C band, and that charging runs at the full rate.
 4. **Motors:** stall one motor and check the current chops at about 1.36 A.
 5. **2S pack:** check that the charge stops at 8.4 V, measure the charge current (about 0.42 A at 3.5 V/cell), and check that each HY2213 bleeds about 89 mA once its cell passes 4.20 V. Trip the HY2120 with a load: over-current near 18–20 A, depending on how hot Q2/Q3 are. Then check that unplugging clears it.
 6. **Brain on 2S:** at 5.6 V in (the 2S cutoff), check that Q1 is fully on (about −5 V gate drive), that VCC holds 4.96 V with the servos loaded, and that the soft start still takes about 70 µs with C71 at 10 nF.
@@ -159,14 +159,35 @@ The net classes are set in the project file, and the custom DRC rules are in `ki
 
 ## The pack board
 
-`kicad-pack/goosepack.kicad_pcb` has all 72 footprints from the pack schematic, clustered by block (charger, protector, connectors) and **not placed**. It uses the 4-layer JLC04161H-7628 stackup (the brain moved to 6 layers). **There is no board outline yet:** it will be drawn with the pack housing, so DRC reports one "invalid outline" error and 160 unconnected items.
+`kicad-pack/goosepack.kicad_pcb` is **placed and routed** (2026-10-27, charger reworked the same day): **50 × 23 mm**, the smallest board with every part on the top side (so JLC's Economic PCBA, top side only, still works) and every capacitor and resistor within 9 mm of the pin it serves (the TS, ILIM_HIZ and PROG dividers, which only set DC levels, and C34 sit further out). The parts also pack onto 45.5 × 20.5 mm, but only with the charger's last passives 13–22 mm from their pins, and that board didn't route. It uses the 4-layer JLC04161H-7628 stackup (the brain moved to 6 layers). DRC with zones refilled: 0 errors, 0 unconnected items, two warnings (J11's silk was trimmed at the board edge and U7's pin 1 mark nudged off C22, so neither matches its library footprint); schematic parity and ERC are clean. The housing is designed around this outline.
 
-Layout notes for later:
+`tools/place_pack.py compact` rebuilds the placement (run with KiCad's Python; `--size` and `--reach` try other sizes and reach limits, `--led=stat` puts LED1 by U7 instead of the edge). Then `tools/route_pack.py setup`, `route` and `finish` rebuild the copper, and `tools/silk.py pack` places the references and the polarity labels (see each docstring). Routing takes about 10 minutes; every step takes `--pcb=FILE` to work on a copy, and `route --order=NET,...` tries another route order. Its other layouts (`vertical`, `rightangle`, `ontop`) were the earlier options for a board sized to the Ovonic pack; renders of all of them are in `renders/pack/`.
 
-- The pack board sits on the cell pack, and TH2 goes on its underside, pressed against the cells.
+- **Top:** power row along the bottom edge (J3 pads, F1 over R66, Q2/Q3 back to back, J2 pads), J11 and U13 above it, the charger and J1 at the east end, LED1 on the east edge above J1. J1's face sticks out about 1.4 mm past the east edge.
+- **The charger's power stage** follows TI's BQ25798 layout example (SLUSDV2C §8.4.2): U7's power pins face west into L2, the SYS caps (C32, C27–C30) sit in a row north of L2 and the PMID caps (C26, C24, C25) in a row south of it, each row on an F.Cu pour from its pin with its 100 nF cap nearest, and PGND runs out between L2's pads to five vias under L2's body. The boot caps are 0402: C18 under L2 with its SW1 pad on the SW1 pour (BTST1 about 6.4 mm, partly on B.Cu), C19 over pin 19 (BTST2 1.5 mm; SW2 back by a via and about 7 mm of 0.4 mm In2). The REGN, VBUS and BAT caps sit at their pins.
+- **Polarity:** B−/B+ by J3's pads (the cells), P−/P+ by J2's (the output; the square pads are negative), and B0–B3 under J11's pins.
+- **Heights above the board:** J11 7.0 mm (about 12 mm with the balance plug in), J1 3.3 mm, L2 3.0 mm, F1 2.7 mm, D1 2.4 mm, the rest under 1.8 mm.
+- **Back:** no parts, only the clipped leads of J2, J3 and J11 (keep them to 1.5 mm).
+- **Pigtails:** J3 takes a 16 AWG lead ending in an XT30U-M that the pack's own XT30U-F plugs into, so the cell leads stay uncut. J2 takes the 16 AWG output lead with the XT30U-F that mates the brain's J3. Both use KiCad's `SolderWire-1.5sqmm_1x02_P6mm` pads. J11 stays a B4B-XH-A header: JST XH has no wire-to-wire male, so the balance lead can't become a pigtail.
+- There are no mounting holes: the housing holds the board by its edges.
 - The housing shows LED1 and the USB-C opening.
-- R66 is a TA-I RLP25 2 mΩ 2512 metal shunt. It uses KiCad's generic 2512 land pattern for now: check TA-I's recommended pads before laying it out.
-- J2's pads take a 16 AWG lead with an XT30U-F. The footprint's silk now reads PACK− on the square pad 1 and PACK+ on pad 2.
+- R66 is a TA-I RLP25 2 mΩ 2512 metal shunt. It uses KiCad's generic 2512 land pattern for now: check TA-I's recommended pads before ordering.
+
+Routing:
+
+- **Layers:** F.Cu carries the parts, signals and the pack-path pours (J3 → F1 → PACK+, BAT_N → R66 → Q2 → Q3 → PACK- → J2). In1 is ground, split between BAT_N (the cells' negative, under the protector) and PACK- (the charger's and the brain's ground). In2 carries PACK+ in a band from F1 to J2 and is otherwise a signal layer. B.Cu carries signals. F.Cu, In2 and B.Cu are filled with the same ground split, stitched to In1 every 2.5 mm where both fills reach.
+- **Widths:** the pack path and the charger's power stage are pours. Power and plane-net tracks are 0.4 mm. The charger's routed power nets (VBUS, PMID, SYS) are 0.3 mm, since the BQ25798's 0.2 mm pads at 0.4–0.46 mm pitch take nothing wider at 0.2 mm clearance; `finish` widens them to 0.4 mm wherever DRC still passes (VBUS and PACK+ to 0.6 or 0.5 mm on In2 first). VBUS still has about 12 mm of 0.3 mm on In2, which carries only C21's and D1's branches, not the input current. Signals are 0.15 mm.
+- **Vias:** 0.45/0.25 mm for signals, 0.5/0.3 or 0.6/0.3 mm for the power classes (the router picks by net class), none within 0.2 mm of an SMD pad. The vias under U7's body (no exposed pad) are its east-side and corner escapes: SDA, SCL, SDRV, the east ground pins; VBUS's east pins join pins 2 and 3 by an F.Cu strip under the body instead.
+- **Current sense:** Kelvin lines on B.Cu from vias at the inner edges of R66's pads to R68 and R69 (the SRP/SRN filter, with C68 across U13's pins). Rule areas keep the fills off the BAT_N line and its vias, so it meets BAT_N only at R66's pad.
+- **Router:** `tools/grid_router.py --board=pack`, the brain's router. Freerouting 2.1 stalled at 25–40 unrouted connections and ignores its pass limits. `route_pack.py setup` lays the connections that no route order could fit around U7 (escape vias for its crowded corners and J1's CC2 and north VBUS pads, C18's and C19's boot loops, a stub out of C36's SDRV pad), and keeps ILIM_HIZ 1 mm off SW2's In2 run with a router-only keepout; `route` then routes STAT, CHG_SYS, BTST1 and PROG first and the rest in the router's own order. `tools/route_loop.py` wraps the router in a diagnose-and-retry loop for an LLM (or a person) to drive: each attempt routes a copy with `tools/route_llm.py` (grid_router plus a diagnosis of each failed pair; `tools/escape.py` adds pin escapes) and writes the failures, the nets in the way and a hint to a JSON report. That loop found the route orders above.
+
+Open layout items (fresh-eyes reviews on 2026-10-27 scored the board 2.4, then 3.4 and 3.5 of 5 after the charger rework; the last found no blockers). Decided the same day: D1 is an SMBJ15A (24.4 V clamp, under the BQ25798's 30 V VBUS maximum; see PARTS.md) and the finish is ENIG.
+
+- **The boot loops** are the shortest this footprint allows with every part on top: TI's example runs SW1/SW2 through vias inside U7's pads, which single-sided assembly without via-in-pad can't do. BTST1 is about 6.4 mm with two vias, and C19's SW2 return about 7.7 mm through In2.
+- **C36** (SDRV's 1 nF) sits about 9 mm from its pin's via; nothing closer is free, and SDRV is a static charge-pump output.
+- **Q2 and Q3** only have the F.Cu drain pour for heat (about 1 W each at 15 A).
+- **References:** 44 are hidden for lack of room (no reference may sit over another part); the fab layers keep them all.
+- **R66** uses KiCad's generic 2512 land pattern: check TA-I's recommended pads (see above).
 
 ## The 2S pack board
 
@@ -288,15 +309,17 @@ J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, an
 |---|---|
 | Layers | 4 |
 | Thickness | 1.6 mm |
-| Surface finish | Lead-free HASL is fine (no ENIG requirement) |
+| Surface finish | **ENIG** (decided 2026-10-27; the board's stackup says so too) |
 | Impedance control | Yes, stackup JLC04161H-7628 |
-| Via covering | Tented, or epoxy-filled and capped if you put vias in pads |
+| Via covering | Tented (no vias in pads) |
+| Min via hole | 0.25 mm (signal vias 0.45/0.25 mm; power vias 0.5/0.3 and 0.6/0.3 mm) |
+| PCB remark | "Edge rails on the long (north/south) edges only, nothing on the east edge: the USB-C connector overhangs it by 1.4 mm." |
 
 **Assembly:**
 
 - **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips, on both sides of the brain. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
   - Brain: JLC places every SMD part, D4, U14, F2 and SW2 included (they were hand-placed until 2026-10-20). Through-hole, in the panel's JLC files (or hand-soldered): J3, J4, J5, J12, M1–M6, SW1. L1 was hand-placed until 2026-10-20; JLC places it now (the Zeng Yi HMS0530-2R2M instead of the Coilcraft XAL5030). L3 is gone: the core runs from an LDO (U12).
-  - Pack, hand-placed: L2, Q2, Q3, R66, TH1, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
+  - Pack, hand-placed: L2, Q2, Q3, R66, TH1, F1. Hand-soldered: J2 and J3 (leads), J11.
   - 2S pack, hand-placed: L2, Q2, Q3, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
 - **Brain:** order Standard PCBA, both sides, and upload `build/fab-panel/jlc_bom.csv` and `jlc_cpl.csv`. Check every through-hole part in the preview too: their footprint origins are at pin 1, so the CPL gives the pad centre. In the previews on 2026-10-20, J5 needed the −90° offset, J3, J12 and M1–M6 came out turned 180° (housings inboard, pins at the edge), and SW1's lever pointed into the board; fab.py now adds these offsets by LCSC number. J4 sat right with none. **Packs:** Economic PCBA, top side only.
 - **In JLC's placement preview, before you pay:**

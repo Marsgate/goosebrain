@@ -2,6 +2,7 @@
 
     .venv/bin/python tools/review.py sch [--out DIR]
     .venv/bin/python tools/review.py pcb [--out DIR] [--baseline DIR]
+    .venv/bin/python tools/review.py pcb --board pack ...   (the 3S pack, kicad-pack/goosepack; folders pcb-pack/)
 
 Each run writes a numbered folder under build/review/<sch|pcb>/ (or --out):
 
@@ -46,6 +47,17 @@ POWER_NETS = {
 }
 POWER_NET_SUFFIXES = {"_OUT1": 0.4, "_OUT2": 0.4}  # motor outputs, /Motor drivers/U*_OUT1/2
 
+# The 3S pack board (--board pack): 4 layers, and its pack path is pours, so only tracks need checking, at the class
+# width in goosepack.kicad_pro (0.4 mm, Charger 0.3 mm).
+# Segments up to STUB_MM long may be narrower: they leave the BQ25798's and the BQ7791501's fine-pitch pins. The Kelvin
+# sense lines from R66 (PCB group "kelvin", 0.2 mm) carry no current and aren't checked.
+PACK_SCH = ROOT / "kicad-pack/goosepack.kicad_sch"
+PACK_PCB = ROOT / "kicad-pack/goosepack.kicad_pcb"
+PACK_POWER_NETS = {n: 0.4 for n in ("/CELL+", "/PACK+", "/BAT_N", "/PROT_SNS", "/PROT_FET_D", "/PACK-")} | \
+                  {n: 0.3 for n in ("/VBUS", "/PMID", "/CHG_SYS", "/SW1", "/SW2")}   # the Charger class width
+STUB_MM = 1.0
+WIDTH_KEY = "min_width"         # the pack checks "min_long": the narrowest segment longer than STUB_MM
+
 # Schematic-parity findings that aren't real mismatches: board-only parts
 # (mounting holes, logo) and the empty Datasheet field.
 PARITY_IGNORE_REFS = ("REF**", "G***")
@@ -63,7 +75,7 @@ def next_run_dir(kind, out):
     if out:
         path = Path(out)
     else:
-        base = ROOT / "build/review" / kind
+        base = ROOT / "build/review" / (kind + ("-pack" if PCB == PACK_PCB else ""))
         base.mkdir(parents=True, exist_ok=True)
         n = 1 + max((int(p.name) for p in base.iterdir() if p.name.isdigit()), default=0)
         path = base / f"{n:02d}"
@@ -162,12 +174,17 @@ import json, sys, pcbnew
 b = pcbnew.LoadBoard(sys.argv[1])
 nets = {}
 for t in b.GetTracks():
-    n = nets.setdefault(t.GetNetname(), {"min_width": None, "length": 0.0, "vias": 0, "segments": 0})
+    n = nets.setdefault(t.GetNetname(), {"min_width": None, "min_long": None, "length": 0.0, "vias": 0,
+                                         "segments": 0})
     if t.GetClass() == "PCB_VIA":
         n["vias"] += 1
         continue
     w = pcbnew.ToMM(t.GetWidth())
     n["min_width"] = w if n["min_width"] is None else min(n["min_width"], w)
+    g = t.GetParentGroup()
+    sense = g is not None and g.GetName() == "kelvin"    # the pack's current-sense lines carry no current
+    if pcbnew.ToMM(t.GetLength()) > float(sys.argv[2]) and not sense:
+        n["min_long"] = w if n["min_long"] is None else min(n["min_long"], w)
     n["length"] += pcbnew.ToMM(t.GetLength())
     n["segments"] += 1
 zones = [{"net": z.GetNetname(), "layers": [b.GetLayerName(l) for l in z.GetLayerSet().Seq()]}
@@ -224,14 +241,14 @@ def review_pcb(out, baseline):
         new = {k: n - base.get(k, 0) for k, n in types.items() if n > base.get(k, 0)}
         results["gates"]["no_new_drc"] = {"pass": not new, "detail": new or "none new"}
 
-    metrics = json.loads(run(KICAD_PYTHON, "-c", TRACK_METRICS, PCB).stdout)
+    metrics = json.loads(run(KICAD_PYTHON, "-c", TRACK_METRICS, PCB, str(STUB_MM)).stdout)
     results["metrics"] = metrics
     thin = []
     for net, info in metrics["nets"].items():
         need = POWER_NETS.get(net) or next(
             (w for sfx, w in POWER_NET_SUFFIXES.items() if net.endswith(sfx)), None)
-        if need and info["min_width"] is not None and info["min_width"] + 1e-6 < need:
-            thin.append(f"{net}: {info['min_width']:.2f} mm < {need} mm")
+        if need and info[WIDTH_KEY] is not None and info[WIDTH_KEY] + 1e-6 < need:
+            thin.append(f"{net}: {info[WIDTH_KEY]:.2f} mm < {need} mm")
     results["gates"]["power_track_width"] = {"pass": not thin, "detail": thin or "ok"}
 
     for name, (layers, extra) in PCB_VIEWS.items():
@@ -280,7 +297,14 @@ def main():
     parser.add_argument("kind", choices=["sch", "pcb"])
     parser.add_argument("--out", help="output folder (default: next numbered folder)")
     parser.add_argument("--baseline", help="earlier pcb review folder to compare DRC against")
+    parser.add_argument("--board", choices=["brain", "pack"], default="brain")
     args = parser.parse_args()
+    if args.board == "pack":
+        global SCH, PCB, POWER_NETS, POWER_NET_SUFFIXES, WIDTH_KEY
+        SCH, PCB, POWER_NETS, POWER_NET_SUFFIXES = PACK_SCH, PACK_PCB, PACK_POWER_NETS, {}
+        WIDTH_KEY = "min_long"
+        for name in ("inner3", "inner4"):
+            PCB_VIEWS.pop(name)
 
     out = next_run_dir(args.kind, args.out)
     results = review_sch(out) if args.kind == "sch" else review_pcb(out, args.baseline)

@@ -2,7 +2,18 @@
 
 Run with KiCad's Python after tools/route_recipe.py and a zone fill, on KiCad's DRC report in JSON:
     kicad-cli pcb drc --format json --schematic-parity -o drc.json kicad/thegoose.kicad_pcb
-    .../python3 tools/grid_router.py drc.json [--clear] [--first=NET,NET...]
+    .../python3 tools/grid_router.py drc.json [--clear] [--first=NET,NET...] [--board=pack] [--pcb=FILE]
+    .../python3 tools/grid_router.py --rip=NET,NET... [--board=pack] [--pcb=FILE]
+
+--rip removes the router's copper on those nets (the "autoroute" group; --rip=* all of it) and exits: run DRC again, then route them
+afterwards in a new order (the router has no rip-up of its own).
+
+--board=pack routes the 3S pack board (kicad-pack/goosepack.kicad_pcb) instead, after tools/route_pack.py setup: its
+ground planes (BAT_N, PACK-) are already fanned out and skipped (PACK+ is routed out to the charger), every F.Cu/In2.Cu/B.Cu zone is an obstacle, the
+In2 PACK+ corridor's rule area keeps tracks out, a rule area named "router keepout NET,NET..." (which allows everything,
+so DRC ignores it) keeps those nets' tracks and vias out on its layers, each net routes at its class width (Default 0.15 mm, Charger
+0.3 mm, Power 0.4 mm), and no via lands within PAD_VIA of an SMD pad of any net (no vias in pads). None of the
+brain's pockets or In3 power costs apply.
 
 Freerouting 2.1 did poorly here: it ignored keepouts on inner layers, hugged pin rows and then couldn't rip up, and its
 results swung between 12 and 63 unrouted on identical runs (see ROUTING_LOG.md). This router is small and
@@ -38,11 +49,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import route_recipe as rr  # noqa: E402
 
-PCB = ROOT / "kicad/thegoose.kicad_pcb"
+PACK = "--board=pack" in sys.argv
+PCB = ROOT / ("kicad-pack/goosepack.kicad_pcb" if PACK else "kicad/thegoose.kicad_pcb")
+PCB = Path(next((a[6:] for a in sys.argv if a.startswith("--pcb=")), PCB))   # --pcb=FILE: route a copy instead
 GROUP = "autoroute"
 MM = 1e6
-OX, OY = rr.OX, rr.OY
-G = 0.05                        # grid pitch, mm
+OX, OY = (100.0, 100.0) if PACK else (rr.OX, rr.OY)
+G = 0.025 if PACK else 0.05     # grid pitch, mm (the pack's 0.45 mm BQ25798 pitch needs the finer grid)
 HW = 0.075                      # half a 0.15 mm track: the halos are drawn for it
 MARGIN = 0.01
 CLR_T, CLR_W = 0.15, 0.2        # Default to Default; everything else (USB, switch nodes, power classes)
@@ -51,7 +64,12 @@ HOLE_TO_HOLE = 0.5              # JLC, between drilled holes
 EDGE = 0.3                      # copper to board edge
 CORNER = 1.0                    # outline corner radius
 VIA_D, VIA_DRILL = 0.45, 0.3
-VIA_COST = 30.0                 # in cells (1.5 mm)
+VIAS = [(VIA_D, VIA_DRILL)]     # sizes a new via can take (diameter, drill); bit i of Grid.noholes rules out size i
+SIGNAL_VIAS = POWER_VIAS = (0,)
+if PACK:                        # signals 0.45/0.25; power-class nets keep a 0.3 mm drill, 0.6 mm pad where it fits
+    VIAS = [(0.45, 0.25), (0.6, 0.3), (0.5, 0.3)]
+    SIGNAL_VIAS, POWER_VIAS = (0,), (1, 2)
+VIA_COST = 1.5 / G              # in cells (1.5 mm)
 IN2_POWER_COST = 1.6            # per cell on In2 over an In3 power area
 SOFT, SOFT_COST = 0.45, 4.0     # cells this far beyond a fine-pitch pad's halo cost more for other nets, so routes
 FINE = 0.45                     # don't run along a pin row and seal off its escapes; FINE: pad width counted as fine
@@ -59,11 +77,20 @@ LAYERS = [pcbnew.F_Cu, pcbnew.In2_Cu, pcbnew.B_Cu]
 SKIP = {"GND", "VSYS", "VCC", "PACK+"}            # carried by planes, pours and the recipe
 WIDE = {"+3V3", "+1V1", "VBUS", "Net-(D2-K)", "Net-(D2-A)"}
 SWITCH = {"Net-(U4-SW)"}
+CLASS_W = {}                                      # pack: track width by net class (others 0.15, WIDE nets 0.2)
+if PACK:
+    SKIP = {"/BAT_N", "/PACK-"}                   # planes; route_pack.py setup fanned every pad out
+    WIDE, SWITCH = set(), {"/SW1", "/SW2"}
+    CLASS_W = {"Charger": 0.3, "Power": 0.4, "Plane": 0.4}
+NARROW = 0.2                                      # pack: where the class width doesn't fit (the DRC minimum)
+PAD_VIA = 0.2                                     # pack: a via's copper keeps this far from every SMD pad, its own
+                                                 # net's too, so solder can't wick down it
 SMALL_ZONES = {"U10 back GND", "Y1 guard", "U4 VIN", "PACK+ J3-Q1", "VSYS Q1 drain", "PACK+ gate net"}
 J4_SHELL = (34.1, 0.0, 51.1, 10.55)               # no F.Cu under J4's shell (above its pin row)
 J1_WEST = (17.98, 0.0, 20.6, 7.6)                 # no B.Cu between IO1's lane and J1's west shell pad: a route there
                                                  # cuts the B.Cu pour round the pad off into an island
 FREE, BLOCKED = -1, -2
+KEEPOUT = "router keepout "                       # pack: rule areas named this plus net names
 DIAG = math.sqrt(0.5) * G
 
 
@@ -102,10 +129,12 @@ class Grid:
         self.nx, self.ny = int(math.ceil(W / G)), int(math.ceil(H / G))
         self.plane = self.nx * self.ny
         self.maps = [array("i", [FREE]) * (3 * self.plane), array("i", [FREE]) * (3 * self.plane)]
-        self.noholes = bytearray(self.plane)      # 1 where a new via's hole would sit too close to another hole
+        self.noholes = bytearray(self.plane)      # bit i set where a new via of VIAS[i] would sit too close to
+                                                 # another hole (pack: or its copper too close to an SMD pad)
         self.in2_power = bytearray(self.plane)
         self.soft = array("i", [FREE]) * (3 * self.plane)
         self.netid, self.netname, self.tight = {}, [], []
+        self.keep = {}                            # net name: cells (3 layers) its tracks and vias stay out of
         self.classes = classes
 
     def nid(self, name):
@@ -159,12 +188,26 @@ class Grid:
 
     def hole(self, n, cx, cy, d):
         self.shape([0, 1, 2], n, (cx, cy, cx, cy), lambda px, py: math.hypot(px - cx, py - cy), d / 2, hole=True)
-        r = d / 2 + HOLE_TO_HOLE + VIA_DRILL / 2
-        cx0, cy0, cx1, cy1 = self.box(cx - r, cy - r, cx + r, cy + r)
+        for i, (_, drill) in enumerate(VIAS):
+            r = d / 2 + HOLE_TO_HOLE + drill / 2
+            cx0, cy0, cx1, cy1 = self.box(cx - r, cy - r, cx + r, cy + r)
+            for y in range(cy0, cy1 + 1):
+                for x in range(cx0, cx1 + 1):
+                    if math.hypot((x + 0.5) * G - cx, (y + 0.5) * G - cy) <= r:
+                        self.noholes[y * self.nx + x] |= 1 << i
+
+    def novia(self, pts):
+        """No via's copper within PAD_VIA of this polygon."""
+        edges = list(zip(pts, pts[1:] + pts[:1]))
+        xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+        r = max(d for d, _ in VIAS) / 2 + PAD_VIA
+        cx0, cy0, cx1, cy1 = self.box(min(xs) - r, min(ys) - r, max(xs) + r, max(ys) + r)
         for y in range(cy0, cy1 + 1):
             for x in range(cx0, cx1 + 1):
-                if math.hypot((x + 0.5) * G - cx, (y + 0.5) * G - cy) <= r:
-                    self.noholes[y * self.nx + x] = 1
+                dist = poly_dist((x + 0.5) * G, (y + 0.5) * G, edges)
+                for i, (d, _) in enumerate(VIAS):
+                    if dist <= d / 2 + PAD_VIA:
+                        self.noholes[y * self.nx + x] |= 1 << i
 
     def soften(self, l, n, pts):
         edges = list(zip(pts, pts[1:] + pts[:1]))
@@ -216,9 +259,14 @@ def build(b, g):
                     g.poly([l], n, poly)
                     if fine:
                         g.soften(l, n, poly)
+                    if PACK and p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD:
+                        g.novia(poly)
             if p.GetDrillSize().x > 0:
                 c = lpos(p.GetPosition())
                 g.hole(n, c[0], c[1], max(p.GetDrillSize().x, p.GetDrillSize().y) / MM)
+            if f.GetReference().startswith("FID"):     # fiducials: copper keeps 0.6 mm from the 1 mm pad
+                c = lpos(p.GetPosition())
+                g.seg(pad_layers(p), n, c[0], c[1], c[0], c[1], 0.5 + 0.6 - CLR_T)
     for t in b.GetTracks():
         n = g.nid(t.GetNetname())
         if t.GetClass() == "PCB_VIA":
@@ -229,15 +277,48 @@ def build(b, g):
             a, c = lpos(t.GetStart()), lpos(t.GetEnd())
             g.seg([LAYERS.index(t.GetLayer())], n, a[0], a[1], c[0], c[1], t.GetWidth() / MM / 2)
     for z in b.Zones():
-        if z.GetIsRuleArea() or z.GetZoneName() not in SMALL_ZONES:
+        if z.GetIsRuleArea() or not (PACK or z.GetZoneName() in SMALL_ZONES):
             continue
         n = g.nid(z.GetNetname())
-        for L in (pcbnew.F_Cu, pcbnew.B_Cu):
+        for L in LAYERS if PACK else (pcbnew.F_Cu, pcbnew.B_Cu):
             if z.IsOnLayer(L):
                 fp = z.GetFilledPolysList(L)
                 for k in range(fp.OutlineCount()):
                     ol = fp.Outline(k)
                     g.poly([LAYERS.index(L)], n, [lpos(ol.CPoint(i)) for i in range(ol.PointCount())])
+    if PACK:                                      # per-net keepouts: "router keepout NET,NET..."
+        for z in b.Zones():
+            if not (z.GetIsRuleArea() and z.GetZoneName().startswith(KEEPOUT)):
+                continue
+            for k in range(z.Outline().OutlineCount()):
+                ol = z.Outline().Outline(k)
+                edges = [(lpos(ol.CPoint(i)), lpos(ol.CPoint((i + 1) % ol.PointCount())))
+                         for i in range(ol.PointCount())]
+                xs, ys = [e[0][0] for e in edges], [e[0][1] for e in edges]
+                cx0, cy0, cx1, cy1 = g.box(min(xs) - 0.3, min(ys) - 0.3, max(xs) + 0.3, max(ys) + 0.3)
+                for name in z.GetZoneName()[len(KEEPOUT):].split(","):
+                    kb = g.keep.setdefault(name.strip(), bytearray(3 * g.plane))
+                    for l, L in enumerate(LAYERS):
+                        if not z.IsOnLayer(L):
+                            continue
+                        for y in range(cy0, cy1 + 1):
+                            for x in range(cx0, cx1 + 1):
+                                if poly_dist((x + 0.5) * G, (y + 0.5) * G, edges) <= HW + MARGIN:
+                                    kb[l * g.plane + y * g.nx + x] = 1
+    if PACK:                                      # the In2 PACK+ corridor: no tracks
+        for z in b.Zones():
+            if z.GetIsRuleArea() and z.GetDoNotAllowTracks() and z.IsOnLayer(pcbnew.In2_Cu):
+                ol = z.Outline().Outline(0)
+                edges = [(lpos(ol.CPoint(i)), lpos(ol.CPoint((i + 1) % ol.PointCount())))
+                         for i in range(ol.PointCount())]
+                bb = z.GetBoundingBox()
+                (x0, y0), (x1, y1) = lpos(bb.GetOrigin()), lpos(bb.GetEnd())
+                cx0, cy0, cx1, cy1 = g.box(x0 - 0.5, y0 - 0.5, x1 + 0.5, y1 + 0.5)
+                for y in range(cy0, cy1 + 1):
+                    for x in range(cx0, cx1 + 1):
+                        if poly_dist((x + 0.5) * G, (y + 0.5) * G, edges) <= HW + MARGIN:
+                            g.block(1, y * g.nx + x)
+        return
     x0, y0, x1, y1 = J4_SHELL
     cx0, cy0, cx1, cy1 = g.box(x0, y0, x1, y1)
     for y in range(cy0, cy1 + 1):
@@ -274,47 +355,67 @@ class Router:
         self.cost = array("d", [1e18]) * (3 * g.plane)
         self.came = array("i", [-1]) * (3 * g.plane)
         self.touched = []
-        rho = VIA_D / 2 - HW - MARGIN + DIAG + DIAG      # cells this close to a via centre must be free
-        rc = int(math.ceil(rho / G))
-        self.via_offsets = [(dx, dy) for dy in range(-rc, rc + 1) for dx in range(-rc, rc + 1)
-                            if math.hypot(dx, dy) * G <= rho]
+        self.vpick = bytearray(3 * g.plane)      # the VIAS size of the via a search used to reach each node
+        self.via_offsets_by = []
+        for d, drill in VIAS:
+            rho = max(d / 2, drill / 2 + HOLE_CLR - CLR_T) - HW - MARGIN + DIAG + DIAG   # cells this close to a via
+            # centre must be free: its pad's clearance, or its hole's 0.25 mm to copper where that reaches further
+            rc = int(math.ceil(rho / G))
+            self.via_offsets_by.append([(dx, dy) for dy in range(-rc, rc + 1) for dx in range(-rc, rc + 1)
+                                        if math.hypot(dx, dy) * G <= rho])
+        self.via_offsets = self.via_offsets_by[0]
+        self.vias = SIGNAL_VIAS
+        self.kb = None
         self.n = None
 
-    def use(self, n):
+    def use(self, n, width=None):
         g = self.g
         self.n = n
         self.m = g.maps[0] if g.tight[n] else g.maps[1]
-        self.wide = g.netname[n] in WIDE
+        self.width = width or CLASS_W.get(g.classes.get(g.netname[n]), 0.2 if g.netname[n] in WIDE else 2 * HW)
+        self.vias = POWER_VIAS if g.classes.get(g.netname[n]) in CLASS_W else SIGNAL_VIAS
+        self.kb = g.keep.get(g.netname[n])
+        rc = int(math.ceil((self.width / 2 - HW) / G - 1e-9))   # the halos are drawn for HW: a wider track also
+        self.ring = [dy * g.nx + dx for dy in range(-rc, rc + 1) for dx in range(-rc, rc + 1)   # needs the cells
+                     if (dx or dy) and math.hypot(dx, dy) <= rc]                                # this close free
 
     def ok(self, i):
         """Cell (node index) usable by the current net's centreline."""
         m, n = self.m, self.n
         v = m[i]
-        if v != FREE and v != n:
+        if v != FREE and v != n or self.kb and self.kb[i]:
             return False
-        if self.wide:                                    # 0.2 mm track: the four neighbours too
-            nx = self.g.nx
-            for k in (i - 1, i + 1, i - nx, i + nx):
-                v = m[k]
-                if v != FREE and v != n:
-                    return False
+        for d in self.ring:                              # wider tracks (0.2 mm: the four neighbours)
+            v = m[i + d]
+            if v != FREE and v != n:
+                return False
         return True
 
     def via_ok(self, x, y):
+        return self.via_pick(x, y) >= 0
+
+    def via_pick(self, x, y):
+        """The first of the current net's via sizes (an index into VIAS) that fits at (x, y), or -1."""
         g = self.g
-        if g.noholes[y * g.nx + x]:
-            return False
         m, n = self.m, self.n
-        for dx, dy in self.via_offsets:
-            xx, yy = x + dx, y + dy
-            if not (0 <= xx < g.nx and 0 <= yy < g.ny):
-                return False
-            j = yy * g.nx + xx
-            for l in range(3):
-                v = m[l * g.plane + j]
-                if v != FREE and v != n:
-                    return False
-        return True
+        if self.kb and any(self.kb[l * g.plane + y * g.nx + x] for l in range(3)):
+            return -1
+        for i in self.vias:
+            if g.noholes[y * g.nx + x] >> i & 1:
+                continue
+            fits = True
+            for dx, dy in self.via_offsets_by[i]:
+                xx, yy = x + dx, y + dy
+                if not (0 <= xx < g.nx and 0 <= yy < g.ny):
+                    fits = False
+                    break
+                j = yy * g.nx + xx
+                if any(m[l * g.plane + j] not in (FREE, n) for l in range(3)):
+                    fits = False
+                    break
+            if fits:
+                return i
+        return -1
 
     def step_ok(self, l, x, y, dx, dy):
         """One grid move from (x, y) on layer l, without cutting a corner."""
@@ -329,7 +430,7 @@ class Router:
             return self.ok(base + y * g.nx + xx) and self.ok(base + yy * g.nx + x)
         return True
 
-    def search(self, src, dst, limit=4_000_000):
+    def search(self, src, dst, limit=1_500_000 if PACK else 4_000_000):
         g = self.g
         nx, plane = g.nx, g.plane
         cost, came, pw, soft, n = self.cost, self.came, g.in2_power, g.soft, self.n
@@ -388,7 +489,8 @@ class Router:
                     cost[k] = ng
                     came[k] = i
                     heapq.heappush(heap, (ng + h(xx, yy), ng, k))
-            if self.via_ok(x, y):
+            vi = self.via_pick(x, y)
+            if vi >= 0:
                 for l2 in range(3):
                     if l2 != l:
                         k = l2 * plane + j
@@ -398,6 +500,7 @@ class Router:
                                 touched.append(k)
                             cost[k] = ng
                             came[k] = i
+                            self.vpick[k] = vi
                             heapq.heappush(heap, (ng + h(x, y), ng, k))
         return None
 
@@ -470,6 +573,23 @@ def item_cells(g, rt, kind, it):
                         if inside((x + 0.5) * G, (y + 0.5) * G, edges) and rt.ok(i):
                             out.add(i)
         return out
+    if kind == "zone":                          # a pour's filled copper (pack: the pack-path pours)
+        for L in LAYERS:
+            if not it.IsOnLayer(L):
+                continue
+            fp = it.GetFilledPolysList(L)
+            for k in range(fp.OutlineCount()):
+                ol = fp.Outline(k)
+                poly = [lpos(ol.CPoint(i)) for i in range(ol.PointCount())]
+                xs, ys = [q[0] for q in poly], [q[1] for q in poly]
+                cx0, cy0, cx1, cy1 = g.box(min(xs), min(ys), max(xs), max(ys))
+                edges = list(zip(poly, poly[1:] + poly[:1]))
+                for y in range(cy0, cy1 + 1):
+                    for x in range(cx0, cx1 + 1):
+                        i = LAYERS.index(L) * g.plane + y * g.nx + x
+                        if inside((x + 0.5) * G, (y + 0.5) * G, edges) and rt.ok(i):
+                            out.add(i)
+        return out
     if kind == "via":
         a = c = lpos(it.GetPosition())
         r, layers = it.GetWidth(pcbnew.F_Cu) / MM / 2, [0, 1, 2]
@@ -491,7 +611,7 @@ def cluster_cells(g, rt, b, kind, it):
     """Usable cells under an item and everything already connected to it (pads, tracks, vias)."""
     out = item_cells(g, rt, kind, it)
     for c in b.GetConnectivity().GetConnectedItems(it):
-        k = {"PAD": "pad", "PCB_VIA": "via", "PCB_TRACK": "track"}.get(c.GetClass())
+        k = {"PAD": "pad", "PCB_VIA": "via", "PCB_TRACK": "track", "ZONE": "zone"}.get(c.GetClass())
         if k:
             out |= item_cells(g, rt, k, c.Cast())
     return out
@@ -499,7 +619,7 @@ def cluster_cells(g, rt, b, kind, it):
 
 def emit(b, g, rt, grp, netinfo, path):
     n = rt.n
-    w = 0.2 if rt.wide else 0.15
+    w = rt.width
     runs, cur = [], [path[0]]
     for p in path[1:]:
         if p[0] != cur[-1][0]:
@@ -524,23 +644,38 @@ def emit(b, g, rt, grp, netinfo, path):
             g.seg([l], n, ax, ay, cx, cy, w / 2)
         if k + 1 < len(runs):
             x, y = (run[-1][1] + 0.5) * G, (run[-1][2] + 0.5) * G
+            l2, x2, y2 = runs[k + 1][0]
+            vd, vdrill = VIAS[rt.vpick[l2 * g.plane + y2 * g.nx + x2]]
             v = pcbnew.PCB_VIA(b)
             v.SetPosition(bpos(x, y))
-            v.SetWidth(int(round(VIA_D * MM)))
-            v.SetDrill(int(round(VIA_DRILL * MM)))
+            v.SetWidth(int(round(vd * MM)))
+            v.SetDrill(int(round(vdrill * MM)))
             v.SetViaType(pcbnew.VIATYPE_THROUGH)
             v.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
             v.SetNet(netinfo)
             added.append(v)
-            g.seg([0, 1, 2], n, x, y, x, y, VIA_D / 2)
-            g.hole(n, x, y, VIA_DRILL)
+            g.seg([0, 1, 2], n, x, y, x, y, vd / 2)
+            g.hole(n, x, y, vdrill)
     for it in added:
         b.Add(it)
         grp.AddItem(it)
     return added
 
 
+def rip(nets):
+    b = pcbnew.LoadBoard(str(PCB))
+    doomed = [it for gr in b.Groups() if gr.GetName() == GROUP for it in gr.GetItems()
+              if nets == ["*"] or it.GetNetname() in nets]
+    for it in doomed:
+        b.Remove(it)
+    b.Save(str(PCB))
+    print("grid_router: ripped %d items on %s" % (len(doomed), ",".join(nets)))
+
+
 def main():
+    r = next((a[6:].split(",") for a in sys.argv if a.startswith("--rip=")), None)
+    if r:
+        return rip(r)
     drc = json.load(open(sys.argv[1]))
     if "--clear" in sys.argv:
         b = pcbnew.LoadBoard(str(PCB))
@@ -563,6 +698,9 @@ def main():
             items[p.m_Uuid.AsString()] = ("pad", p)
     for t in b.GetTracks():
         items[t.m_Uuid.AsString()] = ("via" if t.GetClass() == "PCB_VIA" else "track", t)
+    for z in b.Zones():
+        if not z.GetIsRuleArea():
+            items[z.m_Uuid.AsString()] = ("zone", z)
     pairs = []
     for u in drc.get("unconnected_items", []):
         its = u["items"]
@@ -586,21 +724,24 @@ def main():
     rt = Router(g)
     ok, failed = 0, []
     for d, net, ia, ib, da, db in pairs:
-        rt.use(g.nid(net))
-        src, dst = cluster_cells(g, rt, b, *ia), cluster_cells(g, rt, b, *ib)
+        path = None
+        for width in (None, NARROW):            # pack: class width, else 0.2 mm (tools/route_pack.py finish widens)
+            rt.use(g.nid(net), width)
+            src, dst = cluster_cells(g, rt, b, *ia), cluster_cells(g, rt, b, *ib)
+            if src & dst or (src and dst and (path := rt.search(src, dst))) or rt.width <= NARROW or not CLASS_W:
+                break
         if src & dst:
             continue
         if not src or not dst:
             failed.append("%s: no free cell under %s" % (net, da if not src else db))
             continue
-        path = rt.search(src, dst)
         if not path:
             failed.append("%s (%.1f mm): %s -> %s" % (net, d, da, db))
             continue
         emit(b, g, rt, grp, nets[net], path)
         ok += 1
-        print("routed %-28s %5.1f mm, %d vias" % (net, d, sum(1 for p, q in zip(path, path[1:]) if p[0] != q[0])),
-              flush=True)
+        print("routed %-28s %5.1f mm, %d vias, %.2f mm" % (net, d, sum(1 for p, q in zip(path, path[1:]) if p[0] != q[0]),
+                                                           rt.width), flush=True)
     b.Save(str(PCB))
     for f in failed:
         print("FAILED", f)

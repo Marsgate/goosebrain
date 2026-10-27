@@ -1,0 +1,18 @@
+(version 1)
+
+# JLCPCB routed-edge limit is 0.3 mm copper to board edge. The board setup value (0.5 mm) can be rewritten by tools
+# that save the board, so the JLC value lives here.
+(rule "JLC copper to edge"
+	(constraint edge_clearance (min 0.3mm)))
+
+# Power widths: tracks on these nets are 0.4 mm (the class width), down to 0.2 mm only where a stub leaves a
+# fine-pitch pin (the BQ25798's 0.2 mm pads, the BQ7791501's 0.4 mm ones). The pack path itself is pours and planes
+# (tools/route_pack.py).
+(rule "Power and charger width"
+	(condition "A.NetClass == 'Plane' || A.NetClass == 'Power' || A.NetClass == 'Charger'")
+	(constraint track_width (min 0.2mm) (opt 0.4mm)))
+
+# Ground fills reach plane pads by thermal spokes; every such pad also has its own stub and via to the plane
+# (tools/route_pack.py fanout), so one spoke is enough where a fine-pitch neighbour leaves room for only one.
+(rule "Fill spokes"
+	(constraint min_resolved_spokes 1))
