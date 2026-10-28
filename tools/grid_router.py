@@ -66,8 +66,8 @@ CORNER = 1.0                    # outline corner radius
 VIA_D, VIA_DRILL = 0.45, 0.3
 VIAS = [(VIA_D, VIA_DRILL)]     # sizes a new via can take (diameter, drill); bit i of Grid.noholes rules out size i
 SIGNAL_VIAS = POWER_VIAS = (0,)
-if PACK:                        # signals 0.45/0.25; power-class nets keep a 0.3 mm drill, 0.6 mm pad where it fits
-    VIAS = [(0.45, 0.25), (0.6, 0.3), (0.5, 0.3)]
+if PACK:                        # signals 0.45/0.3 as on the brain; power-class nets get a 0.6 mm pad where it fits
+    VIAS = [(0.45, 0.3), (0.6, 0.3), (0.5, 0.3)]
     SIGNAL_VIAS, POWER_VIAS = (0,), (1, 2)
 VIA_COST = 1.5 / G              # in cells (1.5 mm)
 IN2_POWER_COST = 1.6            # per cell on In2 over an In3 power area

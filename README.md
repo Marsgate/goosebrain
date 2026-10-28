@@ -163,6 +163,8 @@ The net classes are set in the project file, and the custom DRC rules are in `ki
 
 `tools/place_pack.py compact` rebuilds the placement (run with KiCad's Python; `--size` and `--reach` try other sizes and reach limits, `--led=stat` puts LED1 by U7 instead of the edge). Then `tools/route_pack.py setup`, `route` and `finish` rebuild the copper, and `tools/silk.py pack` places the references and the polarity labels (see each docstring). Routing takes about 10 minutes; every step takes `--pcb=FILE` to work on a copy, and `route --order=NET,...` tries another route order. Its other layouts (`vertical`, `rightangle`, `ontop`) were the earlier options for a board sized to the Ovonic pack; renders of all of them are in `renders/pack/`.
 
+The whole process, from placement to the JLC order, with what went wrong along the way, is in [docs/3s-pack-process.md](docs/3s-pack-process.md). Follow it for the 2S pack.
+
 - **Top:** power row along the bottom edge (J3 pads, F1 over R66, Q2/Q3 back to back, J2 pads), J11 and U13 above it, the charger and J1 at the east end, LED1 on the east edge above J1. J1's face sticks out about 1.4 mm past the east edge.
 - **The charger's power stage** follows TI's BQ25798 layout example (SLUSDV2C §8.4.2): U7's power pins face west into L2, the SYS caps (C32, C27–C30) sit in a row north of L2 and the PMID caps (C26, C24, C25) in a row south of it, each row on an F.Cu pour from its pin with its 100 nF cap nearest, and PGND runs out between L2's pads to five vias under L2's body. The boot caps are 0402: C18 under L2 with its SW1 pad on the SW1 pour (BTST1 about 6.4 mm, partly on B.Cu), C19 over pin 19 (BTST2 1.5 mm; SW2 back by a via and about 7 mm of 0.4 mm In2). The REGN, VBUS and BAT caps sit at their pins.
 - **Polarity:** B−/B+ by J3's pads (the cells), P−/P+ by J2's (the output; the square pads are negative), and B0–B3 under J11's pins.
@@ -177,11 +179,11 @@ Routing:
 
 - **Layers:** F.Cu carries the parts, signals and the pack-path pours (J3 → F1 → PACK+, BAT_N → R66 → Q2 → Q3 → PACK- → J2). In1 is ground, split between BAT_N (the cells' negative, under the protector) and PACK- (the charger's and the brain's ground). In2 carries PACK+ in a band from F1 to J2 and is otherwise a signal layer. B.Cu carries signals. F.Cu, In2 and B.Cu are filled with the same ground split, stitched to In1 every 2.5 mm where both fills reach.
 - **Widths:** the pack path and the charger's power stage are pours. Power and plane-net tracks are 0.4 mm. The charger's routed power nets (VBUS, PMID, SYS) are 0.3 mm, since the BQ25798's 0.2 mm pads at 0.4–0.46 mm pitch take nothing wider at 0.2 mm clearance; `finish` widens them to 0.4 mm wherever DRC still passes (VBUS and PACK+ to 0.6 or 0.5 mm on In2 first). VBUS still has about 12 mm of 0.3 mm on In2, which carries only C21's and D1's branches, not the input current. Signals are 0.15 mm.
-- **Vias:** 0.45/0.25 mm for signals, 0.5/0.3 or 0.6/0.3 mm for the power classes (the router picks by net class), none within 0.2 mm of an SMD pad. The vias under U7's body (no exposed pad) are its east-side and corner escapes: SDA, SCL, SDRV, the east ground pins; VBUS's east pins join pins 2 and 3 by an F.Cu strip under the body instead.
+- **Vias:** 0.45/0.3 mm for signals (as on the brain), 0.5/0.3 or 0.6/0.3 mm for the power classes (the router picks by net class), none within 0.2 mm of an SMD pad. The vias under U7's body (no exposed pad) are its east-side and corner escapes: SDA, SCL, SDRV, the east ground pins; VBUS's east pins join pins 2 and 3 by an F.Cu strip under the body instead.
 - **Current sense:** Kelvin lines on B.Cu from vias at the inner edges of R66's pads to R68 and R69 (the SRP/SRN filter, with C68 across U13's pins). Rule areas keep the fills off the BAT_N line and its vias, so it meets BAT_N only at R66's pad.
 - **Router:** `tools/grid_router.py --board=pack`, the brain's router. Freerouting 2.1 stalled at 25–40 unrouted connections and ignores its pass limits. `route_pack.py setup` lays the connections that no route order could fit around U7 (escape vias for its crowded corners and J1's CC2 and north VBUS pads, C18's and C19's boot loops, a stub out of C36's SDRV pad), and keeps ILIM_HIZ 1 mm off SW2's In2 run with a router-only keepout; `route` then routes STAT, CHG_SYS, BTST1 and PROG first and the rest in the router's own order. `tools/route_loop.py` wraps the router in a diagnose-and-retry loop for an LLM (or a person) to drive: each attempt routes a copy with `tools/route_llm.py` (grid_router plus a diagnosis of each failed pair; `tools/escape.py` adds pin escapes) and writes the failures, the nets in the way and a hint to a JSON report. That loop found the route orders above.
 
-Open layout items (fresh-eyes reviews on 2026-10-27 scored the board 2.4, then 3.4 and 3.5 of 5 after the charger rework; the last found no blockers). Decided the same day: D1 is an SMBJ15A (24.4 V clamp, under the BQ25798's 30 V VBUS maximum; see PARTS.md) and the finish is ENIG.
+Open layout items (fresh-eyes reviews on 2026-10-27 scored the board 2.4, then 3.4 and 3.5 of 5 after the charger rework; the last found no blockers). Decided the same day: D1 is an SMBJ15A (24.4 V clamp, under the BQ25798's 30 V VBUS maximum; see PARTS.md) and the finish is lead-free HASL (ENIG would add $16.70 for 5 boards; OSP ages before the hand-soldered parts go on).
 
 - **The boot loops** are the shortest this footprint allows with every part on top: TI's example runs SW1/SW2 through vias inside U7's pads, which single-sided assembly without via-in-pad can't do. BTST1 is about 6.4 mm with two vias, and C19's SW2 return about 7.7 mm through In2.
 - **C36** (SDRV's 1 nF) sits about 9 mm from its pin's via; nothing closer is free, and SDRV is a static charge-pump output.
@@ -309,17 +311,17 @@ J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, an
 |---|---|
 | Layers | 4 |
 | Thickness | 1.6 mm |
-| Surface finish | **ENIG** (decided 2026-10-27; the board's stackup says so too) |
+| Surface finish | **LeadFree HASL** (decided 2026-10-27, over ENIG for cost; the board's stackup says so too) |
 | Impedance control | Yes, stackup JLC04161H-7628 |
 | Via covering | Tented (no vias in pads) |
-| Min via hole | 0.25 mm (signal vias 0.45/0.25 mm; power vias 0.5/0.3 and 0.6/0.3 mm) |
+| Min via hole | **0.3 mm / 0.45 mm** (the default). A 0.25 mm drill made JLC add a 4-wire Kelvin test and TG155, about $37 more for 5 boards |
 | PCB remark | "Edge rails on the long (north/south) edges only, nothing on the east edge: the USB-C connector overhangs it by 1.4 mm." |
 
 **Assembly:**
 
 - **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips, on both sides of the brain. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
   - Brain: JLC places every SMD part, D4, U14, F2 and SW2 included (they were hand-placed until 2026-10-20). Through-hole, in the panel's JLC files (or hand-soldered): J3, J4, J5, J12, M1–M6, SW1. L1 was hand-placed until 2026-10-20; JLC places it now (the Zeng Yi HMS0530-2R2M instead of the Coilcraft XAL5030). L3 is gone: the core runs from an LDO (U12).
-  - Pack, hand-placed: L2, Q2, Q3, R66, TH1, F1. Hand-soldered: J2 and J3 (leads), J11.
+  - Pack: JLC places every SMD part, L2, Q2, Q3, R66, TH1 and F1 included (they were hand-placed until 2026-10-28). Hand-soldered: J2 and J3 (leads), J11.
   - 2S pack, hand-placed: L2, Q2, Q3, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
 - **Brain:** order Standard PCBA, both sides, and upload `build/fab-panel/jlc_bom.csv` and `jlc_cpl.csv`. Check every through-hole part in the preview too: their footprint origins are at pin 1, so the CPL gives the pad centre. In the previews on 2026-10-20, J5 needed the −90° offset, J3, J12 and M1–M6 came out turned 180° (housings inboard, pins at the edge), and SW1's lever pointed into the board; fab.py now adds these offsets by LCSC number. J4 sat right with none. **Packs:** Economic PCBA, top side only.
 - **In JLC's placement preview, before you pay:**

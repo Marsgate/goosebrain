@@ -2,7 +2,7 @@
 
 Parts for the two boards: the **brain** (`kicad/`, RP2354 + motors + USB host) and the **smart pack** (`kicad-pack/`, charger + protector on the cells). **MPN is the primary ID**, and LCSC is for JLC assembly. Stock was checked on 2026-10-15 to 2026-10-19 through JLCPCB's parts API; every part new on 2026-10-19 (the brain/pack split) was checked live that day. "DK" means Digi-Key and Mouser carry the manufacturer's line; it was not checked live unless marked ✓.
 
-**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron), on either side of the brain. **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed.
+**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron), on either side of the brain. **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed. Exception: on the 3S pack JLC places every SMD part (L2, Q2, Q3, R66, TH1 and F1 were hand-placed until 2026-10-28), since the power parts sit on pours that are hard to solder with an iron.
 
 ## The split (2026-10-19)
 
@@ -82,22 +82,22 @@ All passed; no architecture change was needed. The full numbers are on the schem
 | CC Rd (R95, R96) | 0402WGF5101TCE | UNI-ROYAL | 0402 | C25905 | basic | JLC | Plain 5 V sink |
 | VBUS TVS (D1) | SMBJ15A | hongjiacheng | SMB | C19077569 | 18,908 / pref, about $0.05 (local JLC snapshot, 2026-10-27) | JLC | The pack is the thing users plug into random chargers. 15 V standoff, 16.7–18.5 V breakdown, **24.4 V clamp at 24.6 A** (10/1000 µs, 600 W): 5.6 V under the BQ25798's 30 V VBUS absolute maximum. The SMBJ20A it replaced (2026-10-27) clamps at 32.4 V, over that maximum, and an SMBJ18A clamps at 29.2 V, too close to it. VBUS here never goes above 5 V: there's no PD sink, and the charger's power-on defaults leave HVDCP and 9/12 V requests off (check 3), so even a 9 or 12 V legacy fast charger stays under the 15 V standoff. Same SMB footprint, cathode on VBUS |
 | Charger (U7) | BQ25798RQMR | TI | VQFN-29 4x4 | C2876593 | 3,079 / ext | JLC | Standalone. Fallback BQ25792RQMR C2862876 |
-| Charger inductor (L2) | FNR4030S2R2MT | Changjiang | 4 × 4 mm | C167869 | 55,599 / ext | Hand | 2.2 µH |
+| Charger inductor (L2) | FNR4030S2R2MT | Changjiang | 4 × 4 mm | C167869 | 55,599 / ext | JLC | 2.2 µH |
 | PROG (R31, R78) | 0402WGF6801TCE | UNI-ROYAL | 0402 | C25917 | pref | JLC | 2 × 6.8 kΩ = 13.6 kΩ: 3S, 750 kHz |
 | ILIM_HIZ (R32, R33) | 0402WGF3902TCE / 0402WGF2402TCE | UNI-ROYAL | 0402 | C25783 / C25769 | pref / pref | JLC | 39 kΩ from REGN, 24 kΩ to PACK−: 1.04 A in |
-| TS divider (R34, R35) | 0402WGF5231TCE / 0402WGF3012TCE | UNI-ROYAL | 0402 | C25907 / C29402 | basic | JLC | 5.23 kΩ / 30.1 kΩ |
+| TS divider (R34, R35) | RTT025231FTH / 0402WGF3012TCE | RALEC / UNI-ROYAL | 0402 | C11631 / C29402 | ext / ext | JLC | 5.23 kΩ / 30.1 kΩ. R34 moved from UNI-ROYAL C25907 to RALEC C11631 on 2026-10-27: JLC had only 4 of C25907 |
 | TS fixed resistor (R79) | 0603WAF1002T5E | UNI-ROYAL | 0603 | C25804 | basic | JLC | 10 kΩ in place of the cell NTC TH2 (Murata NCP18XH103F03RB), removed 2026-10-26: the cells sit on the board's top side, with the parts, so no NTC can press on them. Holds TS at the 25 °C point |
 | I2C pull-ups (R97, R98) | 0402WGF1002TCE | UNI-ROYAL | 0402 | C25744 | basic | JLC | 10 kΩ SCL/SDA to REGN |
 | Charge LED (LED1, R36) | KT-0805G | Hubei KENTO | 0805 top view | C2297 | 2.6 M / basic | JLC | Green, from REGN through R36 2.2 kΩ to STAT. The housing shows it |
 | Charger caps | Samsung CL21/CL05/CL10, FH 0402/0603 | — | — | as on the brain before | basic | JLC | VBUS C20–C22, PMID C23–C26, SYS C27–C32, BAT C33/C34, REGN C35, SDRV C36; R30 100 Ω to BATP |
 | Boot caps (C18, C19) | 0402B473K160NT | FH | 0402 | C192385 | 30,760 / ext, about $0.003 (local JLC snapshot, 2026-10-27) | JLC | 47 nF 16 V X7R (BTST–SW sees under 6 V). **Extended**: no basic or preferred 47 nF comes in 0402, and the 0603 (C1622, basic) doesn't fit beside L2's SW pads, where the 2026-10-27 layout review wanted the boot loops short. One extended fee covers both |
 | Protector (U13) | BQ7791501PWR | TI | TSSOP-24 | C2876947 | 309 / ext | JLC | **Low stock: 309 packs.** Same-threshold alternative BQ7791501PWT (C3682023, small reel) |
-| Protector FETs (Q2 DSG, Q3 CHG) | IRF8736TRPBF | Infineon | SO-8 | C51630 | 33,259 / ext, $0.44 | Hand | See check 7. Replaces the 80N03F PDFN |
-| Shunt (R66) | RLP25FEER002 | TA-I Tech | 2512 | C160590 | 49,780 / ext, $0.06 | Hand | 2 mΩ 1 % 2 W ±50 ppm. One part replaces R66 ‖ R67. Check the maker's land pattern before layout |
-| Protector NTC (TH1) | NCP18XH103F03RB | Murata | 0603 | C13564 | 407,883 / ext | Hand | By the FETs |
+| Protector FETs (Q2 DSG, Q3 CHG) | IRF8736TRPBF | Infineon | SO-8 | C51630 | 33,259 / ext, $0.44 | JLC | See check 7. Replaces the 80N03F PDFN |
+| Shunt (R66) | RLP25FEER002 | TA-I Tech | 2512 | C160590 | 49,780 / ext, $0.06 | JLC | 2 mΩ 1 % 2 W ±50 ppm. One part replaces R66 ‖ R67. Check the maker's land pattern before layout |
+| Protector NTC (TH1) | NCP18XH103F03RB | Murata | 0603 | C13564 | 407,883 / ext | JLC | By the FETs |
 | Load-removal pull-down (R94) | 0402WGF1003TCE | UNI-ROYAL | 0402 | C25741 | basic | JLC | 100 kΩ PACK− to BAT_N. See check 5 |
 | Protector passives | UNI-ROYAL 0402, Samsung CL05 | — | 0402 | — | basic | JLC | Cell filters R62–R65 100 Ω / C64–C67 1 µF, R61 1k + C62, C63, R75 10k (PRES), R76 100k (ROCD), R77 10k (VTB), R74 470k (LD), R68/R69 100 Ω + C68, gate R70 4.7k / R71 1M / R72 1k / R73 1M |
-| Fuse (F1) | 0453015.MR | Littelfuse | 2410 | C178997 | 3,510 / ext | Hand | 15 A very fast-acting, CELL+ to PACK+ ahead of J2. Moved from the brain |
+| Fuse (F1) | 0453015.MR | Littelfuse | 2410 | C178997 | 3,510 / ext | JLC | 15 A very fast-acting, CELL+ to PACK+ ahead of J2. Moved from the brain |
 | Cell pigtail (J3) | XT30U-M on a 16 AWG lead | Changzhou Amass Elec | `Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm` | C99101 (plug) | 54,512 / ext | THT | The cells' own XT30U-F plugs into the pigtail's XT30U-M, so the cell leads are never cut. Pad 1 BAT_N, pad 2 CELL+. Was a vertical XT30UPB-M (C428721) until 2026-10-26 |
 | Balance connector (J11) | B4B-XH-A(LF)(SN) | JST | THT vertical | C144395 | 455,390 / ext | THT | Pin 1 cell 1−, pin 4 cell 3+ |
 | Output lead (J2) | XT30U-F on a 16 AWG lead | Changzhou Amass Elec | `Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm` | C99102 (plug) | 41,268 / ext | THT | Pad 1 PACK−, pad 2 PACK+. Mates the brain's J3. Was on `hexy:XT30_SolderPads_1x02_P5.00mm` until 2026-10-26 |

@@ -38,7 +38,7 @@ route: tools/grid_router.py --board=pack (Freerouting 2.1 stalled at 25-40 unrou
 on KiCad's unconnected pairs. It skips BAT_N and PACK- and routes the rest at each class width: signals, the Power nets
 the pours don't reach (CELL+ to R61) and PACK+ out to the charger's BAT pins and caps (charge current only). Nets go in
 ROUTE_ORDER (STAT out to the LED by J1, SYS out to its far bulk cap, BTST1 and PROG, which grid_router's own order
-leaves walled in; the rest follow in that order; --order=NET,... replaces it). The router can't rip up on its own; ROUTE_FIX (--fix=) rips some
+leaves walled in, then D- before D+ and SDA, which share J1's and U7's east exits; the rest follow in that order; --order=NET,... replaces it). The router can't rip up on its own; ROUTE_FIX (--fix=) rips some
 nets and routes them again after the first pass (it used to re-route PMID after SW2; the current order needs none).
 finish:
 - setup's vias that routing left dangling removed (the tracks that met in them now meet at their centre); the
@@ -75,7 +75,7 @@ MM = 1e6
 OX, OY = 100.0, 100.0
 W, H = 50.0, 23.0
 VIA_D, VIA_DRILL = 0.6, 0.3
-SMALL_VIA = (0.45, 0.25)        # setup vias where a 0.6 mm one doesn't fit (BTST1 beside pin 4), as the router's
+SMALL_VIA = (0.45, 0.3)         # setup vias where a 0.6 mm one doesn't fit (BTST1 beside pin 4), as the router's
                                 # signal vias
 
 PLANE = ["/PACK+", "/BAT_N", "/PACK-"]
@@ -120,7 +120,7 @@ def net_classes():
     pro = json.loads(PRO.read_text())
     ns = pro["net_settings"]
     base = next(c for c in ns["classes"] if c["name"] == "Default")
-    base.update(track_width=0.15, clearance=0.15, via_diameter=0.45, via_drill=0.25)
+    base.update(track_width=0.15, clearance=0.15, via_diameter=0.45, via_drill=0.3)
     classes = [base]
     for name, width in (("Plane", 0.4), ("Power", 0.4), ("Charger", CHARGER_W)):
         c = dict(base, name=name, track_width=width, clearance=0.2, via_diameter=VIA_D, via_drill=VIA_DRILL,
@@ -129,8 +129,8 @@ def net_classes():
     ns["classes"] = classes
     brain = json.loads((ROOT / "kicad/thegoose.kicad_pro").read_text())   # JLC limits, as on the brain
     pro.setdefault("board", {})["design_settings"] = brain["board"]["design_settings"]
-    rules = pro["board"]["design_settings"]["rules"]      # 4 layers at JLC: 0.2 mm via drills are standard; the
-    rules.update(min_through_hole_diameter=0.25, min_via_annular_width=0.1)   # pack's vias go to 0.25, with a 0.1 ring
+    rules = pro["board"]["design_settings"]["rules"]      # 0.3 mm drills keep JLC's standard via (0.25 mm costs
+    rules.update(min_through_hole_diameter=0.3, min_via_annular_width=0.075)  # about $37 more per order: TG155 + Kelvin test)
     ns["netclass_patterns"] = [{"netclass": "Plane", "pattern": n} for n in PLANE] + \
                               [{"netclass": "Power", "pattern": n} for n in POWER] + \
                               [{"netclass": "Charger", "pattern": n} for n in CHARGER]
@@ -633,7 +633,7 @@ def setup():
         print("no room to fan out:", " ".join(failed))
 
 
-ROUTE_ORDER = ["/STAT", "/CHG_SYS", "/BTST1", "/PROG"]
+ROUTE_ORDER = ["/STAT", "/CHG_SYS", "/BTST1", "/PROG", "/USB_DM", "/USB_DP", "/CHG_SDA"]
 ROUTE_ORDER = next((a[8:].split(",") for a in sys.argv if a.startswith("--order=")), ROUTE_ORDER)   # route --order=
 ROUTE_FIX = None                                  # (rip these, then route in this order); route --fix=NET,..:NET,..
 ROUTE_FIX = next(([n.split(",") for n in a[6:].split(":")] for a in sys.argv if a.startswith("--fix=")), ROUTE_FIX)
@@ -829,6 +829,8 @@ def drop_unused_vias(b):
             doomed.append(at[0])                         # a stub out to nothing
         doomed.append(via)
     for item in doomed:
+        if item.GetParentGroup():                        # leave no group pointing at a removed item
+            item.GetParentGroup().RemoveItem(item)
         b.Remove(item)
     return len(vias)
 
@@ -907,15 +909,31 @@ def drc_errors(b):
     return {i["uuid"] for v in drc["violations"] if v["severity"] == "error" for i in v["items"]}
 
 
+def restart(stage):
+    """pcbnew's lists go stale after removals (and a second LoadBoard in the same process can come back broken), so
+    each finish stage that removes items saves and runs the next one in a fresh process."""
+    os.execv(sys.executable, [sys.executable, __file__, "finish", stage] + PCB_ARG)
+
+
 def finish():
-    if "--cleared" not in sys.argv:
+    stage = next((a for a in sys.argv if a in ("--dropping", "--snapping", "--cleared")), None)
+    if stage is None:                                    # last run's fills and stitching go
         b = pcbnew.LoadBoard(str(PCB))
         grp = next((g for g in b.Groups() if g.GetName() == FINISH), None)
         for item in [z for z in b.Zones() if z.GetZoneName().startswith("fill ")] + \
                 (list(grp.GetItems()) if grp else []):
+            if item.GetParentGroup():
+                item.GetParentGroup().RemoveItem(item)
             b.Remove(item)
         b.Save(str(PCB))
-        dropped = drop_unused_vias(b)
+        restart("--dropping")
+    if stage == "--dropping":
+        b = pcbnew.LoadBoard(str(PCB))
+        print(f"finish: removed {drop_unused_vias(b)} unused setup vias", flush=True)
+        b.Save(str(PCB))
+        restart("--snapping")
+    if stage == "--snapping":
+        b = pcbnew.LoadBoard(str(PCB))
         snapped = snap_to_vias(b)
         twins = twin_vias(b)
         bad = drc_errors(b)                              # what DRC flags goes back
@@ -925,15 +943,15 @@ def finish():
         kept = 0
         for nv, st in twins:
             if {nv.m_Uuid.AsString(), st.m_Uuid.AsString()} & bad:
-                b.Remove(nv)
-                b.Remove(st)
+                for item in (nv, st):
+                    item.GetParentGroup().RemoveItem(item)
+                    b.Remove(item)
             else:
                 kept += 1
         b.Save(str(PCB))
-        print(f"finish: removed {dropped} unused setup vias, "
-              f"{sum(1 for t, _, _ in snapped if t.m_Uuid.AsString() not in bad)} track ends snapped to via "
+        print(f"finish: {sum(1 for t, _, _ in snapped if t.m_Uuid.AsString() not in bad)} track ends snapped to via "
               f"centres, {kept} of {len(twins)} second vias kept on {', '.join(TWIN)}", flush=True)
-        os.execv(sys.executable, [sys.executable, __file__, "finish", "--cleared"] + PCB_ARG)
+        restart("--cleared")
     b = pcbnew.LoadBoard(str(PCB))
     wide = widen(b)
     k = Builder(b, FINISH)

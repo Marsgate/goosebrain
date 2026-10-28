@@ -5352,7 +5352,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF5231TCE"
+		(property "MPN" "RTT025231FTH"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -5361,7 +5361,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL"
+		(property "Manufacturer" "RALEC"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -5370,7 +5370,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C25907"
+		(property "LCSC Part #" "C11631"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -6899,7 +6899,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "74282cfa-3751-454b-9fc1-f7a933fd6c7f")
 		(property "Reference" "L2"
 			(at 320.04 50.8 0)
@@ -9325,7 +9325,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "09a9db43-f730-4207-ab35-ad13f33a319d")
 		(property "Reference" "F1"
 			(at 53.34 187.96 0)
@@ -10071,7 +10071,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "45db245d-729f-4cc9-ac1c-df2158107d90")
 		(property "Reference" "TH1"
 			(at 116.84 200.66 0)
@@ -11957,7 +11957,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "3d3ce98b-092c-4034-866a-dbe71d8a290e")
 		(property "Reference" "R66"
 			(at 210.82 208.28 0)
@@ -12807,7 +12807,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "66cfd3d2-0ee0-4167-bec1-c3f363fca4e8")
 		(property "Reference" "Q2"
 			(at 274.32 218.44 0)
@@ -12936,7 +12936,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "caca9fa2-6586-4f2a-a036-de7778543acb")
 		(property "Reference" "Q3"
 			(at 304.8 218.44 0)
