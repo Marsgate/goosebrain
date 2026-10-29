@@ -333,7 +333,7 @@ J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, an
 | Impedance control | Yes, stackup JLC04161H-7628 |
 | Via covering | Tented (no vias in pads) |
 | Min via hole | **0.3 mm / 0.45 mm** (the default). A 0.25 mm drill made JLC add a 4-wire Kelvin test and TG155, about $37 more for 5 boards |
-| PCB remark | "Edge rails on the long (north/south) edges only, nothing on the east edge: the USB-C connector overhangs it by 1.4 mm." |
+| Delivery format / edge rails | **Single PCB, no edge rails, no V-cut, no PCB remark.** Economic PCBA doesn't support V-cut, so a remark asking for rails holds the order: on 2026-10-28 JLC stopped the 3S order (Y16) over "Edge rails on the long edges only" and asked whether to ignore it or reorder as Standard PCBA |
 
 **Assembly:**
 

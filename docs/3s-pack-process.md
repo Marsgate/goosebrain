@@ -147,7 +147,8 @@ The user signs in and pays. Claude never enters passwords or payment details, an
    | Surface finish | Lead-free HASL (ENIG adds about $16.70 for 5 boards) |
    | Vias | Tented, 0.3/0.45 mm |
    | Build time | 3–4 days |
-   | PCB remark | "Edge rails on the long (north/south) edges only, nothing on the east edge: the USB-C connector overhangs it by 1.4 mm." |
+   | Delivery format | Single PCB: no edge rails, no V-cut, no panel |
+   | PCB remark | None. Don't ask for edge rails: JLC does them as V-cut, which Economic PCBA doesn't support. On 2026-10-28 the remark "Edge rails on the long (north/south) edges only, nothing on the east edge" held order Y16 until we answered JLC's review email. |
 
 2. **PCBA:** Economic, top side, quantity 2. Upload `jlc_bom.csv` and `jlc_cpl.csv`, then press Process.
    - If the BOM/CPL buttons aren't file inputs, find the `type=file` inputs instead.
