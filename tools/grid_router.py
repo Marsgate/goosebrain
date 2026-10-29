@@ -2,13 +2,14 @@
 
 Run with KiCad's Python after tools/route_recipe.py and a zone fill, on KiCad's DRC report in JSON:
     kicad-cli pcb drc --format json --schematic-parity -o drc.json kicad/thegoose.kicad_pcb
-    .../python3 tools/grid_router.py drc.json [--clear] [--first=NET,NET...] [--board=pack] [--pcb=FILE]
-    .../python3 tools/grid_router.py --rip=NET,NET... [--board=pack] [--pcb=FILE]
+    .../python3 tools/grid_router.py drc.json [--clear] [--first=NET,NET...] [--board=pack|pack2s] [--pcb=FILE]
+    .../python3 tools/grid_router.py --rip=NET,NET... [--board=pack|pack2s] [--pcb=FILE]
 
 --rip removes the router's copper on those nets (the "autoroute" group; --rip=* all of it) and exits: run DRC again, then route them
 afterwards in a new order (the router has no rip-up of its own).
 
---board=pack routes the 3S pack board (kicad-pack/goosepack.kicad_pcb) instead, after tools/route_pack.py setup: its
+--board=pack routes the 3S pack board (kicad-pack/goosepack.kicad_pcb) instead (--board=pack2s the 2S pack,
+kicad-pack-2s/goosepack2s.kicad_pcb, with the same settings), after tools/route_pack.py setup: its
 ground planes (BAT_N, PACK-) are already fanned out and skipped (PACK+ is routed out to the charger), every F.Cu/In2.Cu/B.Cu zone is an obstacle, the
 In2 PACK+ corridor's rule area keeps tracks out, a rule area named "router keepout NET,NET..." (which allows everything,
 so DRC ignores it) keeps those nets' tracks and vias out on its layers, each net routes at its class width (Default 0.15 mm, Charger
@@ -47,10 +48,11 @@ import pcbnew
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+import packcfg  # noqa: E402
 import route_recipe as rr  # noqa: E402
 
-PACK = "--board=pack" in sys.argv
-PCB = ROOT / ("kicad-pack/goosepack.kicad_pcb" if PACK else "kicad/thegoose.kicad_pcb")
+PACK = any(a in ("--board=pack", "--board=pack2s") for a in sys.argv)      # --board=pack2s: the 2S pack
+PCB = packcfg.PCB if PACK else ROOT / "kicad/thegoose.kicad_pcb"
 PCB = Path(next((a[6:] for a in sys.argv if a.startswith("--pcb=")), PCB))   # --pcb=FILE: route a copy instead
 GROUP = "autoroute"
 MM = 1e6
@@ -305,9 +307,10 @@ def build(b, g):
                             for x in range(cx0, cx1 + 1):
                                 if poly_dist((x + 0.5) * G, (y + 0.5) * G, edges) <= HW + MARGIN:
                                     kb[l * g.plane + y * g.nx + x] = 1
-    if PACK:                                      # the In2 PACK+ corridor: no tracks
-        for z in b.Zones():
-            if z.GetIsRuleArea() and z.GetDoNotAllowTracks() and z.IsOnLayer(pcbnew.In2_Cu):
+    if PACK:                                      # the PACK+ corridor (In2; on the 2S pack B.Cu too): no tracks, and
+        for z in b.Zones():                       # no vias where its name says so
+            layers = [l for l, L in enumerate(LAYERS) if L != pcbnew.F_Cu and z.IsOnLayer(L)]
+            if z.GetIsRuleArea() and z.GetDoNotAllowTracks() and layers:
                 ol = z.Outline().Outline(0)
                 edges = [(lpos(ol.CPoint(i)), lpos(ol.CPoint((i + 1) % ol.PointCount())))
                          for i in range(ol.PointCount())]
@@ -316,8 +319,14 @@ def build(b, g):
                 cx0, cy0, cx1, cy1 = g.box(x0 - 0.5, y0 - 0.5, x1 + 0.5, y1 + 0.5)
                 for y in range(cy0, cy1 + 1):
                     for x in range(cx0, cx1 + 1):
-                        if poly_dist((x + 0.5) * G, (y + 0.5) * G, edges) <= HW + MARGIN:
-                            g.block(1, y * g.nx + x)
+                        d = poly_dist((x + 0.5) * G, (y + 0.5) * G, edges)
+                        if d <= HW + MARGIN:
+                            for l in layers:
+                                g.block(l, y * g.nx + x)
+                        if z.GetZoneName().endswith("no vias"):
+                            for i, (vd, _) in enumerate(VIAS):
+                                if d <= vd / 2 + CLR_W:
+                                    g.noholes[y * g.nx + x] |= 1 << i
         return
     x0, y0, x1, y1 = J4_SHELL
     cx0, cy0, cx1, cy1 = g.box(x0, y0, x1, y1)

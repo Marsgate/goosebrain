@@ -1,4 +1,6 @@
-"""Route the 3S pack board (kicad-pack/goosepack.kicad_pcb, edited in place).
+"""Route the 3S pack board (kicad-pack/goosepack.kicad_pcb, edited in place), or with --board=pack2s the 2S pack
+(kicad-pack-2s/goosepack2s.kicad_pcb: no R66, so no Kelvin lines, and the ground split, pack path and pours of
+PACK2S below).
 
 Run with KiCad's Python after tools/place_pack.py compact:
     /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 \
@@ -66,8 +68,9 @@ import pcbnew
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+import packcfg  # noqa: E402
 import place_pack as pp  # noqa: E402
-PCB = Path(next((a[6:] for a in sys.argv if a.startswith("--pcb=")), ROOT / "kicad-pack/goosepack.kicad_pcb"))
+PCB = Path(next((a[6:] for a in sys.argv if a.startswith("--pcb=")), packcfg.PCB))
 PRO = PCB.with_suffix(".kicad_pro")              # --pcb=FILE: work on a copy (with its .kicad_pro and .kicad_dru)
 PCB_ARG = [a for a in sys.argv if a.startswith("--pcb=")]
 GROUP = "route_pack"
@@ -108,7 +111,35 @@ PATH = {
     "/PACK+": [(8.0, 14.8), (12.5, 14.8), (12.5, 18.4), (8.0, 18.4)],
 }
 FUSE_VIAS = [(x, y) for x in (8.6, 9.4) for y in (15.4, 16.2, 17.0, 17.8)]   # F1's PACK+ pad down to In2
+DRAIN_VIAS = []                 # 2S: PROT_FET_D down to a B.Cu pour
+BAND_CLEAR = False              # 2S: no other net's vias in PACK_P_AREA, no tracks on B.Cu there either
 PAD_VIA = 0.2                   # a via's copper keeps this far from every SMD pad (no vias in pads)
+
+# The 2S pack (--board=pack2s): board size from its outline, then the same pack-path pours around its own placement
+# (tools/place_pack.py compact2s). The protector senses across Q2 + Q3, so there is no R66 and no Kelvin sense. Ground
+# splits at one vertical line, XB: the BAT_N parts (J3, Q2's sources, U13, C62, C64, R71) west of it, the PACK- parts
+# (Q3, J2, R73, R74, the charger) east, and R94 across it.
+if packcfg.BOARD == "pack2s":
+    _bb = pcbnew.LoadBoard(str(PCB)).GetBoardEdgesBoundingBox()
+    W, H = round(_bb.GetWidth() / MM * 2) / 2, round(_bb.GetHeight() / MM * 2) / 2
+    XB = pp.XB_2S
+    BAT_N_AREA = [(0, 0), (XB, 0), (XB, H), (0, H)]
+    PACK_N_AREA = [(XB, 0), (W, 0), (W, H), (XB, H)]
+    BOARD = [(0, 0), (W, 0), (W, H), (0, H)]
+    # The PACK+ band carries the pack current from F1 to J2 on In2 and B.Cu (no F.Cu room past R71 and R74), so on
+    # 2S it keeps every other net's tracks and vias out on both layers, and J2's P+ pad joins it solid.
+    PACK_P_AREA = [(7.3, 12.9), (23.5, 12.9), (23.5, 17.1), (7.3, 17.1)]
+    BAND_CLEAR = True
+    PATH = {
+        "/CELL+": [(0.3, 12.5), (6.85, 12.5), (6.85, 17.2), (0.3, 17.2)],
+        "/BAT_N": [(0.3, 17.5), (6.95, 17.5), (6.95, 21.3), (4.6, 21.3), (4.6, H - 0.3), (0.3, H - 0.3)],
+        "/PROT_FET_D": [(9.55, 17.5), (16.85, 17.5), (16.85, H - 0.3), (9.55, H - 0.3)],   # into Q3's body gap
+        "/PACK-": [(17.15, 18.6), (23.5, 18.6), (23.5, H - 0.3), (17.15, H - 0.3)],
+        "/PACK+": [(7.1, 13.9), (12.1, 13.9), (12.1, 17.05), (7.1, 17.05)],
+    }
+    FUSE_VIAS = [(x, y) for x in (7.6, 8.4, 9.2) for y in (14.3, 15.1, 15.9, 16.7)]
+    # the drains' heat: a B.Cu copy of the PROT_FET_D pour, stitched through vias in Q3's body gap
+    DRAIN_VIAS = [(x, y) for x in (15.2, 16.1) for y in (18.5, 19.5, 20.5, 21.5)]
 
 
 def v(x, y):
@@ -506,6 +537,12 @@ STUB = 0.4                      # Plane class width; narrower at fine-pitch pins
 INWARD = {"U7"}                 # these parts' plane pins fan out under their bodies only
 
 
+def band_ok(net, x, y):
+    """With BAND_CLEAR, only PACK+ may put a via in the PACK+ band (fanout's fallback, for a pad inside the band with no
+    other way to its plane, still may)."""
+    return not BAND_CLEAR or net == "/PACK+" or poly_dist(x, y, PACK_P_AREA) >= VIA_D / 2 + 0.2
+
+
 def fanout(b, k):
     """A short stub and a via from every SMD pad on a plane net to its plane, unless a pack-path pour takes the pad.
     Vias keep 0.2 mm from every other net's copper and 0.5 mm hole to hole; they may sit under a part's body."""
@@ -543,7 +580,8 @@ def fanout(b, k):
                     x, y = px + dx * d, py + dy * d
                     if best and d >= best[0]:
                         break
-                    if not (0.6 < x < W - 0.6 and 0.6 < y < H - 0.6) or not inside(x, y, PLANES[net]):
+                    if not (0.6 < x < W - 0.6 and 0.6 < y < H - 0.6) or not inside(x, y, PLANES[net]) or \
+                            not band_ok(net, x, y):
                         continue
                     if clr.ok(net, x, y) and clr.seg_ok(net, px, py, x, y, stub / 2, start=edge):
                         best = (d, x, y)
@@ -613,14 +651,20 @@ def setup():
     k = Builder(b)
     k.zone("In1 BAT_N", "/BAT_N", pcbnew.In1_Cu, BAT_N_AREA, 1, solid=False)
     k.zone("In1 PACK-", "/PACK-", pcbnew.In1_Cu, PACK_N_AREA, 0, solid=False)
-    k.zone("In2 PACK+", "/PACK+", pcbnew.In2_Cu, PACK_P_AREA, 5, solid=False)
-    k.keepout("In2 PACK+ corridor", pcbnew.In2_Cu, PACK_P_AREA)
+    k.zone("In2 PACK+", "/PACK+", pcbnew.In2_Cu, PACK_P_AREA, 5, solid=BAND_CLEAR)
+    k.keepout("In2 PACK+ corridor" + (" no vias" if BAND_CLEAR else ""), pcbnew.In2_Cu, PACK_P_AREA)
+    if BAND_CLEAR:                                       # tools/grid_router.py reads "no vias" off the name
+        k.keepout("B PACK+ corridor no vias", pcbnew.B_Cu, PACK_P_AREA)
+        k.zone("B PROT_FET_D", "/PROT_FET_D", pcbnew.B_Cu, PATH["/PROT_FET_D"], 10)
+    for x, y in DRAIN_VIAS:
+        k.via("/PROT_FET_D", x, y)
     for net, pts in PATH.items():
         k.zone(f"F {net[1:]} path", net, pcbnew.F_Cu, pts, 10)
     for x, y in FUSE_VIAS:
         k.via("/PACK+", x, y)
     stage = power_stage(b, k)
-    kelvin(b)
+    if packcfg.BOARD == "pack":
+        kelvin(b)
     if not sdrv_cap(b, k):
         print("no room for a stub out of C36's SDRV pad")
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())               # fanout checks against the pours' fills
@@ -646,7 +690,7 @@ def route():
         def drc():
             subprocess.run([cli, "pcb", "drc", "--format", "json", "-o", f"{d}/drc.json", str(PCB)], capture_output=True)
             return json.loads(Path(f"{d}/drc.json").read_text())
-        pack = ["--board=pack", f"--pcb={PCB}"]
+        pack = [packcfg.FLAG, f"--pcb={PCB}"]
         subprocess.run([kpy, gr, "--rip=*"] + pack, check=True)                 # then DRC lists every pair
         drc()
         subprocess.run([kpy, gr, f"{d}/drc.json", "--first=" + ",".join(ROUTE_ORDER)] + pack, check=True)
@@ -806,7 +850,7 @@ def inside(x, y, pts):
 def drop_unused_vias(b):
     """Remove setup's vias that routing left dangling (an escape the router met on its own layer, a boot cap's SW via):
     every track end inside such a via moves to its centre, so the tracks still meet, then a setup stub that nothing
-    else meets there goes too. Returns how many vias went."""
+    else meets there goes too; and the router's dangling slivers under 0.1 mm. Returns how many vias went."""
     cli = shutil.which("kicad-cli") or "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"
     with tempfile.TemporaryDirectory() as d:
         subprocess.run([cli, "pcb", "drc", "--refill-zones", "--format", "json", "-o", f"{d}/drc.json", str(PCB)],
@@ -828,6 +872,9 @@ def drop_unused_vias(b):
         if len(at) == 1 and at[0].GetParentGroup() and at[0].GetParentGroup().GetName() == GROUP:
             doomed.append(at[0])                         # a stub out to nothing
         doomed.append(via)
+    stubs = {i["uuid"] for v in drc["violations"] if v["type"] == "track_dangling" for i in v["items"]}
+    doomed += [t for t in tracks if t.m_Uuid.AsString() in stubs and t.GetLength() < 0.1 * MM and
+               t.GetParentGroup() and t.GetParentGroup().GetName() == "autoroute"]   # the router's slivers
     for item in doomed:
         if item.GetParentGroup():                        # leave no group pointing at a removed item
             item.GetParentGroup().RemoveItem(item)
@@ -915,6 +962,31 @@ def restart(stage):
     os.execv(sys.executable, [sys.executable, __file__, "finish", stage] + PCB_ARG)
 
 
+def stitch_back_pads(b, k, clr, fills):
+    """A via beside each SMD pad on a ground net that is on B.Cu only (the 2S pack's TH2, until R79 replaced it): fanout only reaches F.Cu pads,
+    and a B.Cu fill island that holds just such a pad is cut off from In1. The via sits in that fill, clear of tracks
+    and pads (under the part's own body is fine). Returns how many went in."""
+    n = 0
+    for f in b.GetFootprints():
+        for p in f.Pads():
+            net = p.GetNetname()
+            if net not in ("/BAT_N", "/PACK-") or p.GetAttribute() != pcbnew.PAD_ATTRIB_SMD or p.IsOnLayer(pcbnew.F_Cu):
+                continue
+            c = p.GetPosition()
+            px, py = c.x / MM - OX, c.y / MM - OY
+            area = BAT_N_AREA if net == "/BAT_N" else PACK_N_AREA
+            spots = [(px + r * math.cos(i * math.pi / 12), py + r * math.sin(i * math.pi / 12))
+                     for r in (0.9, 1.2, 1.5, 1.8, 2.2, 2.6) for i in range(24)]
+            for x, y in spots:
+                if 0.6 < x < W - 0.6 and 0.6 < y < H - 0.6 and inside(x, y, area) and \
+                        fills[(pcbnew.B_Cu, net)].HitTestFilledArea(pcbnew.B_Cu, v(x, y)) and \
+                        clr.ok(net, x, y, courtyards=False) and band_ok(net, x, y):
+                    clr.add_track(k.via(net, x, y))
+                    n += 1
+                    break
+    return n
+
+
 def finish():
     stage = next((a for a in sys.argv if a in ("--dropping", "--snapping", "--cleared")), None)
     if stage is None:                                    # last run's fills and stitching go
@@ -958,7 +1030,7 @@ def finish():
     for layer, side in ((pcbnew.F_Cu, "F"), (pcbnew.In2_Cu, "In2"), (pcbnew.B_Cu, "B")):
         k.zone(f"fill {side} BAT_N", "/BAT_N", layer, BAT_N_AREA, 1, solid=False)
         k.zone(f"fill {side} PACK-", "/PACK-", layer, PACK_N_AREA, 1, solid=False)
-    k.zone("fill B PACK+", "/PACK+", pcbnew.B_Cu, PACK_P_AREA, 2, solid=False)   # beside In2, where routing left room
+    k.zone("fill B PACK+", "/PACK+", pcbnew.B_Cu, PACK_P_AREA, 2, solid=BAND_CLEAR)   # beside In2, where routing left room
 
     clr = Clearance(b)
     # stitching: F, In1 and B ground tied together on a grid, where both outer fills reach
@@ -971,11 +1043,13 @@ def finish():
         while x < W - 0.8:
             net = "/BAT_N" if inside(x, y, BAT_N_AREA) else "/PACK-"
             p = v(x, y)
-            if all(fills[(L, net)].HitTestFilledArea(L, p) for L in (pcbnew.F_Cu, pcbnew.B_Cu)) and clr.ok(net, x, y):
+            if all(fills[(L, net)].HitTestFilledArea(L, p) for L in (pcbnew.F_Cu, pcbnew.B_Cu)) and clr.ok(net, x, y) \
+                    and band_ok(net, x, y):
                 clr.add_track(k.via(net, x, y))
                 stitched += 1
             x += STITCH
         y += STITCH
+    stitched += stitch_back_pads(b, k, clr, fills)
     pcbnew.ZONE_FILLER(b).Fill(b.Zones())
     b.Save(str(PCB))
     print(f"finish: {wide} tracks widened to {WIDE} mm, {stitched} stitching vias")

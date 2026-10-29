@@ -1,6 +1,6 @@
 """Route the pack board to a fixed point and say what's left: the loop an LLM (or a person) drives.
 
-    python3 tools/route_loop.py <setup.kicad_pcb> <workdir> [attempt ...]
+    python3 tools/route_loop.py <setup.kicad_pcb> <workdir> [attempt ...] [--board=pack2s]
 
 Each attempt starts from the same post-setup board (tools/route_pack.py setup) and repeats
     kicad-cli DRC with zone refill -> tools/route_llm.py on its unconnected pairs
@@ -23,7 +23,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 KPY = "/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3"
 CLI = "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli"
-PCB = ROOT / "kicad-pack/goosepack.kicad_pcb"
+sys.path.insert(0, str(ROOT / "tools"))
+import packcfg  # noqa: E402
+
+PCB = packcfg.PCB                                   # --board=pack2s: the 2S pack
 COPPER = {"clearance", "shorting_items", "hole_clearance", "holes_co_located", "hole_to_hole", "tracks_crossing",
           "copper_edge_clearance", "track_width", "solder_mask_bridge"}
 SKIP = {"/BAT_N", "/PACK-"}                 # planes route_pack.py fans out; match grid_router.SKIP
@@ -52,7 +55,7 @@ def attempt(setup, work, k, opts):
         args = [a for a in opts.split() if a != "--keep"] + (["--clear"] if p == 0 and not keep else [])
         if p > 0:
             args = [a for a in args if not a.startswith("--escape=")]     # stubs are laid once
-        r = subprocess.run([KPY, "-u", ROOT / "tools/route_llm.py", work / f"a{k}_drc{p}.json", rep, "--board=pack",
+        r = subprocess.run([KPY, "-u", ROOT / "tools/route_llm.py", work / f"a{k}_drc{p}.json", rep, packcfg.FLAG,
                             *args], capture_output=True, text=True, cwd=ROOT)
         if r.returncode:
             raise SystemExit(r.stderr[-2000:])
@@ -77,8 +80,9 @@ def attempt(setup, work, k, opts):
 
 
 def main():
-    setup, work = Path(sys.argv[1]), Path(sys.argv[2])
-    plans = sys.argv[3:] or ["", "--escape=U7", "auto"]
+    args = [a for a in sys.argv[1:] if not a.startswith("--board")]    # --board=pack2s is packcfg's
+    setup, work = Path(args[0]), Path(args[1])
+    plans = args[2:] or ["", "--escape=U7", "auto"]
     work.mkdir(parents=True, exist_ok=True)
     results = []
     for k, opts in enumerate(plans):

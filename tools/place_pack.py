@@ -1,4 +1,5 @@
-"""Place the 3S pack board (kicad-pack/goosepack.kicad_pcb) in one of three layouts.
+"""Place the 3S pack board (kicad-pack/goosepack.kicad_pcb) in one of three layouts, or with --board=pack2s the 2S
+pack (kicad-pack-2s/goosepack2s.kicad_pcb) in its own compact layout (see compact2s).
 
 Run with KiCad's Python:
     /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 \
@@ -35,7 +36,11 @@ from pathlib import Path
 import pcbnew
 
 ROOT = Path(__file__).resolve().parent.parent
-PCB = ROOT / "kicad-pack/goosepack.kicad_pcb"
+sys.path.insert(0, str(ROOT / "tools"))
+import packcfg  # noqa: E402
+
+BOARD = packcfg.BOARD           # "pack" (3S, the default) or "pack2s" (--board=pack2s)
+PCB = packcfg.PCB
 SOURCE = PCB                    # the board read (its parts, nets and fields); --in FILE reads another copy
 LIB = "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints/"
 MODELS = ROOT / "kicad/3dmodels"
@@ -72,16 +77,19 @@ ANCHORS = ("U7", "U13", "J1", "Q2", "Q3", "L2")   # a passive on one of their ne
 PROTECTOR = ["R61", "C62", "C63", "C66", "C65", "C64", "C67", "R65", "R64", "R63", "R62", "R68", "R69", "C68", "R70",
              "R71", "R72", "R73", "R74", "R75", "R76", "R77", "R94", "TH1"]
 GROUNDS = {"/PACK-", "/BAT_N"}  # every passive touches one of these; they don't say where it belongs
+CHARGER_DX = 0.0                # compact: how far the charger corner (U7_AT, PACK_ZONE) sits west of the 3S pack's
 
 
 def load_fp(lib, name):
     return pcbnew.FootprintLoad(LIB + lib + ".pretty", name)
 
 
-def swap(b, ref, lib, name, value, mpn, model=None, lcsc=None):
+def swap(b, ref, lib, name, value, mpn, model=None, lcsc=None, attrs=None):
     """Replace a footprint, keeping its schematic link, fields and pad nets."""
     old = next(f for f in b.GetFootprints() if f.GetReference() == ref)
     if name in old.GetFPIDAsString():
+        if attrs is not None:                   # swapped on an earlier run: the flags still apply
+            old.SetAttributes(attrs)
         return
     new = load_fp(lib, name)
     new.SetFPID(pcbnew.LIB_ID(lib, name))
@@ -104,7 +112,8 @@ def swap(b, ref, lib, name, value, mpn, model=None, lcsc=None):
         m.m_Offset = pcbnew.VECTOR3D(ox, oy, oz)
         m.m_Rotation = pcbnew.VECTOR3D(0, 0, rz)
         new.Models().push_back(m)
-    new.SetAttributes(old.GetAttributes())     # library flags like "exclude from BOM" would break parity
+    # library flags like "exclude from BOM" would break parity, so keep the old part's (or the ones given)
+    new.SetAttributes(old.GetAttributes() if attrs is None else attrs)
     nets = {p.GetNumber(): p.GetNet() for p in old.Pads()}
     b.Remove(old)
     b.Add(new)
@@ -362,6 +371,59 @@ def compact(p):
         SENSE + POWER_STAGE, (0, 0, w, H), (0, 0, 32.4, H)
 
 
+# The 2S pack (--board=pack2s). Its protector is an HY2120-LB (SOT-23-6) that senses current across Q2 + Q3: no R66, no
+# Kelvin lines, no TH1. Two HY2213 balancers (U21/U22, with Q4/Q5 and their 1 W bleed resistors R112/R113) sit by J11.
+# The charger corner is the 3S pack's, moved west by CHARGER_DX so it still ends at the east edge.
+COMPACT_2S = (45.0, 23.0)       # --size overrides
+XB_2S = 14.6                    # the ground split's target: BAT_N parts west of it, PACK- parts east (tools/route_pack.py
+                                # puts the line between them)
+# parts packed in a zone of their own: the protector's BAT_N side by U13, then the east block (PACK- parts, balancers)
+WEST_2S = ("R71", "R70", "C62", "C64", "R61", "R63")
+EAST_2S = ("U21", "Q4", "U22", "Q5", "C83", "R110", "C84", "R111", "R72", "R73", "R74")
+NEAR_2S = {"C83": "U21", "R110": "U21", "C84": "U22", "R111": "U22"}   # packed within NEAR_REACH_2S of their balancer
+NEAR_REACH_2S = 3.0
+U13_AT_2S = (8.3, 7.0)
+R94_AT_2S = (XB_2S, 9.0)        # R94 (BAT_N to PACK-) across the line, BAT_N pad west
+R113_AT_2S = (EDGE, 8.2)        # R113's courtyard top-left: under J11 (room for its B0-B2 labels), R112 along the top
+                                # edge east of it
+R112_AT_2S = (11.2, EDGE)
+PROTECTOR_2S = list(WEST_2S + EAST_2S)
+FID1_AT_2S = (24.8, 12.0)       # 2S: FID1 and FID2 sit in free spots, not the 3S pack's
+FID2_AT_2S = (20.0, 3.0)        # 2S: FID2's target (3S: the board centre, which here is the charger's pocket)
+
+
+def compact2s(p):
+    """W x H, all parts on the front: power row along the bottom edge (J3, Q2, Q3, J2), F1 over it, J11 and the
+    balancers' bleed resistors along the top, the protector and the balancers between, the 3S charger corner east."""
+    global CHARGER_DX
+    w = p.rects[0][2]
+    CHARGER_DX = w - 50.0
+    p.put("J11", "F", 0, left=0, top=0)                      # plug from above
+    p.put("J3", "F", 90, left=EDGE, bottom=H - EDGE)          # cell pigtail
+    p.put("Q2", "F", p.face("Q2", "F", "/PROT_FET_D", "+x"), left=p.crt(p.fp("J3"))[2], bottom=H - EDGE)
+    p.put("Q3", "F", p.face("Q3", "F", "/PROT_FET_D", "-x"), left=p.crt(p.fp("Q2"))[2], bottom=H - EDGE)
+    p.put("J2", "F", 90, left=p.crt(p.fp("Q3"))[2], bottom=H - EDGE)    # output pigtail, PACK- beside Q3's sources
+    p.put("F1", "F", 0, left=p.crt(p.fp("J3"))[2], bottom=p.crt(p.fp("Q2"))[1])
+    p.put("J1", "F", p.mouth_rot("J1", "F", "+x"), right=w + 1.9, cy=H / 2)
+    power_stage(p, w)
+    p.put("D1", "F", p.face("D1", "F", "/VBUS", "-x"), right=w - EDGE, bottom=H - EDGE)   # VBUS TVS under J1
+    p.put("LED1", "F", 0, right=w - EDGE, bottom=p.crt(p.fp("J1"))[1])
+    p.put("R113", "F", 0, left=R113_AT_2S[0], top=R113_AT_2S[1])
+    p.put("R112", "F", 0, left=R112_AT_2S[0], top=R112_AT_2S[1])
+    p.put("U13", "F", 0, left=U13_AT_2S[0], top=U13_AT_2S[1])
+    p.put("R94", "F", p.face("R94", "F", "/PACK-", "+x"), cx=R94_AT_2S[0], cy=R94_AT_2S[1])
+    fixed = ("J11", "J3", "Q2", "Q3", "J2", "F1", "J1", "D1", "LED1", "R113", "R112", "U13", "R94")
+    return fixed + POWER_STAGE, (0, 0, w, H), (0, 0, 28.3 + CHARGER_DX - 0.25, H)
+
+
+def zones_2s(w):
+    """The 2S protector parts' zones (x0, y0, x1, y1): the BAT_N side west of the split, the rest east of it."""
+    pz = 28.3 + (w - 50.0) - 0.25                       # R71's zone: within 9 mm of Q2's gate pad
+    return {r: (EDGE, 10.5, XB_2S - 0.15, 13.4) for r in WEST_2S} | \
+           {"R71": (12.05, 14.9, XB_2S - 0.15, 17.3)} | \
+           {r: (XB_2S + 0.15, 4.4, pz, 17.4) for r in EAST_2S}
+
+
 # Charger parts packed somewhere other than near their pins, free of MAX_REACH: the TS, ILIM_HIZ and PROG dividers set
 # DC levels, and the corner of U7 by J1 (where their pins are) has no room left. TS goes in the strip above the SYS
 # row, with C36 (SDRV, reached by a via under U7); ILIM_HIZ and PROG in the pocket west of L2, between the SYS and PMID
@@ -389,7 +451,7 @@ L2_GAP = 2.2                    # mm from U7's power pin ends to L2's pads: the 
 
 
 def power_stage(p, w):
-    ux, uy = U7_AT
+    ux, uy = U7_AT[0] + CHARGER_DX, U7_AT[1]
     p.put("U7", "F", p.face("U7", "F", "/SW1", "-x"), cx=ux, cy=uy)
     ux0, uy0, ux1, uy1 = p.crt(p.fp("U7"))
     xo = p.pad_box("U7", "25")[0]                    # the power pins' outer ends
@@ -454,7 +516,7 @@ LAYOUTS = {
                     (0, HEAD[1])]),
     "ontop": (58.0, H_ONTOP, "B", ontop, [(0, 0, 58.0, H_ONTOP)],
               [(0, 0), (58.0, 0), (58.0, H_ONTOP), (0, H_ONTOP)]),
-    "compact": (None, None, "F", compact, None, None),
+    "compact": (None, None, "F", compact2s if BOARD == "pack2s" else compact, None, None),
 }
 
 
@@ -463,7 +525,7 @@ def build(name, out, size=None, grid=None):
     global H, GRID
     w, H, smd, layout, rects, poly = LAYOUTS[name]
     if name == "compact":
-        w, H = size or COMPACT
+        w, H = size or (COMPACT_2S if BOARD == "pack2s" else COMPACT)
         rects, poly = [(0, 0, w, H)], [(0, 0), (w, 0), (w, H), (0, H)]
     GRID = grid or GRID
     b = pcbnew.LoadBoard(str(SOURCE))
@@ -481,20 +543,31 @@ def build(name, out, size=None, grid=None):
     if name == "compact":
         for ref in ("C18", "C19"):                      # boot caps: 0402 so C18 fits under L2 (schematic too)
             swap(b, ref, "Capacitor_SMD", "C_0402_1005Metric", "47nF", "0402B473K160NT", lcsc="C192385")
-        swap(b, "J3", *WIRE16, "Cell pigtail", "XT30U-M", lcsc="C99101")
-        swap(b, "J2", *WIRE16, "Pack lead", "XT30U-F")
+        # no attribute flags, as the 3S pack's old pads had (the 2S board's old J3 is through-hole: DRC compares them)
+        swap(b, "J3", *WIRE16, "Cell pigtail", "XT30U-M", lcsc="C99101", attrs=0)
+        swap(b, "J2", *WIRE16, "Pack lead", "XT30U-F", attrs=0)
     p = Placer(b, rects)
     fixed, charger, protector = layout(p)
     p.fixed(fixed)
     fids = ((w - 1.6, 1.6), (w - 1.6, H - 1.6), (1.6, H / 2))
     try:
         if name == "compact":                     # no free corner is left once the passives are in: go first
-            for fid, (x, y) in zip(("FID1", "FID2", "FID3"), ((1.8, 8.3), (w / 2, H / 2), (w - 8.0, H - 1.6))):
+            at = (FID1_AT_2S, FID2_AT_2S) if BOARD == "pack2s" else ((1.8, 8.3), (w / 2, H / 2))
+            for fid, (x, y) in zip(("FID1", "FID2", "FID3"), at + ((w - 8.0, H - 1.6),)):
                 p.pack([fid], smd, (0, 0, w, H), target=(x, y))
             fids = ()
-        p.pack([r for r in PROTECTOR if r not in fixed], smd, protector)
+        zones = zones_2s(w) if BOARD == "pack2s" else {}
+        for r in (PROTECTOR_2S if BOARD == "pack2s" else PROTECTOR):
+            if r not in fixed:
+                z = zones.get(r, protector)
+                if r in NEAR_2S and BOARD == "pack2s":      # beside the balancer, wherever it landed
+                    x0, y0, x1, y1 = p.crt(p.fp(NEAR_2S[r]))
+                    z = (max(EDGE, x0 - NEAR_REACH_2S), max(EDGE, y0 - NEAR_REACH_2S),
+                         min(z[2], x1 + NEAR_REACH_2S), min(H - EDGE, y1 + NEAR_REACH_2S))
+                p.pack([r], smd, z)
         for r in (["L2"] if "L2" not in fixed else []) + [r for r in CHARGER if r not in fixed and p.fp(r)]:
-            p.pack([r], smd, PACK_ZONE.get(r, charger))
+            z = PACK_ZONE.get(r)
+            p.pack([r], smd, (z[0] + CHARGER_DX, z[1], z[2] + CHARGER_DX, z[3]) if z else charger)
         if p.fp("TH2"):                         # the cell NTC, on the cells; R79 replaced it on 2026-10-26
             p.pack(["TH2"], "B" if smd == "F" else "F", (0, 0, w, H), target=(w / 2, H / 2))
         for fid, (x, y) in zip(("FID1", "FID2", "FID3"), fids):
@@ -509,6 +582,7 @@ def build(name, out, size=None, grid=None):
 
 
 def main():
+    global U13_AT_2S
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("layout", choices=LAYOUTS)
     ap.add_argument("--size", help="compact only: board size WxH in mm")
@@ -516,9 +590,13 @@ def main():
     ap.add_argument("--reach", type=float, help="max mm from a passive's pad to its anchor pin (fail otherwise)")
     ap.add_argument("--out", help="write here instead of editing the board in place")
     ap.add_argument("--in", dest="src", help="read this board instead of the pack board")
+    ap.add_argument("--board", choices=list(packcfg.BOARDS), default="pack", help="the 3S pack (default) or the 2S pack")
+    ap.add_argument("--u13", help="2S: U13's courtyard top-left corner X,Y (default %s,%s)" % U13_AT_2S)
     ap.add_argument("--led", choices=("edge", "stat"), default="edge", help="compact: LED1 on the right edge, or by STAT")
     a = ap.parse_args()
     global MAX_REACH
+    if a.u13:
+        U13_AT_2S = tuple(float(v) for v in a.u13.split(","))
     MAX_REACH = a.reach if a.reach is not None else COMPACT_REACH if a.layout == "compact" else None
     global SOURCE
     SOURCE = Path(a.src) if a.src else PCB

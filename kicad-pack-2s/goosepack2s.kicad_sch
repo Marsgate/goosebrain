@@ -2634,279 +2634,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:Thermistor_NTC"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "TH"
-				(at -4.445 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Thermistor_NTC"
-				(at 3.175 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 1.27 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 1.27 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Temperature dependent resistor, negative temperature coefficient"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "thermistor NTC resistor sensor RTD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_* RV_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "Thermistor_NTC_0_1"
-				(arc
-					(start -3.175 2.413)
-					(mid -3.0506 2.3165)
-					(end -3.048 2.159)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -3.048 2.794)
-					(mid -2.9736 2.9736)
-					(end -2.794 3.048)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -2.794 3.048)
-					(mid -2.6144 2.9736)
-					(end -2.54 2.794)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -2.794 2.54)
-					(mid -2.9736 2.6144)
-					(end -3.048 2.794)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -2.794 1.905)
-					(mid -2.9736 1.9794)
-					(end -3.048 2.159)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -2.54 2.159)
-					(mid -2.6144 1.9794)
-					(end -2.794 1.905)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -2.159 2.794)
-					(mid -2.434 2.5608)
-					(end -2.794 2.54)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 2.159) (xy -2.54 2.794)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 -3.683) (xy -2.54 -1.397) (xy -2.794 -2.159) (xy -2.286 -2.159) (xy -2.54 -1.397) (xy -2.54 -1.651)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.778 2.54) (xy -1.778 1.524) (xy 1.778 -1.524) (xy 1.778 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.778 -1.397) (xy -1.778 -3.683) (xy -2.032 -2.921) (xy -1.524 -2.921) (xy -1.778 -3.683)
-						(xy -1.778 -3.429)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -1.016 2.54)
-					(end 1.016 -2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Thermistor_NTC_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:LED"
 			(pin_numbers
 				(hide yes)
@@ -5313,7 +5040,7 @@
 				)
 			)
 		)
-		(property "Value" "SMBJ20A"
+		(property "Value" "SMBJ15A"
 			(at 116.84 50.8 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5356,7 +5083,7 @@
 				)
 			)
 		)
-		(property "MPN" "SMBJ20A"
+		(property "MPN" "SMBJ15A"
 			(at 114.3 50.8 0)
 			(effects
 				(font
@@ -5374,7 +5101,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C19077575"
+		(property "LCSC Part #" "C19077569"
 			(at 114.3 50.8 0)
 			(effects
 				(font
@@ -6185,7 +5912,7 @@
 				)
 			)
 		)
-		(property "MPN" "0402WGF5231TCE"
+		(property "MPN" "RTT025231FTH"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -6194,7 +5921,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL"
+		(property "Manufacturer" "RALEC"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -6203,7 +5930,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C25907"
+		(property "LCSC Part #" "C11631"
 			(at 104.14 132.08 0)
 			(effects
 				(font
@@ -6334,7 +6061,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Thermistor_NTC")
+		(lib_id "Device:R")
 		(at 116.84 144.78 0)
 		(unit 1)
 		(body_style 1)
@@ -6342,9 +6069,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "73658d65-1026-4936-b10a-7f772d054f3d")
-		(property "Reference" "TH2"
+		(property "Reference" "R79"
 			(at 114.3 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6354,7 +6081,7 @@
 				)
 			)
 		)
-		(property "Value" "10k B3434"
+		(property "Value" "10k"
 			(at 119.38 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6386,7 +6113,7 @@
 				)
 			)
 		)
-		(property "Description" "Temperature dependent resistor, negative temperature coefficient"
+		(property "Description" "Resistor"
 			(at 116.84 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -6397,7 +6124,7 @@
 				)
 			)
 		)
-		(property "MPN" "NCP18XH103F03RB"
+		(property "MPN" "0603WAF1002T5E"
 			(at 116.84 144.78 0)
 			(effects
 				(font
@@ -6406,7 +6133,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Murata"
+		(property "Manufacturer" "UNI-ROYAL"
 			(at 116.84 144.78 0)
 			(effects
 				(font
@@ -6415,7 +6142,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C13564"
+		(property "LCSC Part #" "C25804"
 			(at 116.84 144.78 0)
 			(effects
 				(font
@@ -6433,7 +6160,7 @@
 		(instances
 			(project "goosepack2s"
 				(path "/b039c4cd-30f0-48b1-bce5-22fee9821a58"
-					(reference "TH2")
+					(reference "R79")
 					(unit 1)
 				)
 			)
@@ -7540,7 +7267,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 298.145 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -7573,7 +7300,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603B473K500NT"
+		(property "MPN" "0402B473K160NT"
 			(at 297.18 50.8 0)
 			(effects
 				(font
@@ -7591,7 +7318,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C1622"
+		(property "LCSC Part #" "C192385"
 			(at 297.18 50.8 0)
 			(effects
 				(font
@@ -7648,7 +7375,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 310.845 46.99 0)
 			(hide yes)
 			(show_name no)
@@ -7681,7 +7408,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603B473K500NT"
+		(property "MPN" "0402B473K160NT"
 			(at 309.88 50.8 0)
 			(effects
 				(font
@@ -7699,7 +7426,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C1622"
+		(property "LCSC Part #" "C192385"
 			(at 309.88 50.8 0)
 			(effects
 				(font
@@ -7732,7 +7459,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "74282cfa-3751-454b-9fc1-f7a933fd6c7f")
 		(property "Reference" "L2"
 			(at 320.04 50.8 0)
@@ -9846,7 +9573,7 @@
 				)
 			)
 		)
-		(property "Value" "XT30UPB-M"
+		(property "Value" "Cell pigtail"
 			(at 33.02 190.5 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9856,7 +9583,7 @@
 				)
 			)
 		)
-		(property "Footprint" "hexy:AMASS_XT30UPB-M_1x02_P5.0mm_Vertical_EasyEDA3D"
+		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm"
 			(at 30.48 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -9889,7 +9616,7 @@
 				)
 			)
 		)
-		(property "MPN" "XT30UPB-M"
+		(property "MPN" "XT30U-M"
 			(at 30.48 190.5 0)
 			(effects
 				(font
@@ -9907,7 +9634,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C428721"
+		(property "LCSC Part #" "C99101"
 			(at 30.48 190.5 0)
 			(effects
 				(font
@@ -9962,7 +9689,7 @@
 				)
 			)
 		)
-		(property "Footprint" "hexy:XT30_SolderPads_1x02_P5.00mm"
+		(property "Footprint" "Connector_Wire:SolderWire-1.5sqmm_1x02_P6mm_D1.7mm_OD3mm"
 			(at 30.48 208.28 0)
 			(hide yes)
 			(show_name no)
@@ -10155,7 +9882,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "09a9db43-f730-4207-ab35-ad13f33a319d")
 		(property "Reference" "F1"
 			(at 53.34 187.96 0)
@@ -11735,7 +11462,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "66cfd3d2-0ee0-4167-bec1-c3f363fca4e8")
 		(property "Reference" "Q2"
 			(at 274.32 218.44 0)
@@ -11864,7 +11591,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "caca9fa2-6586-4f2a-a036-de7778543acb")
 		(property "Reference" "Q3"
 			(at 304.8 218.44 0)
@@ -12772,7 +12499,7 @@
 		)
 		(uuid "5cd1866c-cfb6-4604-90cd-c054b9ad3410")
 	)
-	(text "CHARGE SAFETY WITHOUT FIRMWARE (BQ25798 SLUSDV2C, checked 2026-10-19)\nPROG: R31 8.2k + R78 0 = 8.2k selects 2S (8.4 V) at 750 kHz (Table 7-1). /CE to PACK-: always charging.\nPower-on defaults: ICHG 1 A, VSYSMIN 7 V, precharge 120 mA, termination 200 mA, 12 h safety timer, JEITA, ADC off.\nILIM_HIZ: V = 1 V + 0.8 Ohm x ILIM. R32 39k / R33 18k from REGN (4.8 V typ) = 1.52 V -> ILIM 0.65 A.\nCharge at 90 % efficiency: about 0.42 A at 3.5 V/cell (about 1C for 450 mAh). Re-pick R33 for other cells.\nICHG stays at its 1 A default with no host, so this divider is the only rate limit.\nTS: R34 5.23k / R35 30.1k with TH2 (10k NTC, B25/85 3434): cutoffs 0 C and 60 C within 1 C. TH2 against the cells.\nI2C unused: SCL/SDA pulled to REGN by R97/R98 10k (datasheet: 10k to the logic rail). /INT and /QON open.\nSTAT drives LED1 (0805 top view, lit while charging; blinks on a fault).\nCharger BAT sits on PACK+ after F1; SYS only has its caps."
+	(text "CHARGE SAFETY WITHOUT FIRMWARE (BQ25798 SLUSDV2C, checked 2026-10-19)\nPROG: R31 8.2k + R78 0 = 8.2k selects 2S (8.4 V) at 750 kHz (Table 7-1). /CE to PACK-: always charging.\nPower-on defaults: ICHG 1 A, VSYSMIN 7 V, precharge 120 mA, termination 200 mA, 12 h safety timer, JEITA, ADC off.\nILIM_HIZ: V = 1 V + 0.8 Ohm x ILIM. R32 39k / R33 18k from REGN (4.8 V typ) = 1.52 V -> ILIM 0.65 A.\nCharge at 90 % efficiency: about 0.42 A at 3.5 V/cell (about 1C for 450 mAh). Re-pick R33 for other cells.\nICHG stays at its 1 A default with no host, so this divider is the only rate limit.\nTS: R34 5.23k / R35 30.1k with R79 10k (no NTC): 58.9 % of REGN, inside the 10-45 C band (68.4 / 44.8 %), so\nthe charger always sees 25 C and charges at the full rate. No temperature sensing: the HY2120 has no NTC input.\nI2C unused: SCL/SDA pulled to REGN by R97/R98 10k (datasheet: 10k to the logic rail). /INT and /QON open.\nSTAT drives LED1 (0805 top view, lit while charging; blinks on a fault).\nCharger BAT sits on PACK+ after F1; SYS only has its caps."
 		(exclude_from_sim no)
 		(at 243.84 147.32 0)
 		(effects
@@ -12783,7 +12510,7 @@
 		)
 		(uuid "9d02e1dd-0804-4f2a-9c8e-9be16f0cfd6e")
 	)
-	(text "HY2120-LB (HYCON DS-HY2120-V15): OV 4.25 V (release 4.05 V), UV 2.80 V (release 3.00 V) per cell; power-down on.\nCurrent is sensed as the drop across Q2 + Q3 on CS (no shunt): discharge OC 200 mV (10 ms), short 1.0 V (250 us), charge OC -210 mV.\nWith Q2 + Q3 at about 10 mOhm that is about 18-20 A, lower when the FETs are hot. F1 15 A: CELL+ -> PACK+ (J2 pin 2).\nFilters per datasheet: R61/C62 470 + 100n on VDD (from CELL+), R63/C64 470 + 100n on VC (from the mid tap), R74 2k on CS.\nPath: cell - (BAT_N, J3 pin 1) -> Q2 (OD, discharge) -> Q3 (OC, charge) -> PACK- (J2 pin 1). No temperature input: TH2 covers charging only.\nOver-current clears when CS falls back under 200 mV with the load gone. R94 4.7k PACK- to BAT_N holds CS at about 80 mV\nwith the charger's 17 uA standby draw, so a trip clears when the pack is unplugged or the brain's switch goes off.\nBalancing: U21 (cell 1) and U22 (cell 2) HY2213-BB3A turn Q4/Q5 on above 4.200 V; R112/R113 47R bleed about 89 mA.\nBalance lead J11 (B3B-XH-A): pin 1 cell 1-, pin 2 mid, pin 3 cell 2+."
+	(text "HY2120-LB (HYCON DS-HY2120-V15): OV 4.25 V (release 4.05 V), UV 2.80 V (release 3.00 V) per cell; power-down on.\nCurrent is sensed as the drop across Q2 + Q3 on CS (no shunt): discharge OC 200 mV (10 ms), short 1.0 V (250 us), charge OC -210 mV.\nWith Q2 + Q3 at about 10 mOhm that is about 18-20 A, lower when the FETs are hot. F1 15 A: CELL+ -> PACK+ (J2 pin 2).\nFilters per datasheet: R61/C62 470 + 100n on VDD (from CELL+), R63/C64 470 + 100n on VC (from the mid tap), R74 2k on CS.\nPath: cell - (BAT_N, J3 pin 1) -> Q2 (OD, discharge) -> Q3 (OC, charge) -> PACK- (J2 pin 1). No temperature input, and no NTC on the charger either (R79).\nOver-current clears when CS falls back under 200 mV with the load gone. R94 4.7k PACK- to BAT_N holds CS at about 80 mV\nwith the charger's 17 uA standby draw, so a trip clears when the pack is unplugged or the brain's switch goes off.\nBalancing: U21 (cell 1) and U22 (cell 2) HY2213-BB3A turn Q4/Q5 on above 4.200 V; R112/R113 47R bleed about 89 mA.\nBalance lead J11 (B3B-XH-A): pin 1 cell 1-, pin 2 mid, pin 3 cell 2+."
 		(exclude_from_sim no)
 		(at 22.86 284.48 0)
 		(effects
@@ -12794,7 +12521,7 @@
 		)
 		(uuid "e68af004-02e8-4cdf-ba6c-bdc151a6a9e6")
 	)
-	(text "J3 XT30UPB-M: the cells' own XT30U-F plugs in (cell leads stay uncut).\nJ2: pads for a 16 AWG lead with an XT30U-F that mates the brain's J3.\nHand-placed (DNP for PCBA): L2, Q2, Q3, TH2, F1; hand-soldered: J2, J3, J11."
+	(text "J3 XT30UPB-M: the cells' own XT30U-F plugs in (cell leads stay uncut).\nJ2: pads for a 16 AWG lead with an XT30U-F that mates the brain's J3.\nJLC places every SMD part; hand-soldered: J2, J3, J11."
 		(exclude_from_sim no)
 		(at 22.86 264.16 0)
 		(effects

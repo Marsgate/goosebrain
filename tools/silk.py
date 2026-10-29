@@ -1,8 +1,9 @@
 """Place every reference designator on the brain board (kicad/thegoose.kicad_pcb, edited in place), or with `pack`
-on the 3S pack board (kicad-pack/goosepack.kicad_pcb, which has no logo).
+on the 3S pack board (kicad-pack/goosepack.kicad_pcb, which has no logo), or with `pack2s` on the 2S pack board
+(kicad-pack-2s/goosepack2s.kicad_pcb; J11 has three pins, so its labels are B0-B2).
 
 Run with KiCad's Python after routing:
-    /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 tools/silk.py [pack]
+    /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 tools/silk.py [pack|pack2s]
 
 Each reference goes on its part's side (F.Silkscreen or B.Silkscreen), 0.8 mm tall with a 0.15 mm stroke (the
 project's minimum), at the first spot around the part's courtyard where it clears every pad and through-hole pad on
@@ -23,9 +24,12 @@ from pathlib import Path
 
 import pcbnew
 
-PACK = "pack" in sys.argv[1:]
-PCB = Path(__file__).resolve().parent.parent / ("kicad-pack/goosepack.kicad_pcb" if PACK else
-                                                "kicad/thegoose.kicad_pcb")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import packcfg  # noqa: E402
+
+PACK = any(a in ("pack", "pack2s") for a in sys.argv[1:])                   # `pack2s`: the 2S pack
+PCB = packcfg.BOARDS["pack2s" if "pack2s" in sys.argv[1:] else "pack"] if PACK else \
+    Path(__file__).resolve().parent.parent / "kicad/thegoose.kicad_pcb"
 MM = 1e6
 H, T = 0.8, 0.15                # text height and stroke
 GAP = 0.1                       # to pads and other silk
@@ -36,9 +40,10 @@ LABELS = "pack_labels"          # pack: PCB group holding the polarity and balan
 LABEL_H = 1.0
 # (footprint, pad): label. J3's and J2's square pads are the negative ones.
 PAD_LABELS = {("J3", "1"): "B-", ("J3", "2"): "B+", ("J2", "1"): "P-", ("J2", "2"): "P+"}
+BAL_H = H if PCB == packcfg.BOARDS["pack2s"] else LABEL_H   # 2S: R113 leaves J11's labels only room for 0.8 mm
 BAL_LABELS = ("B0", "B1", "B2", "B3")   # J11's pins 1-4: the cell taps (not C0-C3, which read as capacitors)
 # pack: references placed by hand (KiCad x, y, angle), where they're clear; the search places them otherwise
-REF_AT = {"C68": (115.9, 107.0, 90), "C67": (119.6, 109.26, 0), "J2": (131.5, 115.5, 0), "C34": (133.9, 118.6, 0)}
+REF_AT = {} if PCB == packcfg.BOARDS["pack2s"] else {"C68": (115.9, 107.0, 90), "C67": (119.6, 109.26, 0), "J2": (131.5, 115.5, 0), "C34": (133.9, 118.6, 0)}
 
 
 def mm(v):
@@ -210,9 +215,14 @@ def place_labels(b, inner, obst):
         grp.SetName(LABELS)
         b.Add(grp)
     fp = {f.GetReference(): f for f in b.GetFootprints()}
+    two = PCB == packcfg.BOARDS["pack2s"]
+    # 2S: only one of J3's labels fits on top (between its pads), so B+ goes first, and all four go on the back too,
+    # beside the pigtail holes, where the board is empty
+    order = sorted(PAD_LABELS.items(), key=lambda kv: kv[1] != "B+") if two else PAD_LABELS.items()
     jobs = [(text, next(p for p in fp[ref].Pads() if p.GetNumber() == num).GetBoundingBox(), ("left", "right", "top",
-                                                                                              "bottom"))
-            for (ref, num), text in PAD_LABELS.items()]
+                                                                                              "bottom"), layer)
+            for layer in ((pcbnew.F_SilkS, pcbnew.B_SilkS) if two else (pcbnew.F_SilkS,))
+            for (ref, num), text in order]
     done = []
     j11 = fp["J11"]                                     # one row under J11's pins, each centred on its pin
     under = j11.GetCourtyard(pcbnew.F_CrtYd).BBox().GetBottom()
@@ -221,25 +231,35 @@ def place_labels(b, inner, obst):
         t = pcbnew.PCB_TEXT(b)
         t.SetText(text)
         t.SetLayer(pcbnew.F_SilkS)
-        t.SetTextSize(pcbnew.VECTOR2I(mm(LABEL_H), mm(LABEL_H)))
+        t.SetTextSize(pcbnew.VECTOR2I(mm(BAL_H), mm(BAL_H)))
         t.SetTextThickness(mm(T))
-        t.SetPosition(pcbnew.VECTOR2I(p.GetPosition().x, under + mm(0.15 + LABEL_H / 2 + 0.1)))
+        t.SetPosition(pcbnew.VECTOR2I(p.GetPosition().x, under + mm(0.15 + BAL_H / 2 + 0.1)))
         row.append(t)
-    if all(not any(o.Intersects(t.GetBoundingBox()) for own, o in obst[pcbnew.F_SilkS]) for t in row):
-        for t in row:
+    # each label that is clear in the row, or slid a little along it, stays there; the others go on their own, under
+    # or over their pin
+    for t, p in zip(row, sorted(j11.Pads(), key=lambda p: int(p.GetNumber()))):
+        at = t.GetPosition()
+        for dx in (0.0, -0.1, 0.1, -0.2, 0.2, -0.3, 0.3, -0.4, 0.4, -0.5, 0.5, -0.6, 0.6):
+            t.SetPosition(pcbnew.VECTOR2I(at.x + mm(dx), at.y))
+            if not any(o.Intersects(t.GetBoundingBox()) for own, o in obst[pcbnew.F_SilkS]):
+                break
+        if not any(o.Intersects(t.GetBoundingBox()) for own, o in obst[pcbnew.F_SilkS]):
             b.Add(t)
             grp.AddItem(t)
             obst[pcbnew.F_SilkS].append((None, grow(t.GetBoundingBox(), GAP)))
             done.append(t.GetText())
-    else:                                               # no clear row: each label on its own, under its pin
-        for text, p in zip(BAL_LABELS, sorted(j11.Pads(), key=lambda p: int(p.GetNumber()))):
+        else:
             c = p.GetPosition()
-            jobs.append((text, pcbnew.BOX2I(pcbnew.VECTOR2I(c.x - mm(0.1), under - mm(0.1)),
-                                            pcbnew.VECTOR2I(mm(0.2), mm(0.1))), ("bottom", "top")))
-    for text, bb, sides in jobs:
+            jobs.append((t.GetText(), pcbnew.BOX2I(pcbnew.VECTOR2I(c.x - mm(0.1), under - mm(0.1)),
+                                                   pcbnew.VECTOR2I(mm(0.2), mm(0.1))), ("bottom", "top"), pcbnew.F_SilkS))
+    # 2S: a label must not sit under another part's body either (R113 hangs over J3's B+ pad's top side)
+    bodies = {L: [c.BBox() for f in b.GetFootprints() for c in (f.GetCourtyard(crt),) if two and c.OutlineCount()]
+              for L, crt in ((pcbnew.F_SilkS, pcbnew.F_CrtYd), (pcbnew.B_SilkS, pcbnew.B_CrtYd))}
+    for text, bb, sides, layer in jobs:
         t = pcbnew.PCB_TEXT(b)
         t.SetText(text)
-        t.SetLayer(pcbnew.F_SilkS)
+        t.SetLayer(layer)
+        t.SetMirrored(layer == pcbnew.B_SilkS)
         t.SetTextSize(pcbnew.VECTOR2I(mm(LABEL_H), mm(LABEL_H)))
         t.SetTextThickness(mm(T))
         cx, cy = bb.GetCenter().x, bb.GetCenter().y
@@ -255,20 +275,22 @@ def place_labels(b, inner, obst):
                     t.SetPosition(pcbnew.VECTOR2I(int(pos[0]), int(pos[1])))
                     tb = t.GetBoundingBox()
                     if inner.Contains(tb.GetOrigin()) and inner.Contains(tb.GetEnd()) and \
-                            not any(o.Intersects(tb) for own, o in obst[pcbnew.F_SilkS]):
+                            not any(o.Intersects(tb) for own, o in obst[layer]) and \
+                            not any(c.Intersects(tb) and not c.Contains(bb.GetCenter()) for c in bodies[layer]):
                         spot = tb
                         break
                 if spot:
                     break
             if spot:
                 break
+        side = "" if layer == pcbnew.F_SilkS else "(back)"
         if spot:
             b.Add(t)
             grp.AddItem(t)
-            obst[pcbnew.F_SilkS].append((None, grow(spot, GAP)))
-            done.append(text)
+            obst[layer].append((None, grow(spot, GAP)))
+            done.append(text + side)
         else:
-            done.append(text + "(no room)")
+            done.append(text + side + "(no room)")
     return done
 
 

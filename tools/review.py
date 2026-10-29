@@ -3,6 +3,7 @@
     .venv/bin/python tools/review.py sch [--out DIR]
     .venv/bin/python tools/review.py pcb [--out DIR] [--baseline DIR]
     .venv/bin/python tools/review.py pcb --board pack ...   (the 3S pack, kicad-pack/goosepack; folders pcb-pack/)
+    .venv/bin/python tools/review.py pcb --board pack2s ... (the 2S pack, kicad-pack-2s/goosepack2s; folders pcb-pack2s/)
 
 Each run writes a numbered folder under build/review/<sch|pcb>/ (or --out):
 
@@ -53,6 +54,8 @@ POWER_NET_SUFFIXES = {"_OUT1": 0.4, "_OUT2": 0.4}  # motor outputs, /Motor drive
 # sense lines from R66 (PCB group "kelvin", 0.2 mm) carry no current and aren't checked.
 PACK_SCH = ROOT / "kicad-pack/goosepack.kicad_sch"
 PACK_PCB = ROOT / "kicad-pack/goosepack.kicad_pcb"
+PACK2S_SCH = ROOT / "kicad-pack-2s/goosepack2s.kicad_sch"       # --board pack2s: the same checks on the 2S pack
+PACK2S_PCB = ROOT / "kicad-pack-2s/goosepack2s.kicad_pcb"
 PACK_POWER_NETS = {n: 0.4 for n in ("/CELL+", "/PACK+", "/BAT_N", "/PROT_SNS", "/PROT_FET_D", "/PACK-")} | \
                   {n: 0.3 for n in ("/VBUS", "/PMID", "/CHG_SYS", "/SW1", "/SW2")}   # the Charger class width
 STUB_MM = 1.0
@@ -75,7 +78,7 @@ def next_run_dir(kind, out):
     if out:
         path = Path(out)
     else:
-        base = ROOT / "build/review" / (kind + ("-pack" if PCB == PACK_PCB else ""))
+        base = ROOT / "build/review" / (kind + {PACK_PCB: "-pack", PACK2S_PCB: "-pack2s"}.get(PCB, ""))
         base.mkdir(parents=True, exist_ok=True)
         n = 1 + max((int(p.name) for p in base.iterdir() if p.name.isdigit()), default=0)
         path = base / f"{n:02d}"
@@ -297,11 +300,12 @@ def main():
     parser.add_argument("kind", choices=["sch", "pcb"])
     parser.add_argument("--out", help="output folder (default: next numbered folder)")
     parser.add_argument("--baseline", help="earlier pcb review folder to compare DRC against")
-    parser.add_argument("--board", choices=["brain", "pack"], default="brain")
+    parser.add_argument("--board", choices=["brain", "pack", "pack2s"], default="brain")
     args = parser.parse_args()
-    if args.board == "pack":
+    if args.board in ("pack", "pack2s"):
         global SCH, PCB, POWER_NETS, POWER_NET_SUFFIXES, WIDTH_KEY
-        SCH, PCB, POWER_NETS, POWER_NET_SUFFIXES = PACK_SCH, PACK_PCB, PACK_POWER_NETS, {}
+        SCH, PCB = (PACK_SCH, PACK_PCB) if args.board == "pack" else (PACK2S_SCH, PACK2S_PCB)
+        POWER_NETS, POWER_NET_SUFFIXES = PACK_POWER_NETS, {}
         WIDTH_KEY = "min_long"
         for name in ("inner3", "inner4"):
             PCB_VIEWS.pop(name)

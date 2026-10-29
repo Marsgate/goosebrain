@@ -193,11 +193,29 @@ Open layout items (fresh-eyes reviews on 2026-10-27 scored the board 2.4, then 3
 
 ## The 2S pack board
 
-`kicad-pack-2s/goosepack2s.kicad_pcb` started as a copy of the 3S pack board. U13 (now an HY2120-LB, SOT-23-6) and J11 (now a B3B-XH-A) were swapped in place. The BQ7791501's parts are gone, and the ten new parts (U21, U22, Q4, Q5, R110–R113, C83, C84) are in a row at y 170. Like the 3S pack it has no outline yet, so DRC reports the "invalid outline" error and 143 unconnected items. The schematic passes ERC, and the board passes the schematic-parity check.
+`kicad-pack-2s/goosepack2s.kicad_pcb` is **placed and routed** (2026-10-28): **45 × 23 mm**, every part on the top side, every passive within 9 mm of the pin it serves, on the same 4-layer JLC04161H-7628 stackup as the 3S pack. ERC is clean. DRC with zones refilled gives 0 errors, 0 unconnected items and 0 parity issues; the only warnings are the J11 and U7 library mismatches the 3S board has too. The same tools build it with a board switch: `place_pack.py compact --board=pack2s`, `route_pack.py setup|route|finish --board=pack2s` (routing takes about 5 minutes), `silk.py pack2s`, `review.py pcb --board pack2s` and `fab.py --board pack2s`. What differs from the 3S process is in [docs/2s-pack-process.md](docs/2s-pack-process.md).
+
+- **Top:** a power row along the bottom edge (J3 pads, Q2 and Q3 back to back, J2 pads), with F1 over Q2. J11 (B3B-XH-A) is in the top-left corner, with R113 under it and R112 along the top edge. U13 and its filters are between them, and the two balancers (U21/Q4 and U22/Q5) east of U13. The charger corner (U7, L2, the SYS and PMID cap rows, J1, D1 and LED1) is the 3S layout moved 5 mm west.
+- **Ground:** In1 (and the F.Cu, In2 and B.Cu fills) splits at one vertical line 14.6 mm from the west edge: BAT_N (the cells' negative: J3, Q2's sources, U13, C62, C64, R71) west of it, PACK- east. R94 sits across the line.
+- **Pack path:** F.Cu pours J3 → F1 (CELL+), J3 → Q2 (BAT_N), Q2 ↔ Q3 (drains, with a B.Cu copy stitched by 8 vias for heat) and Q3 → J2 (PACK-). PACK+ goes from F1 through 12 vias to a 4.2 mm band poured on both In2 and B.Cu, which joins J2's P+ pad solid. No other net's tracks or router vias cross the band. There is no shunt and no Kelvin sense: the HY2120 reads the drop across Q2 + Q3.
+- **Bleed resistors:** R112 and R113 are 13 mm apart, along the top edge and under J11.
+- **No cell thermistor,** as on 3S: R79, a fixed 10 kΩ in TH2's old place (since 2026-10-28), holds the charger's TS pin at the 25 °C point, so it always charges at the full rate. Unlike 3S, the protector (HY2120) has no NTC input, so the 2S pack has no temperature sensing at all.
+- **Back:** nothing but the clipped leads of J2, J3 and J11.
+- **Polarity:** on top, B+ by J3's round pad (B− is the square pad; there is no room for both labels), P+/P− by J2, and B0–B2 under J11's pins. B−/B+/P−/P+ are also on the back, beside the pigtail holes.
+- **Assembly:** JLC places every SMD part, all on the front. F1, L2, Q2 and Q3 sit on pours with many vias, so they moved to JLC on 2026-10-28, as on the 3S pack.
+
+Open layout items (fresh-eyes reviews on 2026-10-28 scored 3.4/5 with two PACK+ blockers, then 3.8/5 with no layout blockers once those were fixed):
+
+- **R113 is about 14 mm from Q5,** whose drain it serves (BAL2_D, about 90 mA while balancing). That breaks the 9 mm rule, on purpose: the two bleeders are kept 13 mm apart, and R113 fits only under J11.
+- **R112 and R113** have only their 2512 pads and 0.15 mm tracks to spread about 0.38 W each.
+- **The charger's PACK+ feed** (to U7's BAT pins and C34) is 0.4 mm and about 10 mm long on each of B.Cu and F.Cu. That is fine at the default 1 A charge current.
+- **References:** 50 are hidden for lack of room, including U13, U21, U22, Q5 and R113; U13, U21, U22, Q2–Q5 get JLC rotation offsets, which need checking in the preview. The fab layers keep them all.
+
+Brought over from the 3S pack when the 2S board was placed (2026-10-28): the J2/J3 pigtail pads, 0402 boot caps C18/C19, the SMBJ15A for D1 (the SMBJ20A's 32.4 V clamp is over the BQ25798's 30 V VBUS limit) and R34's RALEC part number.
 
 - **The cells aren't chosen yet.** The charge rate (about 0.42 A) assumes 450 mAh. For a different capacity, re-pick R33.
 - **The protector measures current across Q2 + Q3,** so its trip point moves with their temperature. There's no shunt and no TH1.
-- **R112/R113 are 1 W bleed resistors** carrying about 0.38 W each while balancing. Keep them off TH2 and away from the cells.
+- **R112/R113 are 1 W bleed resistors** carrying about 0.38 W each while balancing. Keep them away from the cells.
 
 ## Mechanical notes for later
 
@@ -322,7 +340,7 @@ J1's USB-C footprint origin sits 1.15 mm toward the board edge from its pads, an
 - **The JLC + hand split:** JLC places the basic and preferred parts and the hard chips, on both sides of the brain. SMD parts marked DNP in the schematic are hand-placed: `fab.py` leaves them out of the JLC BOM and CPL, and their pads stay on the board.
   - Brain: JLC places every SMD part, D4, U14, F2 and SW2 included (they were hand-placed until 2026-10-20). Through-hole, in the panel's JLC files (or hand-soldered): J3, J4, J5, J12, M1–M6, SW1. L1 was hand-placed until 2026-10-20; JLC places it now (the Zeng Yi HMS0530-2R2M instead of the Coilcraft XAL5030). L3 is gone: the core runs from an LDO (U12).
   - Pack: JLC places every SMD part, L2, Q2, Q3, R66, TH1 and F1 included (they were hand-placed until 2026-10-28). Hand-soldered: J2 and J3 (leads), J11.
-  - 2S pack, hand-placed: L2, Q2, Q3, TH2, F1. Hand-soldered: J2 (lead), J3, J11.
+  - 2S pack: JLC places every SMD part, L2, Q2, Q3 and F1 included (they were hand-placed until 2026-10-28; TH2 became R79 the same day). Hand-soldered: J2 (lead), J3, J11.
 - **Brain:** order Standard PCBA, both sides, and upload `build/fab-panel/jlc_bom.csv` and `jlc_cpl.csv`. Check every through-hole part in the preview too: their footprint origins are at pin 1, so the CPL gives the pad centre. In the previews on 2026-10-20, J5 needed the −90° offset, J3, J12 and M1–M6 came out turned 180° (housings inboard, pins at the edge), and SW1's lever pointed into the board; fab.py now adds these offsets by LCSC number. J4 sat right with none. **Packs:** Economic PCBA, top side only.
 - **In JLC's placement preview, before you pay:**
   - Check the orientation of every IC, diode, LED, crystal and the USB-C receptacle.

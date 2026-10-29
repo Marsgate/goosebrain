@@ -1,7 +1,7 @@
 """One routing pass of tools/grid_router.py with a machine-readable report of what failed and why.
 
 Run with KiCad's Python on a DRC report in JSON (the board is edited in place, like grid_router.py):
-    .../python3 tools/route_llm.py drc.json report.json [--board=pack] [--clear] [--first=NET,...] [--rip=NET,...]
+    .../python3 tools/route_llm.py drc.json report.json [--board=pack|pack2s] [--clear] [--first=NET,...] [--rip=NET,...]
         [--escape=REF,...]
 
 It routes exactly as grid_router.main() does (same grid, maps, A*, order and emit), so the router itself stays one file.

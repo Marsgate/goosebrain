@@ -2,7 +2,7 @@
 
 Parts for the two boards: the **brain** (`kicad/`, RP2354 + motors + USB host) and the **smart pack** (`kicad-pack/`, charger + protector on the cells). **MPN is the primary ID**, and LCSC is for JLC assembly. Stock was checked on 2026-10-15 to 2026-10-19 through JLCPCB's parts API; every part new on 2026-10-19 (the brain/pack split) was checked live that day. "DK" means Digi-Key and Mouser carry the manufacturer's line; it was not checked live unless marked ✓.
 
-**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron), on either side of the brain. **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed. Exception: on the 3S pack JLC places every SMD part (L2, Q2, Q3, R66, TH1 and F1 were hand-placed until 2026-10-28), since the power parts sit on pours that are hard to solder with an iron.
+**Asm** column: **JLC** = machine-placed by JLC (basic or preferred parts, and parts hard to solder with an iron), on either side of the brain. **Hand** = SMD part marked DNP in the schematic and hand-placed (out of the JLC BOM and CPL, pads stay on the board). **THT** = through-hole, hand-soldered. The rule for both boards: a part stays at JLC if it's basic or preferred, or hard to solder by hand; otherwise it's DNP and hand-placed. Exception: on both packs JLC places every SMD part (on 3S, L2, Q2, Q3, R66, TH1 and F1 were hand-placed until 2026-10-28; on 2S, F1, L2, Q2 and Q3 until the same day), since the power parts sit on pours that are hard to solder with an iron.
 
 ## The split (2026-10-19)
 
@@ -120,6 +120,11 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 | Trip-recovery resistor (R94) | 0402WGF4701TCE | UNI-ROYAL | 0402 | C25900 | JLC | 4.7 kΩ PACK− to BAT_N. Discharge over-current releases when CS falls back below 200 mV. With R94, the charger's 17 µA standby draw holds CS at only 17 µA × 4.7k ≈ 80 mV; without it, the pack's PB+/PB− impedance (about 490 kΩ from the charger) sits right at the HY2120's 450 kΩ release threshold. Any load above about 190 kΩ counts as removed; the brain with its switch off qualifies |
 | DSG gate resistor (R70) | 0402WGF1001TCE | UNI-ROYAL | 0402 | C11702 | JLC | 1 kΩ (was 4.7k). DO/CO drive the gates directly, so this keeps the short-circuit turn-off fast |
 | Balance connector (J11) | B3B-XH-A(LF)(SN) | JST | THT vertical | C144394 | THT | Pin 1 cell 1−, pin 2 mid, pin 3 cell 2+. A 3S plug (4-pin) doesn't fit, and the 3S pack's 4-pin header doesn't take a 2S plug |
+| VBUS TVS (D1) | SMBJ15A | hongjiacheng | SMB | C19077569 | JLC | Was SMBJ20A (C19077575) until 2026-10-28, as on 3S: its 32.4 V clamp is over the BQ25798's 30 V VBUS limit |
+| TS fixed resistor (R79) | 0603WAF1002T5E | UNI-ROYAL | 0603 | C25804 | JLC | 10 kΩ in place of the cell NTC TH2 (Murata NCP18XH103F03RB, DNP) since 2026-10-28, as on 3S: the cells sit on the board's top side, with the parts, so no NTC can press on them. Holds TS at the 25 °C point (58.9 % of REGN). The HY2120 has no NTC input, so the 2S pack has no temperature sensing |
+| Pigtail pads (J2, J3), boot caps (C18, C19), TS high side (R34) | as the 3S pack | | | | | Synced from the 3S pack on 2026-10-28: J2/J3 on `SolderWire-1.5sqmm_1x02_P6mm` pads (J3 an XT30U-M pigtail, C99101), C18/C19 0402 (C192385), R34 RALEC C11631 |
+
+**Assembly:** JLC places every SMD part, all on the front. F1, L2, Q2 and Q3 moved to JLC on 2026-10-28, as on the 3S pack, because they sit on pours. J2, J3 and J11 are hand-soldered.
 
 **Added (cell balancing, charge only):**
 
@@ -130,7 +135,7 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 | Balance FETs (Q4, Q5) | AO3400A | Alpha & Omega | SOT-23-3 | C20917 | JLC | Gate from OUT, source on the cell's negative tap |
 | Bleed resistors (R112, R113) | 25121WJ0470T4E | UNI-ROYAL | 2512 | C15261 | JLC | 47 Ω, 1 W: about 89 mA and 0.38 W at 4.2 V. The bleed current comes through the balance lead |
 
-**Removed from the copy:** BQ7791501 (U13) and its parts R62, R64–R66, R68, R69, R75–R77, C63, C65–C68, TH1. With no shunt, Q2's source is BAT_N. The HY2120 has no temperature input, so the pack loses the protector's discharge over-temperature cutoff (TH1 next to the FETs). TH2 on the charger still stops charging outside 0–60 °C.
+**Removed from the copy:** BQ7791501 (U13) and its parts R62, R64–R66, R68, R69, R75–R77, C63, C65–C68, TH1. With no shunt, Q2's source is BAT_N. The HY2120 has no temperature input, so the pack loses the protector's discharge over-temperature cutoff (TH1 next to the FETs). TH2 on the charger stopped charging outside 0–60 °C until it became R79 on 2026-10-28; since then nothing on the 2S pack senses temperature.
 
 ## Removed
 
@@ -156,4 +161,4 @@ A copy of the 3S pack for 2-cell packs (8.4 V full, 5.6 V at the 2.8 V/cell cuto
 - The pack rides outside the brain's box and plugs into the horizontal J3 through the bottom wall, so the brain has no pack bay. Box = outline + 5 mm: about 73.2 × 37 mm, about 16 mm tall above a 2 mm gap under the board (back-side parts are at most 1.6 mm tall). The board has no mounting holes: the case holds it, with a rib behind J3 to take the plug force.
 - The brain is on 6 layers (JLC06161H-3313), 68.2 × 32 mm, with parts on both sides: 79 SMD parts on the back, assembled by JLC as Standard PCBA (both sides). 4 layers was tried first and didn't route; ROUTING_LOG.md has the details.
 - `tools/fab.py` builds all three boards (`--board brain|pack|pack2s`). Its `Texas_HTSOP-8` rotation for the motor drivers still needs confirming in JLC's placement preview.
-- **2S pack board:** the 10 new footprints (U21, U22, Q4, Q5, R110–R113, C83, C84) are staged in a row at y 170 below the cluster. U13 is now SOT-23-6 and J11 a B3B-XH-A, both swapped in place. Like the 3S pack, it has no outline yet.
+- **2S pack board:** placed and routed at 45 × 23 mm on 2026-10-28 (README, "The 2S pack board"; docs/2s-pack-process.md).

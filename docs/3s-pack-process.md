@@ -165,8 +165,7 @@ The user signs in and pays. Claude never enters passwords or payment details, an
 
 These are the 3S-specific bits to change:
 
-- **Paths:** `tools/place_pack.py`, `route_pack.py`, `silk.py`, `grid_router.py --board=pack`, `review.py --board pack` and `route_loop.py` all hard-code `kicad-pack/goosepack.kicad_pcb`. Only `fab.py` already knows `--board pack2s`.
-  - Add a board switch to each rather than forking the scripts. Keep the 3S defaults, so its rebuild doesn't change.
+- **Paths:** the pack tools pick their board through `tools/packcfg.py` (`--board=pack` by default, `--board=pack2s`). For a third pack, add it there and give each tool its constants under a board check. Keep the 3S defaults, so its rebuild doesn't change.
 - **Part lists and anchors:** `CHARGER`, `PROTECTOR`, `ANCHORS`, `U13_LEFT` and the fixed spots in `place_pack.py`.
 - **In route_pack.py:**
   - the net lists `PLANE`, `POWER` and `CHARGER`;
@@ -177,3 +176,5 @@ These are the 3S-specific bits to change:
   - `ROUTE_ORDER`.
 - **The charger's power stage and its setup escapes** (U7, L2, C18/C19, J1) are the same circuit. Reuse them as they are if the charger corner keeps the same placement.
 - **Afterwards:** update README's pack section, PARTS.md's Asm column and this file's numbers.
+
+The 2S pack was ported this way on 2026-10-28. Every tool now takes `--board=pack2s` (see `tools/packcfg.py`), and what came out different is in [2s-pack-process.md](2s-pack-process.md).
